@@ -14,6 +14,8 @@ const emit = defineEmits<{ close: [] }>()
         <h2 class="bottom-sheet__title">{{ title }}</h2>
         <button class="bottom-sheet__close" :aria-label="t('common.close')" @click="emit('close')">✕</button>
       </header>
+      <!-- панель над прокруткой: окно кладёт сюда то, что должно быть видно всегда (Teleport) -->
+      <div class="bottom-sheet__toolbar"></div>
       <div class="bottom-sheet__body">
         <slot />
       </div>

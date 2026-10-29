@@ -147,6 +147,16 @@ const messages: Messages = {
   'gear.unlocksAt': 'Откроется на ур. {n} «{gen}»',
   'upgrade.hrm': 'Пульсометр',
   'upgrade.hrm.desc': '{gen} ×2',
+  'upgrade.app': 'Беговое приложение',
+  'upgrade.app.desc': '{gen} ×2',
+  'upgrade.spikes': 'Шиповки',
+  'upgrade.spikes.desc': '{gen} ×2',
+  'upgrade.plan': 'План тренировок',
+  'upgrade.plan.desc': '{gen} ×2',
+  'upgrade.oximeter': 'Пульсоксиметр',
+  'upgrade.oximeter.desc': '{gen} ×2',
+  'upgrade.lactate': 'Лактатометр',
+  'upgrade.lactate.desc': '{gen} ×2',
 
   // --- race sheet
   'raceSheet.onCourse': 'Ты на трассе {name}. Закрой окно: тапы — рывки за счёт сил, гели на пунктах питания возвращают силы.',

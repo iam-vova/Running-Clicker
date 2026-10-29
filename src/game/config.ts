@@ -20,7 +20,7 @@ export const RUNNER = {
   reserve: 0.1, // столько сил остаётся на финише при ровном беге без рывков
   tapFrac: 0.004, // рывок продвигает на такую долю дистанции
   tapFracPerTechnique: 0.001, // + за каждый уровень техники бега
-  sprintCost: 3, // рывок — спринт: метр рывка стоит в 1 + sprintCost/выносливость^¼ раз дороже метра ровного бега
+  sprintCost: 6, // рывок — спринт: метр рывка стоит в 1 + sprintCost/выносливость^¼ раз дороже метра ровного бега
   wallSpeed: 0.6, // силы кончились — «стена»: скорость падает до этой доли
   feeds: [1 / 3, 2 / 3], // пункты питания: на этих долях дистанции пролетает гель
   feedEnergy: 0.15, // столько сил возвращает гель на трассе
@@ -51,12 +51,12 @@ export const CHARACTERS = [
 export type CharId = (typeof CHARACTERS)[number]['id']
 
 export const GENERATORS = [
-  { id: 'jog', icon: 'jog', base: 10, rate: 6, growth: 1.15, unlockRace: null },
-  { id: 'club', icon: 'club', base: 100, rate: 60, growth: 1.15, unlockRace: null },
-  { id: 'intervals', icon: 'stopwatch', base: 1100, rate: 480, growth: 1.14, unlockRace: '5k' },
-  { id: 'coach', icon: 'coach', base: 12000, rate: 2820, growth: 1.13, unlockRace: '10k' },
-  { id: 'camp', icon: 'camp', base: 130000, rate: 15600, growth: 1.13, unlockRace: '15k' },
-  { id: 'lab', icon: 'lab', base: 1500000, rate: 90000, growth: 1.12, unlockRace: '30k' },
+  { id: 'jog', icon: 'jog', base: 10, rate: 1.5, growth: 1.15, unlockRace: null },
+  { id: 'club', icon: 'club', base: 100, rate: 15, growth: 1.15, unlockRace: null },
+  { id: 'intervals', icon: 'stopwatch', base: 1100, rate: 120, growth: 1.14, unlockRace: '5k' },
+  { id: 'coach', icon: 'coach', base: 12000, rate: 705, growth: 1.13, unlockRace: '10k' },
+  { id: 'camp', icon: 'camp', base: 130000, rate: 3900, growth: 1.13, unlockRace: '15k' },
+  { id: 'lab', icon: 'lab', base: 1500000, rate: 22500, growth: 1.12, unlockRace: '30k' },
 ] as const
 
 export type GenId = (typeof GENERATORS)[number]['id']
@@ -64,23 +64,29 @@ export type GenId = (typeof GENERATORS)[number]['id']
 export const RACES = [
   // mult — награда (множитель дохода); открытую тренировку UI берёт из GENERATORS.unlockRace
   // cutoff — контрольное время, минуты на трассе. Цепочка из ТЗ v0.4, лимиты откалиброваны симуляцией
-  { id: '1k', km: 1, cutoff: 5.5, mult: 1.2 },
-  { id: '3k', km: 3, cutoff: 15.5, mult: 1.3 },
-  { id: '5k', km: 5, cutoff: 27, mult: 1.5 },
-  { id: '10k', km: 10, cutoff: 50, mult: 1.5 },
-  { id: '15k', km: 15, cutoff: 70, mult: 1.5 },
-  { id: 'half', km: 21.1, cutoff: 97, mult: 2 },
-  { id: '30k', km: 30, cutoff: 136, mult: 1.5 },
-  { id: 'marathon', km: 42.195, cutoff: 179, mult: 2 },
+  { id: '1k', km: 1, cutoff: 7, mult: 1.2 },
+  { id: '3k', km: 3, cutoff: 17, mult: 1.3 },
+  { id: '5k', km: 5, cutoff: 27.5, mult: 1.5 },
+  { id: '10k', km: 10, cutoff: 50.5, mult: 1.5 },
+  { id: '15k', km: 15, cutoff: 67, mult: 1.5 },
+  { id: 'half', km: 21.1, cutoff: 93, mult: 2 },
+  { id: '30k', km: 30, cutoff: 134.5, mult: 1.5 },
+  { id: 'marathon', km: 42.195, cutoff: 177.5, mult: 2 },
   // ультра: сил без гелей не хватит (reserve < 0 — «стена» на ~70% дистанции), гели — каждые 1/6 дистанции
-  { id: '50k', km: 50, cutoff: 192, mult: 2, feeds: [1 / 6, 2 / 6, 3 / 6, 4 / 6, 5 / 6], reserve: -0.4 },
+  { id: '50k', km: 50, cutoff: 188, mult: 2, feeds: [1 / 6, 2 / 6, 3 / 6, 4 / 6, 5 / 6], reserve: -0.4 },
 ] as const
 
 export type RaceId = (typeof RACES)[number]['id']
 
-// rate генераторов — в км/ч
+// rate генераторов — в км/ч. Темп игры откалиброван sim/calibrate.ts: тренировки дают км вчетверо медленнее, чем в v0.10, рывок — прежний
 export const UPGRADES = [
+  // гаджеты: каждый ×2 к своей тренировке, открывается на need-м уровне тренировки
+  { id: 'app', icon: 'phone-app', cost: 150, gen: 'jog', need: 10 },
   { id: 'hrm', icon: 'heart', cost: 1000, gen: 'club', need: 10 },
+  { id: 'spikes', icon: 'spikes', cost: 15000, gen: 'intervals', need: 10 },
+  { id: 'plan', icon: 'calendar', cost: 160000, gen: 'coach', need: 10 },
+  { id: 'oximeter', icon: 'oximeter', cost: 1.8e6, gen: 'camp', need: 10 },
+  { id: 'lactate', icon: 'lactate', cost: 2e7, gen: 'lab', need: 10 },
 ] as const
 
 export type UpgradeId = (typeof UPGRADES)[number]['id']

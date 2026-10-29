@@ -7,6 +7,7 @@ npm ci
 npm run dev      # локально
 npm run build    # сборка в dist/
 npm run sim      # симуляция баланса (RUSH=1 — игрок, который стартует как можно раньше)
+node --experimental-strip-types sim/calibrate.ts   # подбор лимитов забегов под целевые минуты (TARGET='{"1k":3,…}')
 ```
 
 Дизайн и баланс — в [GAME.md](GAME.md).

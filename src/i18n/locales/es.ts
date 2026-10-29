@@ -147,6 +147,16 @@ const messages: Messages = {
   'gear.unlocksAt': 'Se desbloquea en nv. {n} de «{gen}»',
   'upgrade.hrm': 'Pulsómetro',
   'upgrade.hrm.desc': '{gen} ×2',
+  'upgrade.app': 'App de running',
+  'upgrade.app.desc': '{gen} ×2',
+  'upgrade.spikes': 'Zapatillas de clavos',
+  'upgrade.spikes.desc': '{gen} ×2',
+  'upgrade.plan': 'Plan de entrenamiento',
+  'upgrade.plan.desc': '{gen} ×2',
+  'upgrade.oximeter': 'Pulsioxímetro',
+  'upgrade.oximeter.desc': '{gen} ×2',
+  'upgrade.lactate': 'Lactatómetro',
+  'upgrade.lactate.desc': '{gen} ×2',
 
   // --- race sheet
   'raceSheet.onCourse': 'Estás corriendo los {name}. Cierra esta ventana: cada toque es un sprint que gasta energía; los geles de los avituallamientos la recuperan.',

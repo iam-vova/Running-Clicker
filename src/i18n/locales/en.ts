@@ -148,6 +148,16 @@ export const messages = {
   'gear.unlocksAt': 'Unlocks at lv. {n} of “{gen}”',
   'upgrade.hrm': 'Heart rate monitor',
   'upgrade.hrm.desc': '{gen} ×2',
+  'upgrade.app': 'Running app',
+  'upgrade.app.desc': '{gen} ×2',
+  'upgrade.spikes': 'Track spikes',
+  'upgrade.spikes.desc': '{gen} ×2',
+  'upgrade.plan': 'Training plan',
+  'upgrade.plan.desc': '{gen} ×2',
+  'upgrade.oximeter': 'Pulse oximeter',
+  'upgrade.oximeter.desc': '{gen} ×2',
+  'upgrade.lactate': 'Lactate meter',
+  'upgrade.lactate.desc': '{gen} ×2',
 
   // --- race sheet
   'raceSheet.onCourse': 'You are racing the {name}. Close this window: taps are dashes that spend energy, gels at aid stations restore it.',

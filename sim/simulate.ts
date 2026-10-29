@@ -8,9 +8,10 @@ import {
 } from '../src/game/logic.ts'
 import type { GameState } from '../src/game/logic.ts'
 
-const CPS = Number(process.argv[2] ?? 4)
+import { pathToFileURL } from 'node:url'
+
 const DT = 0.1
-const MAX_T = Number(process.env.MAX_T ?? 3 * 3600)
+let CPS = 4
 
 type Option =
   | { kind: 'gen'; id: GenId; cost: number }
@@ -53,13 +54,21 @@ function gainOf(s: GameState, o: Option): number {
   return value(copy) - value(s)
 }
 
+export type SimOptions = { cps?: number; rush?: boolean; maxT?: number; stopAt?: RaceId; trace?: boolean; gels?: boolean }
+/** Прогон бота. starts/finishes — секунды игры до старта/финиша каждого забега. */
+export function simulate(o: SimOptions = {}) {
+CPS = o.cps ?? 4
+const MAX_T = o.maxT ?? 3 * 3600
 const s = newState()
 const log: [number, string][] = []
+const starts: Partial<Record<RaceId, number>> = {}
+const finishes: Partial<Record<RaceId, number>> = {}
 const mark = (t: number, what: string) => log.push([t, what])
 let t = 0
 let clickAcc = 0
 
 while (t < MAX_T && pendingRace(s)) {
+  if (o.stopAt && starts[o.stopAt] !== undefined) break
   clickAcc += CPS * DT
   while (clickAcc >= 1) {
     // на трассе бот тратит на рывки только силы сверх нужных до финиша
@@ -67,7 +76,7 @@ while (t < MAX_T && pendingRace(s)) {
     if (!l || l.energy - tapEnergy(s, s.activeRace!.id) >= l.need - tapKm(s, s.activeRace!.id) * (l.need / Math.max(1e-9, raceKmLeft(s)))) click(s)
     clickAcc--
   }
-  if (feedDue(s) && process.env.GELS !== '0') catchRaceGel(s)
+  if (feedDue(s) && o.gels !== false) catchRaceGel(s)
 
   const rate = value(s)
   const best = options(s)
@@ -80,15 +89,23 @@ while (t < MAX_T && pendingRace(s)) {
 
   // бот стартует, когда прогноз укладывается в лимит (рывки на трассе — запас)
   // RUSH=1 — нетерпеливый игрок: стартует, как только лучший прогноз (рывки + гели) в лимите
-  const go = (id: RaceId) => (process.env.RUSH ? bestForecast(s, id) <= race(id).cutoff : raceReady(s, id))
-  for (const r of RACES.filter((x) => x === pendingRace(s))) if (canStartRace(s, r.id) && go(r.id)) { startRace(s, r.id); mark(t, `старт забега ${r.id}, прогноз ${forecast(s, r.km).toFixed(1)} мин (трусца ${s.owned.jog}, клуб ${s.owned.club})`) }
-  if (process.env.TRACE && Math.round(t * 10) % 300 === 0) console.log('TRACE', fmtTime(t), runSpeed(s).toFixed(1), statMult(s, 'stamina').toFixed(2), 'lab', s.owned.lab, 'ultra', s.boosts.ultra, RACES.map((r) => `${r.id}:${forecast(s, r.km).toFixed(1)}`).join(' '))
+  const go = (id: RaceId) => (o.rush ? bestForecast(s, id) <= race(id).cutoff : raceReady(s, id))
+  for (const r of RACES.filter((x) => x === pendingRace(s))) if (canStartRace(s, r.id) && go(r.id)) { startRace(s, r.id); starts[r.id] = t; mark(t, `старт забега ${r.id}, прогноз ${forecast(s, r.km).toFixed(1)} мин (трусца ${s.owned.jog}, клуб ${s.owned.club})`) }
+  if (o.trace && Math.round(t * 10) % 300 === 0) console.log('TRACE', fmtTime(t), runSpeed(s).toFixed(1), statMult(s, 'stamina').toFixed(2), 'lab', s.owned.lab, 'ultra', s.boosts.ultra, RACES.map((r) => `${r.id}:${forecast(s, r.km).toFixed(1)}`).join(' '))
   const done = tick(s, DT)
   if (done) mark(t, `${done.ok ? 'финиш' : 'СХОД'} забега ${done.id} за ${done.time.toFixed(1)} мин`)
+  if (done?.ok) finishes[done.id] = t
   t += DT
 }
+return { s, t, log, starts, finishes }
+}
+
+// запуск из командной строки: npm run sim [кликов_в_секунду]; RUSH=1, TRACE=1, MAX_T=…, GELS=0
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+const { s, t, log } = simulate({ cps: Number(process.argv[2] ?? 4), rush: !!process.env.RUSH, trace: !!process.env.TRACE, gels: process.env.GELS !== '0', maxT: Number(process.env.MAX_T ?? 3 * 3600) })
 
 console.log(`Кликов в секунду: ${CPS}\n`)
 for (const [time, what] of log) console.log(`${fmtTime(time).padStart(12)}  ${what}`)
 console.log(`\nИтог через ${fmtTime(t)}: объём ${fmt(income(s))} км/ч, скорость бегуна ${runSpeed(s).toFixed(1)} км/ч, прогноз 10 км ${forecast(s, 10).toFixed(1)} мин, рывок ${fmt(clickValue(s))} км`)
 console.log('Генераторы', s.owned, 'Бустеры', s.boosts)
+}

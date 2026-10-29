@@ -25,20 +25,23 @@ function offlineEffect(id: GenId) {
 
 <template>
   <div class="train-sheet">
-    <div class="train-sheet__bulk" role="radiogroup" :aria-label="t('train.bulkLabel')">
-      <span class="text text--muted text--small train-sheet__bulk-label">{{ t('train.bulk') }}</span>
-      <button
-        v-for="n in BULK"
-        :key="n"
-        class="train-sheet__bulk-option"
-        :class="{ 'train-sheet__bulk-option--active': bulk === n }"
-        role="radio"
-        :aria-checked="bulk === n"
-        @click="setBulk(n)"
-      >
-        ×{{ n }}
-      </button>
-    </div>
+    <!-- «Покупать по» — в панели над прокруткой окна, всегда видна -->
+    <Teleport defer to=".bottom-sheet__toolbar">
+      <div class="train-sheet__bulk" role="radiogroup" :aria-label="t('train.bulkLabel')">
+        <span class="text text--muted text--small train-sheet__bulk-label">{{ t('train.bulk') }}</span>
+        <button
+          v-for="n in BULK"
+          :key="n"
+          class="train-sheet__bulk-option"
+          :class="{ 'train-sheet__bulk-option--active': bulk === n }"
+          role="radio"
+          :aria-checked="bulk === n"
+          @click="setBulk(n)"
+        >
+          ×{{ n }}
+        </button>
+      </div>
+    </Teleport>
     <ul class="shop-list">
       <li v-for="g in GENERATORS" :key="g.id" class="shop-item" :class="{ 'shop-item--locked': !genUnlocked(state, g.id) }">
         <img class="icon" :src="icon(g.icon)" alt="" />

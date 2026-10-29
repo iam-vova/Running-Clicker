@@ -122,7 +122,7 @@ export function upgradeVisible(s: GameState, id: UpgradeId): boolean {
 
 /** Скорость бегуна на 1 км, км/ч. Растёт от объёма тренировок. */
 export function runSpeed(s: GameState): number {
-  const x = Math.log10(1 + income(s) / 6) // порядков дохода: растёт с первой же «Утренней трусцы»
+  const x = Math.log10(1 + income(s) / gen('jog').rate) // порядков дохода сверх одной «Утренней трусцы»: растёт с первой же
   return RUNNER.baseSpeed + ((RUNNER.maxSpeed - RUNNER.baseSpeed) * x) / (x + RUNNER.speedHalf)
 }
 
