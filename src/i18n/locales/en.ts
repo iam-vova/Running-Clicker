@@ -69,7 +69,6 @@ export const messages = {
   // --- race HUD
   'raceHud.title': 'On course: {name}',
   'raceHud.distance': 'Distance covered',
-  'raceHud.place': '#{p}/{n}',
   'raceHud.spareTaps': { one: '{count} dash', other: '{count} dashes' },
   'raceHud.noSpare': 'no dashes',
   'raceHud.waitGel': 'wait for the gel',
@@ -94,6 +93,7 @@ export const messages = {
   // --- training
   'train.bulk': 'Buy',
   'train.bulkLabel': 'How many levels to buy',
+  'train.new': 'new',
   'train.level': 'lv. {n}',
   'train.perLevel': '+{v} km/s per level',
   'train.total': 'total {v} km/s · ×2 at lv. {n}',

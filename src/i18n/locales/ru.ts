@@ -68,7 +68,6 @@ const messages: Messages = {
   // --- race HUD
   'raceHud.title': 'На трассе: {name}',
   'raceHud.distance': 'Пройденная дистанция',
-  'raceHud.place': '{p}/{n}',
   'raceHud.spareTaps': { one: '{count} рывок', few: '{count} рывка', many: '{count} рывков', other: '{count} рывка' },
   'raceHud.noSpare': 'без рывков',
   'raceHud.waitGel': 'жди гель',
@@ -93,6 +92,7 @@ const messages: Messages = {
   // --- training
   'train.bulk': 'Покупать по',
   'train.bulkLabel': 'Сколько уровней покупать',
+  'train.new': 'новое',
   'train.level': 'ур. {n}',
   'train.perLevel': '+{v} км/с за уровень',
   'train.total': 'всего {v} км/с · ×2 на ур. {n}',

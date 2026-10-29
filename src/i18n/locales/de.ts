@@ -68,7 +68,6 @@ const messages: Messages = {
   // --- race HUD
   'raceHud.title': 'Auf der Strecke: {name}',
   'raceHud.distance': 'Zurückgelegte Strecke',
-  'raceHud.place': '{p}/{n}',
   'raceHud.spareTaps': { one: '{count} Sprint', other: '{count} Sprints' },
   'raceHud.noSpare': 'keine Sprints',
   'raceHud.waitGel': 'aufs Gel warten',
@@ -93,6 +92,7 @@ const messages: Messages = {
   // --- training
   'train.bulk': 'Kaufen',
   'train.bulkLabel': 'Wie viele Stufen kaufen',
+  'train.new': 'neu',
   'train.level': 'St. {n}',
   'train.perLevel': '+{v} km/s pro Stufe',
   'train.total': 'gesamt {v} km/s · ×2 ab St. {n}',

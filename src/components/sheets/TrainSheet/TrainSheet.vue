@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // «Тренировки»: генераторы км (покупка по ×1/×10/×100) и техника бега.
+import { computed } from 'vue'
 import { GENERATORS, OFFLINE } from '../../../game/config.ts'
 import type { GenId } from '../../../game/config.ts'
 import { buyGen, fmt, genCostN, genLevelRate, genRate, genUnlocked, labStamina, offlineEff, offlineHours } from '../../../game/logic.ts'
@@ -13,6 +14,14 @@ import { fmtHours, pct, xMult } from '../../../utils/format.ts'
 import BoostRow from '../BoostRow/BoostRow.vue'
 
 const { bulk, setBulk } = useBulk()
+/** Открытые тренировки и одна следующая — загадкой: новые появляются по мере забегов, а не видны все сразу */
+const shown = computed(() => {
+  const open = GENERATORS.filter((g) => genUnlocked(state, g.id))
+  const next = GENERATORS.find((g) => !genUnlocked(state, g.id))
+  return next ? [...open, next] : open
+})
+/** Только что открылась забегом и ещё не куплена */
+const isNew = (id: GenId) => GENERATORS.find((g) => g.id === id)!.unlockRace !== null && state.owned[id] === 0
 const cost = (id: GenId) => genCostN(id, state.owned[id], bulk.value)
 /** Как тренировка влияет на офлайн: клуб — лимит часов, тренер — эффективность */
 function offlineEffect(id: GenId) {
@@ -43,10 +52,14 @@ function offlineEffect(id: GenId) {
       </div>
     </Teleport>
     <ul class="shop-list">
-      <li v-for="g in GENERATORS" :key="g.id" class="shop-item" :class="{ 'shop-item--locked': !genUnlocked(state, g.id) }">
-        <img class="icon" :src="icon(g.icon)" alt="" />
+      <li v-for="g in shown" :key="g.id" class="shop-item" :class="{ 'shop-item--locked': !genUnlocked(state, g.id) }">
+        <img class="icon" :src="icon(genUnlocked(state, g.id) ? g.icon : 'lock')" alt="" />
         <div class="shop-item__info">
-          <div class="shop-item__name">{{ genName(g.id) }} <span class="train-sheet__level">{{ t('train.level', { n: state.owned[g.id] }) }}</span></div>
+          <div v-if="!genUnlocked(state, g.id)" class="shop-item__name">???</div>
+          <div v-else class="shop-item__name">
+            {{ genName(g.id) }} <span class="train-sheet__level">{{ t('train.level', { n: state.owned[g.id] }) }}</span>
+            <span v-if="isNew(g.id)" class="train-sheet__new">{{ t('train.new') }}</span>
+          </div>
           <div v-if="genUnlocked(state, g.id)" class="shop-item__meta">
             <div>{{ t('train.perLevel', { v: fmt(genLevelRate(state, g.id) / 60) }) }}</div>
             <div>{{ t('train.total', { v: fmt(genRate(state, g.id) / 60), n: (Math.floor(state.owned[g.id] / 25) + 1) * 25 }) }}</div>

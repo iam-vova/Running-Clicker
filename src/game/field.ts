@@ -30,15 +30,6 @@ export function fieldTimes(id: RaceId, seed: number): number[] {
   return times
 }
 
-/** Место на трассе сейчас: 1 + сколько соперников впереди */
-export function livePlace(id: RaceId, seed: number, elapsed: number, covered: number): number {
-  const km = RACES.find((r) => r.id === id)!.km
-  // соперник впереди, если его ровный темп увёл дальше: km·elapsed/T > covered ⇔ T < km·elapsed/covered
-  if (covered <= 0) return FIELD[id]
-  const limit = (km * elapsed) / covered
-  return 1 + countBelow(fieldTimes(id, seed), limit)
-}
-
 /** Место на финише: 1 + сколько соперников финишировали раньше */
 export const finishPlace = (id: RaceId, seed: number, time: number) => 1 + countBelow(fieldTimes(id, seed), time)
 

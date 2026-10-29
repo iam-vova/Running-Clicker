@@ -31,12 +31,9 @@ const energyHint = computed(() => {
 
 <template>
   <div v-if="state.activeRace && activeRace && live" class="race-hud">
-    <!-- дистанция и место · прогноз финиша против лимита -->
+    <!-- дистанция · прогноз финиша против лимита -->
     <div class="race-hud__row">
-      <span>
-        <b class="race-hud__title">{{ raceName(activeRace.id) }}</b>
-        <span class="race-hud__place">{{ t('raceHud.place', { p: live.place, n: live.field }) }}</span>
-      </span>
+      <b class="race-hud__title">{{ raceName(activeRace.id) }}</b>
       <span>
         {{ t('raceHud.finish') }} <b class="status" :class="live.finish > activeRace.cutoff ? 'status--late' : 'status--ok'">{{ fmtClock(live.finish) }}</b>
         <span class="text text--muted"> / {{ fmtClock(activeRace.cutoff) }}</span>

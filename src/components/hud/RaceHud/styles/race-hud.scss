@@ -22,14 +22,6 @@
     gap: 8px;
   }
 
-  // место в забеге: рядом с таймером, справа
-  &__place {
-    margin-left: 8px;
-    color: var(--muted);
-    font-weight: 600;
-    white-space: nowrap;
-  }
-
   &__energy-row {
     display: flex;
     align-items: center;

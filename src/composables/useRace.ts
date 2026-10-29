@@ -4,7 +4,6 @@ import { GENERATORS, RACES } from '../game/config.ts'
 import type { RaceId } from '../game/config.ts'
 import { bestForecast, forecast, raceLive, raceReady, startRace, tapEnergy, tapKm } from '../game/logic.ts'
 import { state } from '../game/state.ts'
-import { FIELD, livePlace } from '../game/field.ts'
 import { t } from '../i18n'
 import { genName } from '../i18n/names.ts'
 import { xMult } from '../utils/format.ts'
@@ -56,8 +55,6 @@ const live = computed(() => {
     ghost,
     leadM: (runner - ghost) * r.km * 1000, // отрыв от тени лимита, м (минус — тень впереди)
     tapM: tapKm(state, r.id) * 1000,
-    place: livePlace(r.id, a.seed ?? 0, a.elapsed, a.covered),
-    field: FIELD[r.id],
   }
 })
 /** Сколько рывков можно сделать, не залезая в силы, нужные до финиша ровным бегом */
