@@ -3,7 +3,7 @@ import { finishPlace } from './field.ts'
 import { BOOSTS, CLICK_INCOME_PCT, CLICK_KM, GENERATORS, LAB_STAMINA_PER_LEVEL, OFFLINE, RACES, RUNNER, TIME_SCALE, TRAIL_ULTRA_PER_LEVEL, UPGRADES } from './config.ts'
 import type { BoostId, CharId, GenId, RaceId, Stat, UpgradeId } from './config.ts'
 
-export const SAVE_VERSION = 9
+export const SAVE_VERSION = 10
 
 export interface GameState {
   version: number

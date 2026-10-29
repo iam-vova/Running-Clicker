@@ -148,6 +148,7 @@ export const BOOSTS = [
       { icon: 'potato', cost: 40, mult: 1.15 },
       { icon: 'pasta', cost: 600, mult: 1.4 },
       { icon: 'dates', cost: 8000, mult: 1.8 },
+      { icon: 'gummies', cost: 30000, mult: 2.2 },
       { icon: 'gel', cost: 120000, mult: 2.6 },
     ],
   },

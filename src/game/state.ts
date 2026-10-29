@@ -44,6 +44,8 @@ function load(): GameState {
     }
     // v8 → v9: офлайн с лимитом и эффективностью (от «Бегового клуба» и «Личного тренера»)
     if (saved.version === 8) saved = { ...saved, version: 9 }
+    // v9 → v10: в «Еде» финики и мармелад стали двумя уровнями — купленные гели (бывший 4-й) теперь 5-й
+    if (saved.version === 9) saved = { ...saved, version: 10, boosts: { ...saved.boosts, food: (saved.boosts?.food ?? 0) >= 4 ? 5 : saved.boosts?.food ?? 0 } }
     delete saved.offline // недолго жившие отдельные улучшения офлайна
     if (saved.version !== SAVE_VERSION) return newState()
     const base = newState()
