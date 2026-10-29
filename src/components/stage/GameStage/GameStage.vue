@@ -49,7 +49,7 @@ function loop(now: number) {
   const dt = last ? Math.min((now - last) / 1000, 0.1) : 0
   last = now
   if (state.activeRace && feedDue(state)) spawnFeed()
-  if (dashing.value || runout.value || state.activeRace) moveGround(GROUND_SPEED * dt)
+  if (dashing.value || runout.value || cooldown.value || state.activeRace) moveGround(GROUND_SPEED * dt)
   if (groundBoost > 0.01) {
     // рывок = короткое ускорение: земля едет втрое быстрее обычного, пока не догонит (один рывок — ~0.07 с)
     const d = Math.min(groundBoost, GROUND_SPEED * 2 * dt)
@@ -66,6 +66,7 @@ function loop(now: number) {
   }
   placeArch()
   placeProps()
+  moveLeftovers(dt)
   placeRunners()
   frame = requestAnimationFrame(loop)
 }
@@ -74,6 +75,8 @@ function loop(now: number) {
 const archEl = ref<HTMLElement | null>(null)
 const archFrontEl = ref<HTMLElement | null>(null)
 const archOn = ref(false)
+/** Заминка после финиша: бегун бежит дальше, пока арка не уйдёт за экран */
+const cooldown = ref(false)
 let archWorld = 0 // положение арки в координатах groundTotal
 function placeArch() {
   if (state.activeRace && live.value) {
@@ -89,8 +92,13 @@ function placeArch() {
     // финиш серией рывков: забег засчитан раньше, чем земля доехала до арки, — ставим её туда, где финиш
     archOn.value = true
     archWorld = groundTotal + Math.min(groundBoost, 200)
-  } else if (!celebrating.value && !runout.value && !showResult.value) {
-    archOn.value = false // окно результата закрыли — арка тает
+  } else if (archOn.value && !celebrating.value && !runout.value && !showResult.value) {
+    // окно результата закрыли: бегун трусит дальше, арка с толпой уезжает за левый край и только там исчезает
+    cooldown.value = true
+    if (archWorld - groundTotal < -halfStage() - 220) {
+      archOn.value = false
+      cooldown.value = false
+    }
   }
   if (archOn.value) {
     const ax = `${Math.round(archWorld - groundTotal) * px.value}px`
@@ -127,6 +135,9 @@ watch(
   (seed, was) => {
     if (seed === undefined || seed === was || (state.activeRace?.elapsed ?? 0) > 0.5) return
     props.value = []
+    leftovers.value = []
+    archOn.value = false
+    cooldown.value = false
     addProp('crowd', groundTotal - 20)
   },
 )
@@ -148,9 +159,37 @@ function rivalOffset(i: number): number | null {
   const k = Math.floor(i / Math.ceil(times.length / RIVAL_SLOTS))
   const lag = (((k * 7) % RIVAL_SLOTS) * 0.012 * Math.max(0, 1 - a.elapsed / (0.3 * T)))
   const c = (r.km * a.elapsed) / T - lag
-  if (c >= r.km) return null // уже финишировал
   return ((c - a.covered) / raceSpeed(state, r.id)) * GROUND_SPEED + groundBoost
 }
+type RivalView = { i: number; lane: number; style: Record<string, string | number> }
+/** Скорость соперника i относительно земли, игровые px/с (бегун на своём темпе = GROUND_SPEED) */
+function rivalSpeed(i: number): number {
+  const a = state.activeRace
+  const r = activeRace.value
+  if (!a || !r) return GROUND_SPEED
+  return ((r.km / fieldTimes(r.id, a.seed ?? 0)[i]) / raceSpeed(state, r.id)) * GROUND_SPEED
+}
+// после забега соперники не пропадают: бегут дальше своим темпом по земле, пока не уйдут за край экрана
+type Leftover = RivalView & { world: number; speed: number }
+const leftovers = ref<Leftover[]>([])
+let lastSeen: Leftover[] = [] // кто был на экране в последнем кадре забега и где (world)
+watch(
+  () => !!state.activeRace,
+  (on) => {
+    if (!on && lastSeen.length) leftovers.value = lastSeen
+    lastSeen = []
+  },
+  { flush: 'sync' }, // до перерисовки: те же элементы продолжают бег, без мигания
+)
+function moveLeftovers(dt: number) {
+  if (!leftovers.value.length) return
+  const lim = halfStage() + 48
+  for (const l of leftovers.value) l.world += l.speed * dt
+  if (leftovers.value.some((l) => Math.abs(l.world - groundTotal) > lim)) leftovers.value = leftovers.value.filter((l) => Math.abs(l.world - groundTotal) <= lim)
+}
+/** На экране: во время забега — ближайшие соперники, после — те, кто ещё не убежал за край */
+const shownRivals = computed<RivalView[]>(() => (state.activeRace ? rivals.value : leftovers.value))
+
 const rivals = computed(() => {
   const a = state.activeRace
   const r = activeRace.value
@@ -191,19 +230,32 @@ onUpdated(placeRunners)
 
 /** Каждый кадр: тень и соперники — в координатах земли, без CSS-переходов (иначе на рывках дёргаются) */
 function placeRunners() {
-  if (!state.activeRace || !stageEl.value) return
+  if (!stageEl.value) return
+  const els = stageEl.value.querySelectorAll<HTMLElement>('[data-rival]')
+  if (!state.activeRace) {
+    for (const el of els) {
+      const l = leftovers.value.find((l) => l.i === Number(el.dataset.rival))
+      if (l) el.style.setProperty('--gx', `${Math.round(l.world - groundTotal) * px.value}px`)
+    }
+    return
+  }
   const gx = `${Math.round(ghostOffset()) * px.value}px`
   ghostEl.value?.style.setProperty('--gx', gx)
   ghostTagEl.value?.style.setProperty('--gx', gx)
-  for (const el of stageEl.value.querySelectorAll<HTMLElement>('[data-rival]')) {
-    const x = rivalOffset(Number(el.dataset.rival))
-    if (x !== null) el.style.setProperty('--gx', `${Math.round(x) * px.value}px`)
+  lastSeen = []
+  for (const el of els) {
+    const i = Number(el.dataset.rival)
+    const x = rivalOffset(i)
+    if (x === null) continue
+    el.style.setProperty('--gx', `${Math.round(x) * px.value}px`)
+    const view = rivals.value.find((v) => v.i === i)
+    if (view) lastSeen.push({ ...view, world: groundTotal + x, speed: rivalSpeed(i) })
   }
 }
 
 // --- бегун ---
 const dashing = ref(false)
-const heroPose = computed(() => (celebrating.value ? 'finish' : dashing.value || runout.value || state.activeRace ? 'run' : 'idle'))
+const heroPose = computed(() => (celebrating.value ? 'finish' : dashing.value || runout.value || cooldown.value || state.activeRace ? 'run' : 'idle'))
 
 // --- всплывающие «+км» ---
 type Pop = { id: number; x: number; y: number; text: string }
@@ -311,7 +363,7 @@ onBeforeUnmount(() => {
     </Transition>
     <!-- Соперники: ближайшие на трассе, на дальних дорожках -->
     <TransitionGroup name="game-stage-fade">
-      <span v-for="rv in rivals" :key="rv.i" :data-rival="rv.i" class="sprite sprite--run game-stage__rival" :style="rv.style" aria-hidden="true"></span>
+      <span v-for="rv in shownRivals" :key="rv.i" :data-rival="rv.i" class="sprite sprite--run game-stage__rival" :style="rv.style" aria-hidden="true"></span>
     </TransitionGroup>
     <!-- Тень лимита: силуэт бегуна в темп контрольного времени — позади, если успеваешь, впереди, если отстаёшь -->
     <template v-if="live && activeRace">
