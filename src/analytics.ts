@@ -52,7 +52,7 @@ setInterval(() => {
 }, 5000)
 
 /** Счётчики текущего забега: рывки и пойманные гели */
-export const raceStats = { taps: 0, gels: 0 }
+export const raceStats = { taps: 0, gels: 0, perfect: 0 }
 
 // --- отправка пачками: раз в 10 с и при сворачивании вкладки ---
 type Event = { event: string; properties: Record<string, unknown>; timestamp: string }

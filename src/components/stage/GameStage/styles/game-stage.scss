@@ -122,6 +122,51 @@
     }
   }
 
+  // шкала рывка: серые края — мимо, жёлтое — обычный рывок, зелёный центр — вдвое дальше (зоны — RUNNER.timing)
+  &__meter {
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--nav-h) + 5px * var(--px));
+    width: min(160px, 46%);
+    height: 12px;
+    transform: translateX(-50%);
+    border: 2px solid rgb(0 0 0 / 0.6);
+    border-radius: 3px;
+    background: linear-gradient(
+      to right,
+      #8d939b 0 25%,
+      #f0bd3e 25% 42%,
+      #33c46a 42% 58%,
+      #f0bd3e 58% 75%,
+      #8d939b 75%
+    );
+    pointer-events: none;
+    transition: box-shadow 0.15s;
+
+    &--off {
+      opacity: 0.4;
+    }
+
+    &[data-hit='perfect'] {
+      box-shadow: 0 0 0 2px #fff, 0 0 14px 4px #33c46a;
+    }
+
+    &[data-hit='miss'] {
+      box-shadow: 0 0 0 2px rgb(0 0 0 / 0.3);
+    }
+  }
+
+  &__meter-pointer {
+    position: absolute;
+    top: -5px;
+    bottom: -5px;
+    left: calc(var(--p, 0) * 100%);
+    width: 4px;
+    transform: translateX(-50%);
+    background: #fff;
+    border: 1px solid #000;
+  }
+
   &__pop {
     position: absolute;
     transform: translate(-50%, -100%);

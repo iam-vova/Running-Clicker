@@ -168,6 +168,12 @@ export const sfx = {
     }
     vibrate(8)
   },
+  /** рывок в зелёную зону — звонкий двойной щелчок */
+  perfect() {
+    tone(880, 0.05, { vol: 0.18, wave: 'triangle' })
+    tone(1320, 0.09, { vol: 0.2, wave: 'triangle', delay: 0.05 })
+    vibrate(15)
+  },
   /** рывок без сил — глухо */
   noEnergy() {
     tone(140, 0.09, { vol: 0.3, wave: 'triangle', to: 90 })

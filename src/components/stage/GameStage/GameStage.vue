@@ -3,6 +3,8 @@
 // Тап в любое место (или пробел) — рывок.
 import { computed, onBeforeUnmount, onMounted, onUpdated, ref, watch } from 'vue'
 import { catchGel, catchRaceGel, click, clickValue, feedDue, fmt, fmtClock, forecast, raceSpeed } from '../../../game/logic.ts'
+import type { DashHit } from '../../../game/logic.ts'
+import { RUNNER } from '../../../game/config.ts'
 import { paused, state } from '../../../game/state.ts'
 import { t } from '../../../i18n/index.ts'
 import { sfx } from '../../../sound.ts'
@@ -64,6 +66,7 @@ function loop(now: number) {
       sfx.step()
     }
   }
+  moveMeter(dt)
   placeArch()
   placeProps()
   moveLeftovers(dt)
@@ -267,23 +270,59 @@ function pop(x: number, y: number, text: string, warn = false) {
   setTimeout(() => (pops.value = pops.value.filter((p) => p.id !== id)), 800)
 }
 
+// --- шкала рывка: указатель бегает туда-обратно; тап, когда он в зелёной зоне, — рывок вдвое дальше ---
+const TIMING = RUNNER.timing
+const meterEl = ref<HTMLElement | null>(null)
+let meterT = 0 // фаза указателя, с
+let meterP = 0 // положение указателя, 0–1
+let lockUntil = 0 // после тапа указатель стоит (performance.now, мс)
+let flashTimer = 0
+function moveMeter(dt: number) {
+  if (!state.activeRace) return
+  if (performance.now() >= lockUntil) meterT += dt
+  const ph = (meterT % TIMING.period) / TIMING.period
+  meterP = ph < 0.5 ? ph * 2 : 2 - ph * 2 // треугольник: 0 → 1 → 0
+  meterEl.value?.style.setProperty('--p', meterP.toFixed(4))
+}
+/** Куда попал тап; тап, пока указатель стоит после прошлого, — «мимо» (иначе частые тапы ловили бы одну зону) */
+function dashHit(): DashHit {
+  const now = performance.now()
+  const locked = now < lockUntil
+  lockUntil = now + TIMING.lock * 1000
+  if (locked) return 'miss'
+  const d = Math.abs(meterP - 0.5)
+  return d < TIMING.perfect ? 'perfect' : d < TIMING.good ? 'good' : 'miss'
+}
+function flashMeter(hit: DashHit) {
+  const el = meterEl.value
+  if (!el) return
+  el.dataset.hit = hit
+  clearTimeout(flashTimer)
+  flashTimer = window.setTimeout(() => delete el.dataset.hit, 300)
+}
+
 // --- рывок ---
 let dashTimer = 0
 function dash(e?: PointerEvent) {
   const inRace = live.value
   // рывок «в долг»: запаса нет, тратишь силы, нужные до финиша, — предупреждаем, но не запрещаем
   const debt = !!inRace && inRace.canTap && inRace.spareTaps === 0
+  const hit: DashHit = inRace?.canTap ? dashHit() : 'good'
+  if (inRace?.canTap) flashMeter(hit)
+  const meters = inRace ? inRace.tapM * TIMING.mult[hit] : 0
   const text = inRace
     ? !inRace.canTap
       ? t('stage.noEnergy')
-      : t(debt ? 'stage.debt' : 'stage.plusMeters', { n: Math.round(inRace.tapM) })
+      : t(debt ? 'stage.debt' : hit === 'perfect' ? 'stage.perfect' : hit === 'miss' ? 'stage.miss' : 'stage.plusMeters', { n: Math.round(meters) })
     : t('stage.plusKm', { n: fmt(clickValue(state)) })
   // рывок на трассе — бегун продвинулся: сдвигаем землю на столько же, чтобы арка и фон двигались вместе
-  if (inRace && inRace.canTap) groundBoost += (inRace.tapM / 1000 / inRace.speed) * GROUND_SPEED
+  if (inRace && inRace.canTap) groundBoost += (meters / 1000 / inRace.speed) * GROUND_SPEED
   if (inRace && (!inRace.canTap || debt)) sfx.noEnergy()
+  else if (hit === 'perfect' && inRace) sfx.perfect()
   else sfx.dash()
+  if (inRace && hit === 'perfect') raceStats.perfect++
   if (inRace) raceStats.taps++
-  click(state)
+  click(state, hit)
   dashing.value = true
   clearTimeout(dashTimer)
   dashTimer = window.setTimeout(() => (dashing.value = false), 500)
@@ -376,6 +415,10 @@ onBeforeUnmount(() => {
       <span ref="ghostEl" class="sprite sprite--run game-stage__hero game-stage__hero--ghost" aria-hidden="true"></span>
       <span ref="ghostTagEl" class="game-stage__ghost-tag">{{ t('race.cutoffShort', { t: fmtClock(activeRace.cutoff) }) }}</span>
     </template>
+    <!-- Шкала рывка под ногами бегуна: тап в зелёную зону — рывок вдвое дальше -->
+    <div v-if="live && activeRace" ref="meterEl" class="game-stage__meter" :class="{ 'game-stage__meter--off': !live.canTap }" aria-hidden="true">
+      <i class="game-stage__meter-pointer"></i>
+    </div>
     <span ref="heroEl" class="sprite game-stage__hero" :class="`sprite--${heroPose}`" aria-hidden="true"></span>
     <Transition name="game-stage-fade">
       <div v-show="archOn" ref="archFrontEl" class="game-stage__finish" aria-hidden="true">

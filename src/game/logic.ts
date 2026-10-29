@@ -282,18 +282,21 @@ function earn(s: GameState, km: number) {
   s.totalKm += km
 }
 
-export function click(s: GameState) {
+export type DashHit = keyof typeof RUNNER.timing.mult
+
+/** Тап: км на тренировке; на забеге — рывок (hit — куда попал указатель шкалы рывка). */
+export function click(s: GameState, hit: DashHit = 'good') {
   s.clicks++
   earn(s, clickValue(s))
-  raceTap(s)
+  raceTap(s, hit)
 }
 
 /** Рывок на трассе: продвигает вперёд за счёт сил. Без сил — ничего не даёт. */
-export function raceTap(s: GameState): boolean {
+export function raceTap(s: GameState, hit: DashHit = 'good'): boolean {
   const a = s.activeRace
   if (!a || a.energy < tapEnergy(s, a.id)) return false
-  a.energy -= tapEnergy(s, a.id)
-  a.covered = Math.min(a.covered + tapKm(s, a.id), race(a.id).km)
+  a.energy -= tapEnergy(s, a.id) // силы — как за обычный рывок, дальность — по попаданию
+  a.covered = Math.min(a.covered + tapKm(s, a.id) * RUNNER.timing.mult[hit], race(a.id).km)
   return true
 }
 

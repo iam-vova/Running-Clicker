@@ -88,6 +88,7 @@ function onStarted(id: RaceId) {
   setTimeout(() => sfx.cheer(1.4), 900) // болельщики на старте
   raceStats.taps = 0
   raceStats.gels = 0
+  raceStats.perfect = 0
   const r = RACES.find((r) => r.id === id)!
   track('race_start', {
     race: id,

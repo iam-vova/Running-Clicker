@@ -57,6 +57,7 @@ function onRaceFinish(res: RaceResult) {
     gave_up: !!res.gaveUp,
     taps: raceStats.taps,
     gels: raceStats.gels,
+    perfect: raceStats.perfect,
     place: res.place ?? null,
   })
   lastResult.value = {
