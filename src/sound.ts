@@ -59,39 +59,48 @@ function createContext() {
   noiseBuf = null
 }
 
-/** Пересоздать аудио, если старый контекст «застрял» (iOS после звонка/сворачивания иногда не оживает) */
+/** Контекст «застрял» (iOS после сворачивания): пересоздаём его на следующем касании — только внутри жеста он оживёт */
+let stale = false
+
 function rebuild() {
   const playing = !!timer
   stopMusic()
-  try {
-    void ctx?.close()
-  } catch {
-    /* уже закрыт */
-  }
+  void ctx?.close().catch(() => {})
   ctx = null
   createContext()
   if (playing) startMusic()
 }
 
+/** iOS: короткий беззвучный звук внутри жеста окончательно «открывает» аудио */
+function primeSilence() {
+  if (!ctx) return
+  const src = ctx.createBufferSource()
+  src.buffer = ctx.createBuffer(1, 1, 22050)
+  src.connect(ctx.destination)
+  src.start(0)
+}
+
 /**
- * Создать/разбудить аудио по жесту пользователя. Вызывается на каждом касании:
- * браузер мог приостановить звук (suspended) или iOS — прервать его (interrupted) после сворачивания игры.
+ * Создать/разбудить аудио. Вызывается на каждом касании (жест пользователя): браузер мог приостановить звук
+ * (suspended), а iOS — прервать (interrupted) после сворачивания игры. Новый контекст создаётся только здесь,
+ * внутри жеста: созданный вне жеста на iOS так и останется немым.
  */
 export function unlock() {
   try {
-    if (!ctx) createContext()
+    const state = ctx?.state as string | undefined // iOS добавляет своё состояние 'interrupted'
+    if (!ctx || stale || state === 'closed' || state === 'interrupted') {
+      stale = false
+      if (ctx) rebuild()
+      else createContext()
+    }
     const c = ctx!
     if (c.state === 'running') return
-    c.resume().then(
-      () => {
-        if (c === ctx && c.state !== 'running') rebuild()
-      },
-      () => c === ctx && rebuild(),
-    )
-    // iOS: resume() у прерванного контекста может так и не завершиться — проверяем чуть позже
+    primeSilence()
+    void c.resume().catch(() => (stale = true))
+    // не ожил за секунду — на следующем касании пересоздадим
     setTimeout(() => {
-      if (c === ctx && c.state !== 'running' && !document.hidden) rebuild()
-    }, 300)
+      if (c === ctx && c.state !== 'running' && !document.hidden) stale = true
+    }, 1000)
   } catch {
     ctx = null
   }
