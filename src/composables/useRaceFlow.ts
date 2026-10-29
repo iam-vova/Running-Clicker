@@ -3,6 +3,7 @@
 import { ref } from 'vue'
 import { GENERATORS, RACES } from '../game/config.ts'
 import type { GenId, RaceId } from '../game/config.ts'
+import { FIELD } from '../game/field.ts'
 import { abandonRace, canStartRace, startRace } from '../game/logic.ts'
 import type { OfflineReport, RaceResult } from '../game/logic.ts'
 import { paused, startGame, state } from '../game/state.ts'
@@ -22,6 +23,8 @@ export type Result = {
   unlocked: GenId | null // какая тренировка открылась
   next: RaceId | null // следующая дистанция
   gaveUp: boolean // сошёл сам, а не обогнала тень
+  place: number | null // место на финише
+  field: number // сколько стартовало
 }
 
 const FINISH_RUNOUT = 1300 // мс: бегун пробегает арку и отбегает от неё
@@ -39,7 +42,10 @@ const away = ref<OfflineReport | null>(null)
 const { sheet, closeSheet } = useSheets()
 
 function onRaceFinish(res: RaceResult) {
-  if (res.ok) sfx.finish()
+  if (res.ok) {
+    sfx.finish()
+    sfx.cheer(2.4, true)
+  }
   else sfx.dnf()
   const r = RACES.find((r) => r.id === res.id)!
   track(res.ok ? 'race_finish' : 'race_dnf', {
@@ -51,6 +57,7 @@ function onRaceFinish(res: RaceResult) {
     gave_up: !!res.gaveUp,
     taps: raceStats.taps,
     gels: raceStats.gels,
+    place: res.place ?? null,
   })
   lastResult.value = {
     id: r.id,
@@ -62,6 +69,8 @@ function onRaceFinish(res: RaceResult) {
     unlocked: GENERATORS.find((g) => g.unlockRace === r.id)?.id ?? null,
     next: RACES.find((x) => !state.races.includes(x.id))?.id ?? null,
     gaveUp: !!res.gaveUp,
+    place: res.place ?? null,
+    field: FIELD[r.id],
   }
   closeSheet()
   if (!res.ok) {

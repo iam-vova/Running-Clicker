@@ -65,6 +65,7 @@ const messages: Messages = {
   // --- race HUD
   'raceHud.title': 'Auf der Strecke: {name}',
   'raceHud.distance': 'Zurückgelegte Strecke',
+  'raceHud.place': 'Platz {p}/{n}',
   'raceHud.covered': '{c} von {k} km',
   'raceHud.ahead': '+{m} m vor dem Zeitlimit-Schatten',
   'raceHud.behind': 'Schatten {m} m voraus',
@@ -215,6 +216,7 @@ const messages: Messages = {
   // --- race result
   'result.label': 'Rennergebnis',
   'result.finishTitle': 'Im Ziel! {name}',
+  'result.place': 'Platz',
   'result.time': 'Zeit',
   'result.plusMedal': '+1 Medaille',
   'result.medalsTotal': '· insgesamt {n}',

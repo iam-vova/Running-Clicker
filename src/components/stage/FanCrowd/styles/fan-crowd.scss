@@ -1,0 +1,35 @@
+// Ряд болельщиков: размер задаёт родитель (ширина 160 игровых px), высота — по пропорции картинки
+.fan-crowd {
+  display: block;
+  aspect-ratio: 160 / 64;
+
+  &__fan {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--x) * 1px * var(--px));
+    width: calc(var(--w) * 1px * var(--px));
+    background: var(--crowd) calc(var(--x) * -1px * var(--px)) 0 / calc(160px * var(--px)) 100% no-repeat;
+    image-rendering: pixelated;
+    animation: fan-crowd-jump 0.5s steps(1) infinite;
+  }
+}
+
+// прыжок по целым игровым пикселям: вверх, выше, вниз, на месте
+@keyframes fan-crowd-jump {
+  0% {
+    transform: translateY(0);
+  }
+
+  25% {
+    transform: translateY(calc(var(--jump) * -0.5px * var(--px)));
+  }
+
+  50% {
+    transform: translateY(calc(var(--jump) * -1px * var(--px)));
+  }
+
+  75% {
+    transform: translateY(0);
+  }
+}

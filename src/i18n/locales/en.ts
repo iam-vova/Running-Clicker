@@ -66,6 +66,7 @@ export const messages = {
   // --- race HUD
   'raceHud.title': 'On course: {name}',
   'raceHud.distance': 'Distance covered',
+  'raceHud.place': '#{p} of {n}',
   'raceHud.covered': '{c} of {k} km',
   'raceHud.ahead': '+{m} m ahead of the pace ghost',
   'raceHud.behind': 'pace ghost {m} m ahead',
@@ -216,6 +217,7 @@ export const messages = {
   // --- race result
   'result.label': 'Race result',
   'result.finishTitle': 'Finish! {name}',
+  'result.place': 'Place',
   'result.time': 'Time',
   'result.plusMedal': '+1 medal',
   'result.medalsTotal': '· total {n}',

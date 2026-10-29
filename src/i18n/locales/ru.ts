@@ -65,6 +65,7 @@ const messages: Messages = {
   // --- race HUD
   'raceHud.title': 'На трассе: {name}',
   'raceHud.distance': 'Пройденная дистанция',
+  'raceHud.place': '{p}-й из {n}',
   'raceHud.covered': '{c} из {k} км',
   'raceHud.ahead': 'отрыв от тени +{m} м',
   'raceHud.behind': 'тень впереди на {m} м',
@@ -215,6 +216,7 @@ const messages: Messages = {
   // --- race result
   'result.label': 'Результат забега',
   'result.finishTitle': 'Финиш! {name}',
+  'result.place': 'Место',
   'result.time': 'Время',
   'result.plusMedal': '+1 медаль',
   'result.medalsTotal': '· всего {n}',

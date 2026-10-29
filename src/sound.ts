@@ -126,7 +126,7 @@ function tone(freq: number, dur: number, { vol = 0.5, wave = 'square' as Wave, t
 
 let noiseBuf: AudioBuffer | null = null
 /** Короткий шум (шаг, удар): фильтруется по высоте. */
-function noise(dur: number, { vol = 0.3, freq = 1200, delay = 0 } = {}) {
+function noise(dur: number, { vol = 0.3, freq = 1200, delay = 0, type = 'lowpass' as BiquadFilterType } = {}) {
   if (!sfxOn() || !ctx || !master) return
   if (!noiseBuf) {
     noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 0.3, ctx.sampleRate)
@@ -137,7 +137,7 @@ function noise(dur: number, { vol = 0.3, freq = 1200, delay = 0 } = {}) {
   const src = ctx.createBufferSource()
   src.buffer = noiseBuf
   const f = ctx.createBiquadFilter()
-  f.type = 'lowpass'
+  f.type = type
   f.frequency.value = freq
   const g = ctx.createGain()
   g.gain.setValueAtTime(vol, t0)
@@ -209,6 +209,15 @@ export const sfx = {
     tone(784, 0.12, { vol: 0.32, delay: 0.45 })
     tone(1047, 0.5, { vol: 0.36, delay: 0.57 })
     vibrate([60, 40, 60, 40, 160])
+  },
+  /** болельщики: аплодисменты — россыпь хлопков, к концу реже; громче на финише */
+  cheer(dur = 1.6, loud = false) {
+    const n = loud ? 70 : 34
+    for (let i = 0; i < n; i++) {
+      const at = dur * Math.random() ** 1.6
+      noise(0.03, { vol: (loud ? 0.22 : 0.13) * (0.5 + Math.random() / 2), freq: 1100 + Math.random() * 1400, delay: at, type: 'bandpass' })
+    }
+    if (loud) tone(620, 0.35, { vol: 0.05, wave: 'triangle', to: 900, delay: 0.2 }) // «у-у!» из толпы
   },
   /** сход — грустный спуск */
   dnf() {

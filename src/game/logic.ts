@@ -1,4 +1,5 @@
 // Чистая логика без Vue: её используют и игра, и симуляция баланса.
+import { finishPlace } from './field.ts'
 import { BOOSTS, CLICK_KM, GENERATORS, LAB_STAMINA_PER_LEVEL, OFFLINE, RACES, RUNNER, TIME_SCALE, UPGRADES } from './config.ts'
 import type { BoostId, CharId, GenId, RaceId, Stat, UpgradeId } from './config.ts'
 
@@ -29,7 +30,8 @@ export interface GameState {
 }
 
 /** pace — темп, с которым вышел на старт (км за минуту трассы): форма на забеге не меняется от покупок по ходу */
-export type ActiveRace = { id: RaceId; elapsed: number; covered: number; energy: number; fed: number; pace?: number }
+/** seed — состав соперников этой попытки (game/field.ts) */
+export type ActiveRace = { id: RaceId; elapsed: number; covered: number; energy: number; fed: number; pace?: number; seed?: number }
 
 export function newState(): GameState {
   return {
@@ -245,7 +247,8 @@ export function catchRaceGel(s: GameState): number {
   return a.energy - before
 }
 
-export type RaceResult = { id: RaceId; ok: boolean; time: number; covered: number; gaveUp?: boolean }
+/** place — место среди FIELD[id] стартовавших (только у финиша) */
+export type RaceResult = { id: RaceId; ok: boolean; time: number; covered: number; gaveUp?: boolean; place?: number }
 
 /** Сойти с дистанции добровольно: сход без награды, весь прогресс остаётся. */
 export function abandonRace(s: GameState): RaceResult | null {
@@ -321,7 +324,7 @@ export function buyBoost(s: GameState, id: BoostId): boolean {
 
 export function startRace(s: GameState, id: RaceId): boolean {
   if (!canStartRace(s, id)) return false
-  s.activeRace = { id, elapsed: 0, covered: 0, energy: 1, fed: 0, pace: race(id).km / forecast(s, race(id).km) }
+  s.activeRace = { id, elapsed: 0, covered: 0, energy: 1, fed: 0, pace: race(id).km / forecast(s, race(id).km), seed: (Math.random() * 2 ** 31) | 0 }
   return true
 }
 
@@ -350,7 +353,7 @@ function raceStep(s: GameState, dt: number): RaceResult | null {
     s.medals++
     s.bestTimes[a.id] = Math.min(time, s.bestTimes[a.id] ?? Infinity)
     s.activeRace = null
-    return { id: a.id, ok: true, time, covered: r.km }
+    return { id: a.id, ok: true, time, covered: r.km, place: finishPlace(a.id, a.seed ?? 0, time) }
   }
   const toCutoff = r.cutoff - a.elapsed
   if (toCutoff <= dt) {
