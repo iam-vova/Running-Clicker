@@ -7,12 +7,14 @@ import { t } from '../../../i18n/index.ts'
 import { muted, setMuted } from '../../../sound.ts'
 import { useRace } from '../../../composables/useRace.ts'
 import { useSheets } from '../../../composables/useSheets.ts'
+import { useRaceFlow } from '../../../composables/useRaceFlow.ts'
 import { icon } from '../../../utils/assets.ts'
 import NextRaceCard from '../NextRaceCard/NextRaceCard.vue'
 import RaceHud from '../RaceHud/RaceHud.vue'
 
 const { nextRace, live } = useRace()
 const { toggleSheet } = useSheets()
+const { runout, celebrating, showResult } = useRaceFlow()
 const perSec = computed(() => kmPerSec(state))
 const speed = computed(() => runSpeed(state))
 </script>
@@ -34,7 +36,8 @@ const speed = computed(() => runSpeed(state))
     <div class="game-hud__line game-hud__line--total">{{ t('hud.total', { km: fmt(state.totalKm) }) }}</div>
 
     <RaceHud v-if="live" />
-    <NextRaceCard v-else-if="nextRace" />
+    <!-- следующий забег — только когда итог прошлого закрыт: не раньше финишной анимации и окна результата -->
+    <NextRaceCard v-else-if="nextRace && !runout && !celebrating && !showResult" />
 
     <!-- Скорость бегуна — закреплена под карточкой забега, не зависит от персонажа -->
     <span class="game-hud__speed">{{ t('units.kmh', { v: speed.toFixed(1) }) }}</span>
