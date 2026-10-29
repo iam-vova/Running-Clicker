@@ -13,7 +13,7 @@ const { nextRace, eta, readiness, readyPct } = useRace()
 <template>
   <div v-if="nextRace" class="next-race-card">
     <span class="next-race-card__row">
-      <b>{{ t('race.title', { name: raceName(nextRace.id) }) }}</b>
+      <b class="next-race-card__title">{{ t('race.title', { name: raceName(nextRace.id) }) }}</b>
       <span class="text text--muted">{{ t('race.cutoffShort', { t: fmtClock(nextRace.cutoff) }) }}</span>
     </span>
     <span class="next-race-card__row">

@@ -21,7 +21,7 @@ const enoughWithGels = computed(() => !!live.value && live.value.energy + live.v
 <template>
   <div v-if="state.activeRace && activeRace && live" class="race-hud">
     <div class="race-hud__row">
-      <b>{{ t('raceHud.title', { name: raceName(activeRace.id) }) }}</b>
+      <b class="race-hud__title">{{ t('raceHud.title', { name: raceName(activeRace.id) }) }}</b>
       <span class="race-hud__timer"><img class="icon icon--inline" :src="icon('stopwatch')" alt="" />{{ fmtClock(state.activeRace.elapsed) }}</span>
     </div>
     <div class="race-hud__row">

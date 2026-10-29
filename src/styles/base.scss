@@ -16,6 +16,25 @@
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 
+/* «Game» — пиксельный шрифт заголовков, кнопок и подписей: Press Start 2P, уменьшенный через size-adjust
+   (он очень широкий). Один вес на весь диапазон — чтобы браузер не рисовал поддельный жирный. */
+@font-face {
+  font-family: 'Game';
+  font-display: swap;
+  font-weight: 100 900;
+  size-adjust: 72%;
+  src: url('@fontsource/press-start-2p/files/press-start-2p-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+@font-face {
+  font-family: 'Game';
+  font-display: swap;
+  font-weight: 100 900;
+  size-adjust: 72%;
+  src: url('@fontsource/press-start-2p/files/press-start-2p-cyrillic-400-normal.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
 /* Layout: мобильная игра — сцена на весь экран, HUD сверху, панель вкладок снизу, окна выезжают снизу. */
 :root {
   --bg: #e9eeec;
@@ -28,8 +47,8 @@
   --lane: #2f6fd6; /* разметка забега */
   --ok: #1d8a5a;
   --warn: #b7791f;
-  /* Текст — Roboto (с кириллицей); пиксельный Press Start 2P только у крупных чисел (счётчик, цены, время) */
-  --display: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Описания — Roboto (читаемость); заголовки, кнопки, подписи — пиксельный «Game»; крупные числа — Press Start 2P */
+  --display: 'Game', 'Roboto', system-ui, sans-serif;
   --body: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --num: 'Press Start 2P', ui-monospace, monospace;
 }

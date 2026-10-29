@@ -11,6 +11,11 @@
   font-size: 13px;
   font-variant-numeric: tabular-nums;
 
+  &__title {
+    font-family: var(--display);
+    font-weight: 600;
+  }
+
   &__row {
     display: flex;
     justify-content: space-between;
