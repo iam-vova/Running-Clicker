@@ -1,4 +1,4 @@
-# Ультрамарафон
+# Hundred Miler: Running Clicker
 
 Пиксельный idle-кликер про бег (Vue 3 + TypeScript + Vite). Вся игра собирается в один `dist/index.html`.
 
