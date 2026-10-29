@@ -1,0 +1,24 @@
+{
+  "name": "ultramarathon",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "sim": "node --experimental-strip-types sim/simulate.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/roboto": "^5.3.0",
+    "@fontsource/press-start-2p": "^5.3.0",
+    "vue": "^3.5.44"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.10",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.5",
+    "vite-plugin-singlefile": "^2.3.4",
+    "vue-tsc": "^3.3.13"
+  },
+  "private": true,
+  "type": "module"
+}

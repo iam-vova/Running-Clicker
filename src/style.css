@@ -1,0 +1,102 @@
+/* Roboto вшит в сборку: только латиница и кириллица, переменная толщина 100–900 */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/roboto/files/roboto-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/roboto/files/roboto-cyrillic-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* Layout: мобильная игра — сцена на весь экран, HUD сверху, панель вкладок снизу, окна выезжают снизу. */
+:root {
+  --bg: #e9eeec;
+  --surface: #f7f9f8;
+  --line: #cfd8d4;
+  --fg: #13201b;
+  --muted: #5b6b65;
+  --accent: #f0531c; /* оранжевый беговой дорожки */
+  --accent-fg: #ffffff;
+  --lane: #2f6fd6; /* разметка забега */
+  --ok: #1d8a5a;
+  --warn: #b7791f;
+  /* Текст — Roboto (с кириллицей); пиксельный Press Start 2P только у крупных чисел (счётчик, цены, время) */
+  --display: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --body: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --num: 'Press Start 2P', ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0e1412;
+    --surface: #161e1b;
+    --line: #2a3632;
+    --fg: #e3ebe8;
+    --muted: #8d9c96;
+    --accent: #ff6a33;
+    --accent-fg: #1a0d07;
+    --lane: #6b9cf0;
+    --ok: #4cc48c;
+    --warn: #f0b443;
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --bg: #0e1412;
+  --surface: #161e1b;
+  --line: #2a3632;
+  --fg: #e3ebe8;
+  --muted: #8d9c96;
+  --accent: #ff6a33;
+  --accent-fg: #1a0d07;
+  --lane: #6b9cf0;
+  --ok: #4cc48c;
+  --warn: #f0b443;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Игра на весь экран: высота через 100% (не 100vh), чтобы уважать отступы просмотрщика */
+html,
+body,
+#app {
+  height: 100%;
+}
+body {
+  margin: 0;
+  overflow: hidden;
+  /* поля по бокам от колонки игры (экран шире 480 px) — тёмные, как рамка телефона */
+  background: #0b100e;
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.45;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+button:focus-visible {
+  outline: 2px solid var(--lane);
+  outline-offset: 2px;
+}
+/* Уменьшение движения: убираем только переходы интерфейса (выезд окон и т. п.).
+   Бег, фон и летящий гель — это сам геймплей, без них игра не работает */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
