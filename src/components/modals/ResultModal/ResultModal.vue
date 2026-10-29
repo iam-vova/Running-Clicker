@@ -1,5 +1,6 @@
 <script setup lang="ts">
-// Результат забега: финиш (медаль, время, награды) или сход (где и почему, «Прокачаться» / «Ещё раз»).
+import { computed } from 'vue'
+// Результат забега: финиш (медаль, время, награды; на повторе — сравнение с рекордом) или сход (где и почему, «Прокачаться» / «Ещё раз»).
 import { fmtClock } from '../../../game/logic.ts'
 import { state } from '../../../game/state.ts'
 import { t } from '../../../i18n/index.ts'
@@ -11,7 +12,9 @@ import { icon } from '../../../utils/assets.ts'
 import { dnfKm } from '../../../utils/format.ts'
 import ModalCard from '../../ui/ModalCard/ModalCard.vue'
 
-defineProps<{ result: Result }>()
+const props = defineProps<{ result: Result }>()
+/** Повтор быстрее прошлого рекорда */
+const record = computed(() => !props.result.prevBest || props.result.time < props.result.prevBest)
 const { closeResult, goTrain, retry } = useRaceFlow()
 </script>
 
@@ -25,12 +28,20 @@ const { closeResult, goTrain, retry } = useRaceFlow()
           <dt class="splits__label">{{ t('result.time') }}</dt>
           <dd class="splits__value status status--ok">{{ fmtClock(result.time) }}</dd>
         </div>
-        <div>
+        <!-- повтор: вместо лимита — прошлый рекорд -->
+        <div v-if="result.replay && result.prevBest">
+          <dt class="splits__label">{{ t('result.record') }}</dt>
+          <dd class="splits__value">{{ fmtClock(result.prevBest) }}</dd>
+        </div>
+        <div v-else>
           <dt class="splits__label">{{ t('race.cutoff') }}</dt>
           <dd class="splits__value">{{ fmtClock(result.cutoff) }}</dd>
         </div>
       </dl>
-      <ul class="result-modal__rewards">
+      <p v-if="result.replay" class="status" :class="record ? 'status--ok' : 'text text--muted'">
+        {{ !result.prevBest ? t('result.firstRecord') : record ? t('result.newRecord', { d: fmtClock(result.prevBest - result.time) }) : t('result.slower', { d: fmtClock(result.time - result.prevBest) }) }}
+      </p>
+      <ul v-else class="result-modal__rewards">
         <li><b>{{ t('result.plusMedal') }}</b> {{ t('result.medalsTotal', { n: state.medals }) }}</li>
         <li><b>{{ raceReward(result.id) }}</b></li>
         <li v-if="result.unlocked">{{ t('result.unlocked') }} <b>{{ genName(result.unlocked) }}</b></li>

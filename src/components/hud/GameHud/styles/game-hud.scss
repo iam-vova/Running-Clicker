@@ -60,43 +60,6 @@
     }
   }
 
-  // общий пробег: цифры в клетках, как у механического счётчика
-  &__odometer {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    margin-bottom: 4px;
-    text-shadow: none;
-  }
-
-  &__odometer-label {
-    margin: 0 4px;
-    font-family: var(--display);
-    font-size: 9px;
-  }
-
-  &__odometer-cell {
-    min-width: 16px;
-    padding: 3px 2px 2px;
-    border: 2px solid var(--fg);
-    border-radius: 3px;
-    background: var(--surface);
-    font-family: var(--num);
-    font-synthesis: none;
-    font-style: normal;
-    font-size: 11px;
-    line-height: 1;
-    text-align: center;
-
-    &--dot {
-      min-width: 0;
-      padding: 0;
-      border: 0;
-      background: none;
-      align-self: flex-end;
-    }
-  }
-
   // на забеге вместо счётчика км
   &__title {
     font-family: var(--display);

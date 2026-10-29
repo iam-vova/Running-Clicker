@@ -24,6 +24,8 @@ export type Result = {
   next: RaceId | null // следующая дистанция
   gaveUp: boolean // сошёл сам, а не обогнала тень
   place: number | null // место на финише
+  replay: boolean // повтор пройденной дистанции: без наград, только рекорд
+  prevBest: number | null // рекорд до этого забега
   field: number // сколько стартовало
 }
 
@@ -47,6 +49,8 @@ function onRaceFinish(res: RaceResult) {
   }
   else sfx.dnf()
   const r = RACES.find((r) => r.id === res.id)!
+  // повтор: при финише его отмечает логика, при сходе — дистанция уже была пройдена
+  const replay = res.ok ? !!res.replay : state.races.includes(r.id)
   track(res.ok ? 'race_finish' : 'race_dnf', {
     race: r.id,
     time_min: +res.time.toFixed(2),
@@ -58,6 +62,7 @@ function onRaceFinish(res: RaceResult) {
     gels: raceStats.gels,
     perfect: raceStats.perfect,
     place: res.place ?? null,
+    replay,
   })
   lastResult.value = {
     id: r.id,
@@ -70,6 +75,8 @@ function onRaceFinish(res: RaceResult) {
     next: RACES.find((x) => !state.races.includes(x.id))?.id ?? null,
     gaveUp: !!res.gaveUp,
     place: res.place ?? null,
+    replay,
+    prevBest: res.prevBest ?? null,
     field: FIELD[r.id],
   }
   closeSheet()

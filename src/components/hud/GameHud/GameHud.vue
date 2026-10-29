@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// HUD поверх сцены: углы (без звука, настройки), счётчик км, карточка следующего забега или забега на трассе, скорость.
+// HUD поверх сцены: углы (без звука, настройки), счётчик км (общий пробег — в профиле), карточка следующего забега или забега на трассе, скорость.
 import { computed } from 'vue'
 import { fmt, kmPerSec, runSpeed } from '../../../game/logic.ts'
 import { state } from '../../../game/state.ts'
@@ -17,8 +17,6 @@ const { toggleSheet } = useSheets()
 const { runout, celebrating, showResult } = useRaceFlow()
 const perSec = computed(() => kmPerSec(state))
 const speed = computed(() => runSpeed(state))
-/** Одометр: знаки общего пробега (как fmt), каждый в своей клетке */
-const odometer = computed(() => fmt(state.totalKm).split(''))
 </script>
 
 <template>
@@ -31,12 +29,6 @@ const odometer = computed(() => fmt(state.totalKm).split(''))
       <img class="icon" :src="icon('gear')" alt="" />
     </button>
     <template v-if="!live">
-      <!-- общий пробег — счётчик-одометр: статистика, не тратится -->
-      <div class="game-hud__odometer" :aria-label="t('hud.total', { km: fmt(state.totalKm) })">
-        <span class="game-hud__odometer-label">{{ t('hud.odometer') }}</span>
-        <i v-for="(c, i) in odometer" :key="i" class="game-hud__odometer-cell" :class="{ 'game-hud__odometer-cell--dot': c === '.' }">{{ c }}</i>
-        <span class="game-hud__odometer-label">{{ t('hud.kmUnit') }}</span>
-      </div>
       <!-- ресурс: тратится на тренировки и снаряжение -->
       <div class="game-hud__km">{{ fmt(state.km) }}</div>
       <div class="game-hud__label">{{ t('hud.trainingKm') }}</div>

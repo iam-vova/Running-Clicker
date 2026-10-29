@@ -38,13 +38,11 @@ const messages: Messages = {
   'stage.hint': 'Нажимай на экран, чтобы бежать',
 
   // --- HUD
-  'hud.odometer': 'пробег',
   'hud.kmUnit': 'км',
   'hud.raceTitle': 'Забег',
   'units.kmhShort': 'км/ч',
   'hud.trainingKm': 'Тренировочные км',
   'hud.perSecond': 'в секунду',
-  'hud.total': 'Общий пробег {km} км',
   'hud.mute': 'Без звука',
 
   // --- races (shared)
@@ -203,8 +201,9 @@ const messages: Messages = {
   'raceSheet.reward': 'Награда: {r}',
   'raceSheet.start': 'Старт',
   'raceSheet.startRisky': 'Старт — рискнуть',
-  'raceSheet.allDone': 'Все забеги пройдены',
-  'raceSheet.comingSoon': 'Следующий старт — 100 км и 100 миль. Появятся в следующей версии.',
+  'raceSheet.allDone': 'Все дистанции пройдены',
+  'raceSheet.replayHint': 'Перебеги любую на личный рекорд — наград нет, только время. Нажми на дистанцию, чтобы стартовать.',
+  'raceSheet.record': 'рекорд {t}',
   'raceSheet.distances': 'Дистанции',
 
   // --- profile
@@ -265,6 +264,10 @@ const messages: Messages = {
   'result.ghostPassed': 'Тень лимита обогнала тебя на {t}.',
   'result.levelUp': 'Прокачаться',
   'result.retry': 'Ещё раз',
+  'result.record': 'Рекорд',
+  'result.newRecord': 'Новый рекорд! Быстрее на {d}',
+  'result.firstRecord': 'Новый рекорд!',
+  'result.slower': 'Медленнее рекорда на {d}',
 
   // --- character picker
   'picker.label': 'Выбор персонажа',

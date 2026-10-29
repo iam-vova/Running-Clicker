@@ -73,6 +73,23 @@
     &--next {
       font-weight: 600;
     }
+
+    // строка-кнопка повтора после финала
+    &--replay {
+      width: 100%;
+      align-items: center;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      background: none;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+
+      &:active {
+        background: color-mix(in srgb, var(--accent) 12%, transparent);
+      }
+    }
   }
 
   &__race-mark {

@@ -38,13 +38,11 @@ const messages: Messages = {
   'stage.hint': 'Tippe auf den Bildschirm, um zu laufen',
 
   // --- HUD
-  'hud.odometer': 'gesamt',
   'hud.kmUnit': 'km',
   'hud.raceTitle': 'Rennen',
   'units.kmhShort': 'km/h',
   'hud.trainingKm': 'Trainings-km',
   'hud.perSecond': 'pro Sekunde',
-  'hud.total': 'Gesamtstrecke {km} km',
   'hud.mute': 'Stumm',
 
   // --- races (shared)
@@ -204,7 +202,8 @@ const messages: Messages = {
   'raceSheet.start': 'Start',
   'raceSheet.startRisky': 'Start — es riskieren',
   'raceSheet.allDone': 'Alle Rennen geschafft',
-  'raceSheet.comingSoon': 'Als Nächstes: 100 km und 100 Meilen. Kommen in der nächsten Version.',
+  'raceSheet.replayHint': 'Lauf jede Distanz erneut für eine neue Bestzeit — ohne Belohnung, nur die Zeit. Tippe auf eine Distanz zum Starten.',
+  'raceSheet.record': 'Bestzeit {t}',
   'raceSheet.distances': 'Distanzen',
 
   // --- profile
@@ -265,6 +264,10 @@ const messages: Messages = {
   'result.ghostPassed': 'Der Zeitlimit-Schatten hat dich bei {t} überholt.',
   'result.levelUp': 'Verbessern',
   'result.retry': 'Nochmal',
+  'result.record': 'Bestzeit',
+  'result.newRecord': 'Neue Bestzeit! {d} schneller',
+  'result.firstRecord': 'Neue Bestzeit!',
+  'result.slower': '{d} langsamer als deine Bestzeit',
 
   // --- character picker
   'picker.label': 'Läufer wählen',

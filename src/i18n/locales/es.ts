@@ -38,13 +38,11 @@ const messages: Messages = {
   'stage.hint': 'Toca la pantalla para correr',
 
   // --- HUD
-  'hud.odometer': 'total',
   'hud.kmUnit': 'km',
   'hud.raceTitle': 'Carrera',
   'units.kmhShort': 'km/h',
   'hud.trainingKm': 'Km de entrenamiento',
   'hud.perSecond': 'por segundo',
-  'hud.total': 'Distancia total {km} km',
   'hud.mute': 'Silenciar',
 
   // --- races (shared)
@@ -204,7 +202,8 @@ const messages: Messages = {
   'raceSheet.start': 'Salir',
   'raceSheet.startRisky': 'Salir — arriesgarse',
   'raceSheet.allDone': 'Todas las carreras completadas',
-  'raceSheet.comingSoon': 'Lo siguiente: 100 km y 100 millas. Llegarán en la próxima versión.',
+  'raceSheet.replayHint': 'Repite cualquier distancia para batir tu marca: sin premios, solo el tiempo. Toca una distancia para empezar.',
+  'raceSheet.record': 'marca {t}',
   'raceSheet.distances': 'Distancias',
 
   // --- profile
@@ -265,6 +264,10 @@ const messages: Messages = {
   'result.ghostPassed': 'La sombra del límite te adelantó en {t}.',
   'result.levelUp': 'Mejorar',
   'result.retry': 'Otra vez',
+  'result.record': 'Mejor marca',
+  'result.newRecord': '¡Nueva mejor marca! {d} más rápido',
+  'result.firstRecord': '¡Nueva mejor marca!',
+  'result.slower': '{d} más lento que tu marca',
 
   // --- character picker
   'picker.label': 'Elegir corredor',

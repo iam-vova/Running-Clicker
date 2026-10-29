@@ -39,13 +39,11 @@ export const messages = {
   'stage.hint': 'Tap the screen to run',
 
   // --- HUD
-  'hud.odometer': 'distance',
   'hud.kmUnit': 'km',
   'hud.raceTitle': 'Race',
   'units.kmhShort': 'km/h',
   'hud.trainingKm': 'Training km',
   'hud.perSecond': 'per second',
-  'hud.total': 'Total distance {km} km',
   'hud.mute': 'Mute',
 
   // --- races (shared)
@@ -205,7 +203,8 @@ export const messages = {
   'raceSheet.start': 'Start',
   'raceSheet.startRisky': 'Start — take the risk',
   'raceSheet.allDone': 'All races completed',
-  'raceSheet.comingSoon': 'Next up: 100 km and 100 miles. Coming in the next version.',
+  'raceSheet.replayHint': 'Rerun any distance for a personal best — no rewards, just the time. Tap a distance to start.',
+  'raceSheet.record': 'PB {t}',
   'raceSheet.distances': 'Distances',
 
   // --- profile
@@ -266,6 +265,10 @@ export const messages = {
   'result.ghostPassed': 'The pace ghost passed you at {t}.',
   'result.levelUp': 'Level up',
   'result.retry': 'Try again',
+  'result.record': 'Personal best',
+  'result.newRecord': 'New personal best! {d} faster',
+  'result.firstRecord': 'New personal best!',
+  'result.slower': '{d} slower than your best',
 
   // --- character picker
   'picker.label': 'Choose runner',

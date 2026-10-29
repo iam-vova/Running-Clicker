@@ -85,6 +85,12 @@ function go(): boolean {
   onStarted(nextRace.value.id)
   return true
 }
+/** Повтор пройденной дистанции на личный рекорд (после финала) */
+function goRace(id: RaceId): boolean {
+  if (!startRace(state, id)) return false
+  onStarted(id)
+  return true
+}
 /** Старт состоялся (из окна «Забег» или «Ещё раз»): сигнал и статистика */
 function onStarted(id: RaceId) {
   sfx.start()
@@ -97,11 +103,12 @@ function onStarted(id: RaceId) {
     forecast_min: +forecast(state, r.km).toFixed(2),
     best_min: +bestForecast(state, id).toFixed(2),
     cutoff_min: r.cutoff,
+    replay: state.races.includes(id),
     ready: raceReady(state, id) ? 'ok' : bestForecast(state, id) <= r.cutoff ? 'maybe' : 'late',
   })
 }
 
 export const useRace = () => ({
   nextRace, activeRace, eta, etaBest, avgSpeed, gap, readiness, readyPct, raceStatus, rewardText,
-  live, nightNow, timeLeft, go, onStarted, ready: (id: RaceId) => raceReady(state, id),
+  live, nightNow, timeLeft, go, goRace, onStarted, ready: (id: RaceId) => raceReady(state, id),
 })

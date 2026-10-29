@@ -154,7 +154,10 @@ const courseOf = (km: number) => (RACES.find((r) => r.km === km) as { course?: n
 /** Укладывается ли прогноз в контрольное время. Стартовать можно и без этого. */
 export const raceReady = (s: GameState, id: RaceId) => forecast(s, race(id).km) <= race(id).cutoff
 
-export const canStartRace = (s: GameState, id: RaceId) => !s.activeRace && !s.races.includes(id)
+/** Все дистанции пройдены (после финиша 100 миль) — открыт повтор любой на личный рекорд */
+export const allRacesDone = (s: GameState) => RACES.every((r) => s.races.includes(r.id))
+/** Новый забег — если не пройден; после финала — любой, повтором без наград */
+export const canStartRace = (s: GameState, id: RaceId) => !s.activeRace && (!s.races.includes(id) || allRacesDone(s))
 
 /**
  * Чего не хватает до лимита. paceGap — на сколько секунд/км нужно бежать быстрее.
@@ -266,8 +269,8 @@ export function catchRaceGel(s: GameState): number {
   return a.energy - before
 }
 
-/** place — место среди FIELD[id] стартовавших (только у финиша) */
-export type RaceResult = { id: RaceId; ok: boolean; time: number; covered: number; gaveUp?: boolean; place?: number }
+/** place — место среди FIELD[id] стартовавших (только у финиша); replay — повтор пройденной дистанции, prevBest — рекорд до него */
+export type RaceResult = { id: RaceId; ok: boolean; time: number; covered: number; gaveUp?: boolean; place?: number; replay?: boolean; prevBest?: number }
 
 /** Сойти с дистанции добровольно: сход без награды, весь прогресс остаётся. */
 export function abandonRace(s: GameState): RaceResult | null {
@@ -375,11 +378,16 @@ function raceStep(s: GameState, dt: number): RaceResult | null {
   const toFinish = (r.km - a.covered) / speed
   if (toFinish <= dt && a.elapsed + toFinish <= r.cutoff) {
     const time = a.elapsed + toFinish
-    s.races.push(a.id)
-    s.medals++
-    s.bestTimes[a.id] = Math.min(time, s.bestTimes[a.id] ?? Infinity)
+    const replay = s.races.includes(a.id)
+    const prevBest = s.bestTimes[a.id]
+    // медаль и множитель — только за первый финиш; повтор лишь обновляет рекорд
+    if (!replay) {
+      s.races.push(a.id)
+      s.medals++
+    }
+    s.bestTimes[a.id] = Math.min(time, prevBest ?? Infinity)
     s.activeRace = null
-    return { id: a.id, ok: true, time, covered: r.km, place: finishPlace(a.id, a.seed ?? 0, time) }
+    return { id: a.id, ok: true, time, covered: r.km, place: finishPlace(a.id, a.seed ?? 0, time), replay, prevBest }
   }
   const toCutoff = r.cutoff - a.elapsed
   if (toCutoff <= dt) {

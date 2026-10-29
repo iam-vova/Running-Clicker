@@ -58,8 +58,8 @@ onBeforeUnmount(() => GESTURES.forEach((g) => removeEventListener(g, onFirstTouc
 
     <div v-if="toast" class="app__toast" role="status">{{ toast }}</div>
 
-    <!-- финиш 100 миль — финал игры с итогами вместо обычного результата -->
-    <FinaleModal v-if="showResult && lastResult?.ok && lastResult.id === '100mi'" :result="lastResult" />
+    <!-- первый финиш 100 миль — финал игры с итогами вместо обычного результата -->
+    <FinaleModal v-if="showResult && lastResult?.ok && lastResult.id === '100mi' && !lastResult.replay" :result="lastResult" />
     <ResultModal v-else-if="showResult && lastResult" :result="lastResult" />
     <AwayModal v-else-if="away" :report="away" />
     <CharacterPicker v-if="!state.character" />
