@@ -147,7 +147,9 @@ export const nightShare = (km: number) => {
 }
 /** Прогноз финиша, минуты: Ригель, а ночной участок бежится медленнее (nightPace) */
 export const forecast = (s: GameState, km: number) =>
-  ((60 * km ** fatigueExp(s)) / runSpeed(s)) * (1 - nightShare(km) + nightShare(km) / nightPace(s))
+  ((60 * km ** fatigueExp(s)) / runSpeed(s)) * (1 - nightShare(km) + nightShare(km) / nightPace(s)) * courseOf(km)
+/** Профиль трассы: во сколько раз медленнее ровной дороги (только 100 км и 100 миль) */
+const courseOf = (km: number) => (RACES.find((r) => r.km === km) as { course?: number } | undefined)?.course ?? 1
 
 /** Укладывается ли прогноз в контрольное время. Стартовать можно и без этого. */
 export const raceReady = (s: GameState, id: RaceId) => forecast(s, race(id).km) <= race(id).cutoff

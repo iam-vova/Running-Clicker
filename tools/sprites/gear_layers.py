@@ -13,7 +13,9 @@ SHOES = {  # (светлый, средний, тёмный)
     3: ((225, 245, 80), (180, 215, 40), (120, 160, 30)),     # темповые — лаймовые
     4: ((255, 110, 190), (230, 60, 150), (160, 30, 110)),    # карбон — розовые
 }
-VEST = ((255, 214, 64), (236, 170, 30), (180, 115, 20))       # трейловый жилет — жёлтый
+VEST = ((70, 80, 100), (45, 52, 68), (26, 30, 42))            # трейловый жилет — графитовый
+STRAP = (22, 30, 60)
+FLASK = ((235, 245, 255), (150, 205, 245))                     # мягкая фляга: блик и вода
 BELT = ((44, 44, 58), (20, 20, 28))
 BUCKLE = (255, 120, 40)
 SKIN = {'he': ((239, 191, 155), (228, 170, 135)), 'she': ((248, 188, 153), (239, 151, 120))}
@@ -38,6 +40,33 @@ def classify(fr, who):
 def tone(L, cols, lo, hi):
     t = np.clip((L - lo) / max(hi - lo, 1), 0, 1)
     return np.where((t > 0.66)[..., None], cols[0], np.where((t > 0.33)[..., None], cols[1], cols[2]))
+
+def vest_layer(o, shirt, L, top):
+    yy = np.arange(F)
+    mid = max(top - 5, 0)
+    xs = np.nonzero(shirt[mid])[0]
+    if len(xs) == 0: return
+    # самый длинный непрерывный отрезок футболки посередине корпуса — туловище (руки отдельно)
+    runs = np.split(xs, np.nonzero(np.diff(xs) > 1)[0] + 1)
+    run = max(runs, key=len); x0, x1 = run[0], run[-1]
+    w = x1 - x0 + 1
+    # плечи: идём вверх, пока футболка в колонке туловища занимает больше половины ширины
+    y0 = mid
+    while y0 - 1 >= 0 and shirt[y0 - 1, x0:x1 + 1].sum() >= 0.5 * w: y0 -= 1
+    box = shirt.copy(); box[:y0] = False; box[top:] = False; box[:, :max(x0 - 1, 0)] = False; box[:, x1 + 2:] = False
+    col = tone(L, VEST, 60, 200)
+    o[box, :3] = col[box]; o[box, 3] = 255
+    # лямка-кант по переднему краю и мягкая фляга на груди
+    for y in range(y0, top):
+        r = np.nonzero(box[y])[0]
+        if len(r): o[y, r[-1], :3] = STRAP; o[y, r[-1], 3] = 255
+    fy = y0 + 2
+    for k in range(4):
+        y = fy + k
+        r = np.nonzero(box[y])[0] if y < top else []
+        if len(r) >= 4:
+            xf = r[-1] - 2
+            o[y, xf:xf + 2, :3] = FLASK[0] if k == 0 else FLASK[1]; o[y, xf:xf + 2, 3] = 255
 
 def layers_for(sheet, who):
     h, w = sheet.shape[:2]; n = w // F
@@ -64,10 +93,8 @@ def layers_for(sheet, who):
                 o[band, :3] = bc[band]; o[band, 3] = 255
                 xs = np.nonzero(band[top + 1])[0]
                 if len(xs): o[top + 1, xs[len(xs) // 2], :3] = BUCKLE
-            if lv >= 3:  # жилет поверх футболки (выше пояса)
-                v = shirt & (np.arange(F)[:, None] < top)
-                col = tone(L, VEST, 60, 200)
-                o[v, :3] = col[v]; o[v, 3] = 255
+            if lv >= 3:  # трейловый жилет: корпус между плечами и поясом, руки и лицо не трогаем; фляга на груди
+                vest_layer(o, shirt, L, top)
     return out
 
 for who in ('he', 'she'):
