@@ -21,7 +21,8 @@
   --nav-h: calc(64px + env(safe-area-inset-bottom, 0px));
   position: relative;
   height: 100%;
-  max-width: 480px;
+  // телефон — во весь экран; монитор/планшет — колонка с пропорциями телефона (1:2), а не узкая полоса
+  width: min(100%, max(480px, 50vh));
   margin: 0 auto;
   overflow: hidden;
   color: var(--fg);

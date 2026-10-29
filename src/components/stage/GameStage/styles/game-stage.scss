@@ -132,22 +132,27 @@
   }
 }
 
-$fly: min(480px, 100vw);
+// летит через всю сцену: left в % от ширины игры, покачивание — transform
 @keyframes game-stage-gel {
   0% {
+    left: 0;
     transform: translate(-100%, 0) rotate(-12deg);
   }
   25% {
-    transform: translate(calc(#{$fly} * 0.25), -18px) rotate(10deg);
+    left: 25%;
+    transform: translate(-50%, -18px) rotate(10deg);
   }
   50% {
-    transform: translate(calc(#{$fly} * 0.5), 0) rotate(-10deg);
+    left: 50%;
+    transform: translate(-50%, 0) rotate(-10deg);
   }
   75% {
-    transform: translate(calc(#{$fly} * 0.75), -18px) rotate(10deg);
+    left: 75%;
+    transform: translate(-50%, -18px) rotate(10deg);
   }
   100% {
-    transform: translate(calc(#{$fly} + 10px), 0) rotate(-12deg);
+    left: 100%;
+    transform: translate(10px, 0) rotate(-12deg);
   }
 }
 
