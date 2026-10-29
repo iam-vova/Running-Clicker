@@ -169,6 +169,8 @@ const messages: Messages = {
   'settings.theme': 'Design',
   'settings.sound': 'Sound',
   'settings.music': 'Musik',
+  'settings.analytics': 'Anonyme Statistik',
+  'settings.analyticsNote': 'Hilft beim Balancing: Rennzeiten und Käufe, keine persönlichen Daten.',
   'settings.language': 'Sprache',
   'theme.auto': 'Auto',
   'theme.light': 'Tag',

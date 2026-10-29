@@ -45,6 +45,21 @@ src/
 - Названия забегов, тренировок и уровней не хранятся в `config.ts` — они в словаре по id (`race.5k`, `gen.jog`, `boost.shoes.2`), доступ через `i18n/names.ts`.
 - **Новый язык:** скопировать `locales/en.ts` в `locales/<код>.ts` (например `pt-BR.ts`), перевести значения, указать `code` и `name` (на самом языке). Больше ничего: файл подключится сам и появится в списке языков.
 
+## Аналитика
+
+`src/analytics.ts` — анонимные события в PostHog (US Cloud) через HTTP API, без SDK. Только в прод-сборке; игрок может выключить в настройках.
+Без личных данных: случайный id браузера, `$process_person_profile: false`.
+
+| Событие | Поля |
+| --- | --- |
+| `app_open` | — |
+| `offline_return` | `away_min`, `counted_min`, `km` |
+| `purchase` | `kind` (gen/boost/upgrade), `id`, `level`, `count` |
+| `race_start` | `race`, `forecast_min`, `best_min`, `cutoff_min`, `ready` (ok/maybe/late) |
+| `race_finish`, `race_dnf` | `race`, `time_min`, `cutoff_min`, `covered_km`, `gave_up`, `taps`, `gels` |
+
+У каждого события есть `play_min` (минуты активной игры с первого запуска), `races_done`, `income_kmh`, `lang`.
+
 ## Публикация
 
 Каждый push в `main` собирает игру и выкладывает её на GitHub Pages (`.github/workflows/deploy.yml`).

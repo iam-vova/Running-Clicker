@@ -24,7 +24,7 @@ import BoostRow from '../BoostRow/BoostRow.vue'
           <div v-if="upgradeState(u) === 'locked'" class="shop-item__meta">{{ t('gear.unlocksAt', { n: u.need, gen: genName(u.gen) }) }}</div>
           <div v-else-if="upgradeState(u) === 'owned'" class="shop-item__meta shop-item__meta--owned">{{ t('gear.owned') }}</div>
         </div>
-        <button v-if="upgradeState(u) !== 'owned'" class="button button--price" :disabled="upgradeState(u) === 'locked' || state.km < u.cost" @click="bought(buyUpgrade(state, u.id))">
+        <button v-if="upgradeState(u) !== 'owned'" class="button button--price" :disabled="upgradeState(u) === 'locked' || state.km < u.cost" @click="bought(buyUpgrade(state, u.id), 'upgrade', u.id)">
           {{ t('units.km', { v: fmt(u.cost) }) }}
         </button>
       </li>

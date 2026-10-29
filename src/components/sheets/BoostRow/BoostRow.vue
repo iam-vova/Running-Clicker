@@ -29,7 +29,7 @@ const b = props.boost
         {{ nextBoost(state, b.id) ? t('boost.next', { name: boostLevelName(b.id, currentLevel(b).level + 1), desc: nextDesc(b) }) : t('boost.max') }}
       </div>
     </div>
-    <button v-if="nextBoost(state, b.id)" class="button button--price" :disabled="state.km < nextBoost(state, b.id)!.cost" @click="bought(buyBoost(state, b.id))">
+    <button v-if="nextBoost(state, b.id)" class="button button--price" :disabled="state.km < nextBoost(state, b.id)!.cost" @click="bought(buyBoost(state, b.id), 'boost', b.id)">
       {{ t('units.km', { v: fmt(nextBoost(state, b.id)!.cost) }) }}
     </button>
   </li>

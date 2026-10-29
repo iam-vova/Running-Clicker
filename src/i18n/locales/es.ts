@@ -169,6 +169,8 @@ const messages: Messages = {
   'settings.theme': 'Tema',
   'settings.sound': 'Sonido',
   'settings.music': 'Música',
+  'settings.analytics': 'Estadísticas anónimas',
+  'settings.analyticsNote': 'Ayudan a equilibrar el juego: tiempos de carrera y compras, sin datos personales.',
   'settings.language': 'Idioma',
   'theme.auto': 'Auto',
   'theme.light': 'Día',

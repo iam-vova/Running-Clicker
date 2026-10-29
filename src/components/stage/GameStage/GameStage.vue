@@ -6,6 +6,7 @@ import { catchGel, catchRaceGel, click, clickValue, feedDue, fmt, fmtClock, fore
 import { paused, state } from '../../../game/state.ts'
 import { t } from '../../../i18n/index.ts'
 import { sfx } from '../../../sound.ts'
+import { raceStats } from '../../../analytics.ts'
 import { useRace } from '../../../composables/useRace.ts'
 import { useRaceFlow } from '../../../composables/useRaceFlow.ts'
 import { useScale } from '../../../composables/useScale.ts'
@@ -110,6 +111,7 @@ function dash(e?: PointerEvent) {
   if (inRace && inRace.canTap) groundBoost += (inRace.tapM / 1000 / inRace.speed) * GROUND_SPEED
   if (inRace && !inRace.canTap) sfx.noEnergy()
   else sfx.dash()
+  if (inRace) raceStats.taps++
   click(state)
   dashing.value = true
   clearTimeout(dashTimer)
@@ -154,6 +156,7 @@ function raceGelBand(): [number, number] {
 }
 function grabGel(e: PointerEvent) {
   sfx.gel()
+  if (gel.value?.race) raceStats.gels++
   const text = gel.value?.race ? t('stage.plusEnergy', { n: Math.round(catchRaceGel(state) * 100) }) : t('stage.plusKm', { n: fmt(catchGel(state)) })
   const box = (e.currentTarget as HTMLElement).getBoundingClientRect()
   const stage = stageEl.value!.getBoundingClientRect()

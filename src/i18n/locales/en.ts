@@ -170,6 +170,8 @@ export const messages = {
   'settings.theme': 'Theme',
   'settings.sound': 'Sound',
   'settings.music': 'Music',
+  'settings.analytics': 'Anonymous stats',
+  'settings.analyticsNote': 'Helps balance the game: race times and purchases, no personal data.',
   'settings.language': 'Language',
   'theme.auto': 'Auto',
   'theme.light': 'Day',

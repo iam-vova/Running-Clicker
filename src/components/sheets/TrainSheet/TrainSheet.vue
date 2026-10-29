@@ -50,7 +50,7 @@ function offlineEffect(id: GenId) {
           </div>
           <div v-else class="shop-item__meta">{{ t('train.unlocksAfter', { name: raceName(g.unlockRace!) }) }}</div>
         </div>
-        <button v-if="genUnlocked(state, g.id)" class="button button--price" :disabled="state.km < cost(g.id)" @click="bought(buyGen(state, g.id, bulk))">
+        <button v-if="genUnlocked(state, g.id)" class="button button--price" :disabled="state.km < cost(g.id)" @click="bought(buyGen(state, g.id, bulk), 'gen', g.id, bulk)">
           {{ t('units.km', { v: fmt(cost(g.id)) }) }}
         </button>
       </li>

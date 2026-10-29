@@ -7,6 +7,7 @@ import { state } from '../../../game/state.ts'
 import { LOCALES, lang, setLang, t } from '../../../i18n/index.ts'
 import { characterName } from '../../../i18n/names.ts'
 import { musicOn, setMusic, setSound, soundOn } from '../../../sound.ts'
+import { analyticsOn, setAnalytics } from '../../../analytics.ts'
 import { THEMES, useTheme } from '../../../composables/useTheme.ts'
 import { sheetVars } from '../../../utils/assets.ts'
 import ToggleGroup from '../../ui/ToggleGroup/ToggleGroup.vue'
@@ -17,6 +18,7 @@ const character = computed({ get: () => state.character ?? 'he', set: (v: CharId
 const theme = computed({ get: () => themePref.value, set: setTheme })
 const sound = computed({ get: () => soundOn.value, set: setSound })
 const music = computed({ get: () => musicOn.value, set: setMusic })
+const analytics = computed({ get: () => analyticsOn.value, set: setAnalytics })
 
 const charOptions = computed(() => CHARACTERS.map((c) => ({ value: c.id, label: characterName(c.id), style: sheetVars(c.id) })))
 const themeOptions = computed(() => THEMES.map((th) => ({ value: th.id, label: t(th.label) })))
@@ -53,6 +55,11 @@ const onOff = computed(() => [
         <option v-for="l in LOCALES" :key="l.code" :value="l.code">{{ l.name }}</option>
       </select>
     </div>
+    <div class="setting-row">
+      <span>{{ t('settings.analytics') }}</span>
+      <ToggleGroup v-model="analytics" :label="t('settings.analytics')" :options="onOff" />
+    </div>
+    <p class="text text--muted text--small">{{ t('settings.analyticsNote') }}</p>
   </div>
 </template>
 

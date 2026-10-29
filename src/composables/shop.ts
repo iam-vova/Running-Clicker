@@ -1,10 +1,12 @@
 // Магазин: ветки бустеров (техника — в «Тренировках», остальное — в «Снаряжении»), гаджеты и счётчики на вкладках.
 import { computed } from 'vue'
 import { BOOSTS, GENERATORS, UPGRADES } from '../game/config.ts'
+import type { BoostId, GenId } from '../game/config.ts'
 import { genCost, genUnlocked, nextBoost, upgradeVisible } from '../game/logic.ts'
 import { state } from '../game/state.ts'
 import { t } from '../i18n/index.ts'
 import { sfx } from '../sound.ts'
+import { track } from '../analytics.ts'
 import { xMult } from '../utils/format.ts'
 
 export type Boost = (typeof BOOSTS)[number]
@@ -28,8 +30,13 @@ export function nextDesc(b: Boost) {
 export const upgradeState = (u: Upgrade) =>
   state.upgrades.includes(u.id) ? 'owned' : state.owned[u.gen] >= u.need ? 'open' : 'locked'
 
-/** Покупка прошла — «монетка» */
-export const bought = (ok: boolean) => ok && sfx.buy()
+/** Покупка прошла — «монетка» и статистика (что купили и какой теперь уровень) */
+export function bought(ok: boolean, kind: 'gen' | 'boost' | 'upgrade', id: string, count = 1) {
+  if (!ok) return
+  sfx.buy()
+  const level = kind === 'gen' ? state.owned[id as GenId] : kind === 'boost' ? state.boosts[id as BoostId] : 1
+  track('purchase', { kind, id, level, count })
+}
 
 /** Сколько покупок доступно прямо сейчас — бейджи на вкладках */
 export const affordTrain = computed(

@@ -169,6 +169,8 @@ const messages: Messages = {
   'settings.theme': 'Тема',
   'settings.sound': 'Звук',
   'settings.music': 'Музыка',
+  'settings.analytics': 'Анонимная статистика',
+  'settings.analyticsNote': 'Помогает настроить баланс: время забегов и покупки, без личных данных.',
   'settings.language': 'Язык',
   'theme.auto': 'Авто',
   'theme.light': 'День',

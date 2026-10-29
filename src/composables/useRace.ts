@@ -8,6 +8,7 @@ import { t } from '../i18n/index.ts'
 import { genName } from '../i18n/names.ts'
 import { xMult } from '../utils/format.ts'
 import { sfx } from '../sound.ts'
+import { raceStats, track } from '../analytics.ts'
 
 type Race = (typeof RACES)[number]
 
@@ -64,11 +65,25 @@ watch(
 /** Старт следующего забега */
 function go(): boolean {
   if (!nextRace.value || !startRace(state, nextRace.value.id)) return false
-  sfx.start()
+  onStarted(nextRace.value.id)
   return true
+}
+/** Старт состоялся (из окна «Забег» или «Ещё раз»): сигнал и статистика */
+function onStarted(id: RaceId) {
+  sfx.start()
+  raceStats.taps = 0
+  raceStats.gels = 0
+  const r = RACES.find((r) => r.id === id)!
+  track('race_start', {
+    race: id,
+    forecast_min: +forecast(state, r.km).toFixed(2),
+    best_min: +bestForecast(state, id).toFixed(2),
+    cutoff_min: r.cutoff,
+    ready: raceReady(state, id) ? 'ok' : bestForecast(state, id) <= r.cutoff ? 'maybe' : 'late',
+  })
 }
 
 export const useRace = () => ({
   nextRace, activeRace, eta, etaBest, avgSpeed, gap, readiness, readyPct, raceStatus, rewardText,
-  live, timeLeft, go, ready: (id: RaceId) => raceReady(state, id),
+  live, timeLeft, go, onStarted, ready: (id: RaceId) => raceReady(state, id),
 })

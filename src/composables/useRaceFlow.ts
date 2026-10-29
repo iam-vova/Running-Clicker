@@ -8,6 +8,8 @@ import type { OfflineReport, RaceResult } from '../game/logic.ts'
 import { paused, startGame, state } from '../game/state.ts'
 import { sfx } from '../sound.ts'
 import { useSheets } from './useSheets.ts'
+import { useRace } from './useRace.ts'
+import { raceStats, track } from '../analytics.ts'
 
 /** Итог последней попытки — окно результата и строка в окне «Забег» */
 export type Result = {
@@ -40,6 +42,16 @@ function onRaceFinish(res: RaceResult) {
   if (res.ok) sfx.finish()
   else sfx.dnf()
   const r = RACES.find((r) => r.id === res.id)!
+  track(res.ok ? 'race_finish' : 'race_dnf', {
+    race: r.id,
+    time_min: +res.time.toFixed(2),
+    cutoff_min: r.cutoff,
+    covered_km: +res.covered.toFixed(2),
+    distance_km: r.km,
+    gave_up: !!res.gaveUp,
+    taps: raceStats.taps,
+    gels: raceStats.gels,
+  })
   lastResult.value = {
     id: r.id,
     km: r.km,
@@ -78,7 +90,7 @@ function quitRace() {
 function retry() {
   showResult.value = false
   const id = lastResult.value?.id
-  if (id && canStartRace(state, id) && startRace(state, id)) sfx.start()
+  if (id && canStartRace(state, id) && startRace(state, id)) useRace().onStarted(id)
 }
 /** «Прокачаться» после схода — сразу в снаряжение */
 function goTrain() {
@@ -98,7 +110,9 @@ let started = false
 function startFlow() {
   if (started) return
   started = true
+  track('app_open')
   startGame(onRaceFinish, (report) => {
+    track('offline_return', { away_min: Math.round(report.away / 60), counted_min: Math.round(report.counted / 60), km: Math.round(report.km) })
     away.value = report
     paused.value = true
   })
