@@ -1,6 +1,6 @@
 // Чистая логика без Vue: её используют и игра, и симуляция баланса.
 import { finishPlace } from './field.ts'
-import { BOOSTS, CLICK_KM, GENERATORS, LAB_STAMINA_PER_LEVEL, OFFLINE, RACES, RUNNER, TIME_SCALE, UPGRADES } from './config.ts'
+import { BOOSTS, CLICK_INCOME_PCT, CLICK_KM, GENERATORS, LAB_STAMINA_PER_LEVEL, OFFLINE, RACES, RUNNER, TIME_SCALE, UPGRADES } from './config.ts'
 import type { BoostId, CharId, GenId, RaceId, Stat, UpgradeId } from './config.ts'
 
 export const SAVE_VERSION = 9
@@ -112,7 +112,7 @@ export const clickPct = (s: GameState) => {
   return l && 'pct' in l ? l.pct : 0
 }
 
-export const clickValue = (s: GameState) => CLICK_KM * statMult(s, 'click') + kmPerSec(s) * clickPct(s)
+export const clickValue = (s: GameState) => CLICK_KM * statMult(s, 'click') + kmPerSec(s) * (CLICK_INCOME_PCT + clickPct(s))
 
 export function upgradeVisible(s: GameState, id: UpgradeId): boolean {
   if (s.upgrades.includes(id)) return false

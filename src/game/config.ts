@@ -2,6 +2,8 @@
 // Тексты (названия забегов, тренировок, уровней) — не здесь, а в i18n/locales по id: race.5k, gen.jog, boost.shoes.2.
 
 export const CLICK_KM = 0.15
+/** Каждый тап вне забега добавляет ещё такую долю секундного дохода: тап не обесценивается к середине игры */
+export const CLICK_INCOME_PCT = 0.05
 /** 1 секунда реального времени = 1 минута на трассе: км за секунду = км/ч ÷ 60. */
 export const TIME_SCALE = 60
 
@@ -75,11 +77,11 @@ export const RACES = [
   // mult — награда (множитель дохода); открытую тренировку UI берёт из GENERATORS.unlockRace
   // cutoff — контрольное время, минуты на трассе. Цепочка из ТЗ v0.4, лимиты откалиброваны симуляцией
   { id: '1k', km: 1, cutoff: 7, mult: 1.2 },
-  { id: '3k', km: 3, cutoff: 17, mult: 1.3 },
+  { id: '3k', km: 3, cutoff: 16.5, mult: 1.3 },
   { id: '5k', km: 5, cutoff: 27.5, mult: 1.5 },
-  { id: '10k', km: 10, cutoff: 50.5, mult: 1.5 },
-  { id: '15k', km: 15, cutoff: 67, mult: 1.5 },
-  { id: 'half', km: 21.1, cutoff: 93, mult: 2 },
+  { id: '10k', km: 10, cutoff: 50, mult: 1.5 },
+  { id: '15k', km: 15, cutoff: 66, mult: 1.5 },
+  { id: 'half', km: 21.1, cutoff: 92.5, mult: 2 },
   { id: '30k', km: 30, cutoff: 134.5, mult: 1.5 },
   { id: 'marathon', km: 42.195, cutoff: 177.5, mult: 2 },
   // ультра: сил без гелей не хватит (reserve < 0 — «стена» на ~70% дистанции), гели — каждые 1/6 дистанции
