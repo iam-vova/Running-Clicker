@@ -16,6 +16,15 @@ const confirmQuit = ref(false)
 const enough = computed(() => !!live.value && live.value.energy >= live.value.need)
 /** На ультра сил без гелей не хватит — но хватит, если ловить гели впереди */
 const enoughWithGels = computed(() => !!live.value && live.value.energy + live.value.gelsAhead >= live.value.need)
+/** Что делать с силами: сколько рывков в запасе, или беречь их до геля / до финиша */
+const energyHint = computed(() => {
+  const l = live.value
+  if (!l) return ''
+  if (l.wall) return t('raceHud.wall')
+  if (l.spareTaps > 0) return t('raceHud.spareTaps', { count: l.spareTaps })
+  if (enough.value) return t('raceHud.noSpare')
+  return enoughWithGels.value ? t('raceHud.waitGel') : t('raceHud.notEnough')
+})
 </script>
 
 <template>
@@ -43,7 +52,7 @@ const enoughWithGels = computed(() => !!live.value && live.value.energy + live.v
     <!-- Запас сил: рывки тратят, гели на пунктах питания возвращают; отметка — сколько нужно до финиша ровным бегом -->
     <div class="race-hud__row">
       <span>{{ t('raceHud.energy') }} <b class="status" :class="live.wall ? 'status--late' : enough ? 'status--ok' : 'status--maybe'">{{ Math.round(live.energy * 100) }}%</b></span>
-      <span class="text text--muted">{{ live.wall ? t('raceHud.wall') : enough ? t('raceHud.enough') : enoughWithGels ? t('raceHud.enoughWithGels') : t('raceHud.notEnough') }}</span>
+      <span class="text text--muted">{{ energyHint }}</span>
     </div>
     <div class="race-hud__energy" role="progressbar" :aria-label="t('raceHud.energyReserve')" :aria-valuenow="Math.round(live.energy * 100)" aria-valuemin="0" aria-valuemax="100">
       <i class="race-hud__energy-fill" :class="{ 'race-hud__energy-fill--ok': enough }" :style="{ width: live.energy * 100 + '%' }"></i>

@@ -258,30 +258,44 @@ const dashing = ref(false)
 const heroPose = computed(() => (celebrating.value ? 'finish' : dashing.value || runout.value || cooldown.value || state.activeRace ? 'run' : 'idle'))
 
 // --- всплывающие «+км» ---
-type Pop = { id: number; x: number; y: number; text: string }
+type Pop = { id: number; x: number; y: number; text: string; warn?: boolean }
 const pops = ref<Pop[]>([])
 let popId = 0
-function pop(x: number, y: number, text: string) {
+function pop(x: number, y: number, text: string, warn = false) {
   const id = ++popId
-  pops.value.push({ id, x, y, text })
+  pops.value.push({ id, x, y, text, warn })
   setTimeout(() => (pops.value = pops.value.filter((p) => p.id !== id)), 800)
 }
+
+// --- подсказки на первых двух забегах: как тратить силы ---
+const raceHint = computed(() => {
+  const l = live.value
+  if (!l || state.races.length >= 2) return ''
+  if (gel.value?.race) return t('stage.raceHintGel')
+  return l.spareTaps === 0 ? t('stage.raceHintSave') : t('stage.raceHintTap')
+})
 
 // --- рывок ---
 let dashTimer = 0
 function dash(e?: PointerEvent) {
   const inRace = live.value
-  const text = inRace ? (inRace.canTap ? t('stage.plusMeters', { n: Math.round(inRace.tapM) }) : t('stage.noEnergy')) : t('stage.plusKm', { n: fmt(clickValue(state)) })
+  // рывок «в долг»: запаса нет, тратишь силы, нужные до финиша, — предупреждаем, но не запрещаем
+  const debt = !!inRace && inRace.canTap && inRace.spareTaps === 0
+  const text = inRace
+    ? !inRace.canTap
+      ? t('stage.noEnergy')
+      : t(debt ? 'stage.debt' : 'stage.plusMeters', { n: Math.round(inRace.tapM) })
+    : t('stage.plusKm', { n: fmt(clickValue(state)) })
   // рывок на трассе — бегун продвинулся: сдвигаем землю на столько же, чтобы арка и фон двигались вместе
   if (inRace && inRace.canTap) groundBoost += (inRace.tapM / 1000 / inRace.speed) * GROUND_SPEED
-  if (inRace && !inRace.canTap) sfx.noEnergy()
+  if (inRace && (!inRace.canTap || debt)) sfx.noEnergy()
   else sfx.dash()
   if (inRace) raceStats.taps++
   click(state)
   dashing.value = true
   clearTimeout(dashTimer)
   dashTimer = window.setTimeout(() => (dashing.value = false), 500)
-  pop(e ? e.offsetX : 0, e ? e.offsetY : 0, text)
+  pop(e ? e.offsetX : 0, e ? e.offsetY : 0, text, debt)
 }
 function onKey(e: KeyboardEvent) {
   if (e.code === 'Space' && !sheet.value) {
@@ -385,8 +399,9 @@ onBeforeUnmount(() => {
       @pointerdown.stop="grabGel"
       @animationend="gel = null"
     ></button>
-    <span v-for="p in pops" :key="p.id" class="game-stage__pop" :style="{ left: p.x + 'px', top: p.y + 'px' }">{{ p.text }}</span>
+    <span v-for="p in pops" :key="p.id" class="game-stage__pop" :class="{ 'game-stage__pop--warn': p.warn }" :style="{ left: p.x + 'px', top: p.y + 'px' }">{{ p.text }}</span>
     <p v-if="state.clicks < 5 && !state.activeRace && !runout && !celebrating" class="game-stage__hint">{{ t('stage.hint') }}</p>
+    <p v-else-if="raceHint" :key="raceHint" class="game-stage__hint game-stage__hint--race">{{ raceHint }}</p>
   </div>
 </template>
 

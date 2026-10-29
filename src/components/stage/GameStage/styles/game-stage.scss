@@ -134,6 +134,11 @@
     pointer-events: none;
     animation: game-stage-pop 0.8s ease-out forwards;
     white-space: nowrap;
+    // рывок «в долг» — силы на финиш
+    &--warn {
+      color: #ff4f45;
+      font-size: 12px;
+    }
   }
 
   &__gel {
@@ -166,6 +171,16 @@
     white-space: nowrap;
     pointer-events: none;
     animation: game-stage-hint 1.6s ease-in-out infinite;
+    // подсказка на забеге: выше бегуна (над тенью и её плашкой), в две строки на узком экране, без мигания
+    &--race {
+      bottom: calc(var(--nav-h) + 27px * var(--px) + var(--tile) + 34px);
+      width: max-content;
+      max-width: calc(100% - 32px);
+      white-space: normal;
+      text-align: center;
+      border-radius: 14px;
+      animation: none;
+    }
   }
 }
 

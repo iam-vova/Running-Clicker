@@ -2,7 +2,7 @@
 import { computed, watch } from 'vue'
 import { GENERATORS, RACES } from '../game/config.ts'
 import type { RaceId } from '../game/config.ts'
-import { bestForecast, forecast, raceLive, raceReady, startRace, tapKm } from '../game/logic.ts'
+import { bestForecast, forecast, raceLive, raceReady, startRace, tapEnergy, tapKm } from '../game/logic.ts'
 import { state } from '../game/state.ts'
 import { FIELD, livePlace } from '../game/field.ts'
 import { t } from '../i18n'
@@ -46,8 +46,12 @@ const live = computed(() => {
   if (!a || !r) return null
   const runner = a.covered / r.km
   const ghost = Math.min(a.elapsed / r.cutoff, 1) // где сейчас тень лимита, доля дистанции
+  const rl = raceLive(state)!
   return {
-    ...raceLive(state)!,
+    ...rl,
+    // сколько рывков можно сделать, не залезая в силы, нужные до финиша ровным бегом
+    // чистая цена рывка: он тратит tapEnergy, но эти метры уже не надо бежать ровно — экономит их долю need
+    spareTaps: spareTaps(rl.energy, rl.need, r.km - a.covered, r.id),
     runner,
     ghost,
     leadM: (runner - ghost) * r.km * 1000, // отрыв от тени лимита, м (минус — тень впереди)
@@ -56,6 +60,13 @@ const live = computed(() => {
     field: FIELD[r.id],
   }
 })
+/** Сколько рывков можно сделать, не залезая в силы, нужные до финиша ровным бегом */
+function spareTaps(energy: number, need: number, restKm: number, id: RaceId): number {
+  const cost = tapEnergy(state, id)
+  const net = cost - (restKm > 0 ? (tapKm(state, id) * need) / restKm : 0)
+  if (net <= 0 || energy < cost) return 0
+  return Math.max(0, Math.min(Math.floor((energy - need) / net + 1e-9), Math.floor(energy / cost)))
+}
 /** Сколько секунд бежать до финиша (секунда = минута на трассе) */
 const timeLeft = () => (live.value && state.activeRace ? Math.max(0, live.value.finish - state.activeRace.elapsed) : 0)
 
