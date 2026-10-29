@@ -1,0 +1,107 @@
+// Игровые кнопки внизу экрана: белые «таблетки» поверх травы, с тенью-толщиной и нажатием
+.action-bar {
+  position: absolute;
+  left: max(16px, env(safe-area-inset-left, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  gap: 10px;
+  z-index: 3;
+
+  // кнопки-иконки без подписей
+  &__button {
+    position: relative;
+    flex: none;
+    width: 74px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 22px;
+    background: var(--surface);
+    color: var(--fg);
+    font-family: var(--display);
+    font-size: 13px;
+    white-space: nowrap;
+    box-shadow: 0 4px 0 rgb(0 0 0 / 0.18), 0 6px 14px rgb(0 0 0 / 0.12);
+    transition: transform 0.06s, box-shadow 0.06s;
+
+    &:active:not(:disabled) {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 rgb(0 0 0 / 0.18), 0 2px 6px rgb(0 0 0 / 0.12);
+    }
+
+    // окно этой кнопки открыто — «нажата»
+    &--active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 rgb(0 0 0 / 0.18), inset 0 0 0 2px var(--accent);
+    }
+
+    // профиль — справа
+    &--profile {
+      margin-left: auto;
+    }
+
+    &:disabled {
+      opacity: 0.45;
+    }
+
+    .icon {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  // тёмный флажок ночью — светлый пиксельный контур
+  &__flag {
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme='light']) & {
+        filter: drop-shadow(1px 0 0 #9aa8a2) drop-shadow(-1px 0 0 #9aa8a2) drop-shadow(0 1px 0 #9aa8a2) drop-shadow(0 -1px 0 #9aa8a2);
+      }
+    }
+
+    :root[data-theme='dark'] & {
+      filter: drop-shadow(1px 0 0 #9aa8a2) drop-shadow(-1px 0 0 #9aa8a2) drop-shadow(0 1px 0 #9aa8a2) drop-shadow(0 -1px 0 #9aa8a2);
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: -6px;
+    right: -4px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: var(--accent-fg);
+    font-family: var(--body);
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 20px;
+  }
+
+  // забег идёт — зелёная пульсирующая точка
+  &__live-dot {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--ok);
+    box-shadow: 0 0 0 2px var(--surface);
+    animation: action-bar-live 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes action-bar-live {
+  50% {
+    transform: scale(0.7);
+    opacity: 0.6;
+  }
+}

@@ -12,6 +12,7 @@ import { BULK, useBulk } from '../../../composables/useBulk.ts'
 import { icon } from '../../../utils/assets.ts'
 import { fmtHours, pct, xMult } from '../../../utils/format.ts'
 import BoostRow from '../BoostRow/BoostRow.vue'
+import UpgradeSwitch from '../UpgradeSwitch/UpgradeSwitch.vue'
 
 const { bulk, setBulk } = useBulk()
 /** Открытые тренировки и одна следующая — загадкой: новые появляются по мере забегов, а не видны все сразу */
@@ -35,8 +36,9 @@ function offlineEffect(id: GenId) {
 
 <template>
   <div class="train-sheet">
-    <!-- «Покупать по» — в панели над прокруткой окна, всегда видна -->
+    <!-- разделы «Прокачки» и «Покупать по» — в панели над прокруткой окна, всегда видны -->
     <Teleport defer to=".bottom-sheet__toolbar">
+      <UpgradeSwitch />
       <div class="train-sheet__bulk" role="radiogroup" :aria-label="t('train.bulkLabel')">
         <span class="text text--muted text--small train-sheet__bulk-label">{{ t('train.bulk') }}</span>
         <button

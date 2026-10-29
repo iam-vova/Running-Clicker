@@ -105,7 +105,7 @@ function retry() {
 /** «Прокачаться» после схода — сразу в снаряжение */
 function goTrain() {
   showResult.value = false
-  sheet.value = 'gear'
+  useSheets().openUpgrade('gear')
 }
 function closeResult() {
   showResult.value = false

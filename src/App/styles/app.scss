@@ -19,9 +19,10 @@
   --btn-neutral-down: url('../../assets/ui/btn-dark-down.png');
   --btn-off: url('../../assets/ui/btn-off-light.png');
   --tile: calc(64px * var(--px));
-  --nav-h: calc(64px + env(safe-area-inset-bottom, 0px));
+  // низ экрана под игровыми кнопками (ActionBar): кнопки лежат на траве
+  --nav-h: calc(80px + env(safe-area-inset-bottom, 0px));
   // земля сцены поднята над панелью вкладок: снизу — полоса травы под скорость и панель рывка
-  --floor: calc(var(--nav-h) + 60px);
+  --floor: calc(var(--nav-h) + 40px);
   --grass: #92d94f; // = нижняя строка панорамы
   position: relative;
   height: 100%;

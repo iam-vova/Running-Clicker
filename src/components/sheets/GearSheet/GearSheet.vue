@@ -11,10 +11,12 @@ import { icon } from '../../../utils/assets.ts'
 import BoostRow from '../BoostRow/BoostRow.vue'
 
 const gadgets = computed(() => UPGRADES.filter((u) => genUnlocked(state, u.gen)))
+import UpgradeSwitch from '../UpgradeSwitch/UpgradeSwitch.vue'
 </script>
 
 <template>
   <div class="gear-sheet">
+    <Teleport defer to=".bottom-sheet__toolbar"><UpgradeSwitch /></Teleport>
     <ul class="shop-list">
       <BoostRow v-for="b in GEAR_BOOSTS" :key="b.id" :boost="b" />
       <!-- Гаджеты: видны, когда открыта их тренировка — закрыт / можно купить / куплено -->

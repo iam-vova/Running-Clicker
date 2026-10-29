@@ -18,6 +18,7 @@ const messages: Messages = {
   'units.minutes': '{m} Min.',
 
   // --- tabs
+  'tabs.upgrade': 'Upgrades',
   'tabs.train': 'Training',
   'tabs.gear': 'Ausrüstung',
   'tabs.race': 'Rennen',

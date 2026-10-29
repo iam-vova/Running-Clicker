@@ -1,0 +1,42 @@
+// Два раздела прокачки — сегменты на всю ширину
+.upgrade-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 3px;
+  margin: 10px 0 4px;
+  border-radius: 999px;
+  background: var(--line);
+
+  &__tab {
+    position: relative;
+    padding: 8px 6px;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--muted);
+
+    &--active {
+      background: var(--surface);
+      color: var(--fg);
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.15);
+    }
+  }
+
+  &__badge {
+    margin-left: 6px;
+    display: inline-block;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: var(--accent);
+    color: var(--accent-fg);
+    font-style: normal;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 18px;
+  }
+}

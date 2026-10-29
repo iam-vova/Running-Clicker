@@ -19,6 +19,7 @@ export const messages = {
   'units.minutes': '{m} min',
 
   // --- tabs
+  'tabs.upgrade': 'Upgrades',
   'tabs.train': 'Training',
   'tabs.gear': 'Gear',
   'tabs.race': 'Race',

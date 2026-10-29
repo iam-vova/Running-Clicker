@@ -11,7 +11,7 @@ import { useSheets } from '../composables/useSheets.ts'
 import { bgVars, sheetVars } from '../utils/assets.ts'
 import GameStage from '../components/stage/GameStage/GameStage.vue'
 import GameHud from '../components/hud/GameHud/GameHud.vue'
-import TabBar from '../components/ui/TabBar/TabBar.vue'
+import ActionBar from '../components/ui/ActionBar/ActionBar.vue'
 import BottomSheet from '../components/sheets/BottomSheet/BottomSheet.vue'
 import TrainSheet from '../components/sheets/TrainSheet/TrainSheet.vue'
 import GearSheet from '../components/sheets/GearSheet/GearSheet.vue'
@@ -50,7 +50,7 @@ onBeforeUnmount(() => GESTURES.forEach((g) => removeEventListener(g, onFirstTouc
   <main class="app" :class="{ 'app--night': nightNow }" :style="rootVars">
     <GameStage />
     <GameHud />
-    <TabBar />
+    <ActionBar />
 
     <BottomSheet v-if="sheet" :title="sheetTitle" @close="closeSheet">
       <component :is="SHEETS[sheet]" />
