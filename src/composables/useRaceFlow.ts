@@ -100,6 +100,11 @@ function goTrain() {
 function closeResult() {
   showResult.value = false
 }
+/** Сброс прогресса: итог прошлого забега больше не относится к игре */
+function clearResults() {
+  lastResult.value = null
+  showResult.value = false
+}
 function closeAway() {
   away.value = null
   paused.value = false
@@ -120,5 +125,5 @@ function startFlow() {
 
 export const useRaceFlow = () => ({
   lastResult, showResult, runout, celebrating, away,
-  quitRace, retry, goTrain, closeResult, closeAway, startFlow,
+  quitRace, retry, goTrain, closeResult, closeAway, clearResults, startFlow,
 })

@@ -48,7 +48,8 @@ const mark = (id: RaceId) => MARK[raceStatus(id)]
         <b class="status" :class="`status--${readiness}`">{{ gap > 0 ? `${Math.floor(readyPct * 100)}%` : t('raceSheet.ready') }}</b>
       </div>
       <ReadyBar :pct="readyPct" :state="readiness" />
-      <p v-if="lastResult" class="race-sheet__last status" :class="lastResult.ok ? 'status--ok' : 'status--late'">
+      <!-- прошлая попытка именно этой дистанции (после схода); после финиша следующий забег другой — не показываем -->
+      <p v-if="lastResult && lastResult.id === nextRace.id" class="race-sheet__last status" :class="lastResult.ok ? 'status--ok' : 'status--late'">
         {{ lastResult.ok ? t('raceSheet.lastFinish', { name: raceName(lastResult.id), t: fmtClock(lastResult.time) }) : t('raceSheet.lastDnf', { d: lastResult.covered.toFixed(1) }) }}
       </p>
       <p class="race-sheet__verdict status" :class="gap > 0 ? 'status--late' : 'status--ok'">

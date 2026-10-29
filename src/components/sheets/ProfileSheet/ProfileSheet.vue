@@ -7,13 +7,16 @@ import { resetGame, showToast, state } from '../../../game/state.ts'
 import { t } from '../../../i18n/index.ts'
 import { raceName } from '../../../i18n/names.ts'
 import { useSheets } from '../../../composables/useSheets.ts'
+import { useRaceFlow } from '../../../composables/useRaceFlow.ts'
 import { icon } from '../../../utils/assets.ts'
 import { fmtHours, pct } from '../../../utils/format.ts'
 
 const { closeSheet } = useSheets()
+const { clearResults } = useRaceFlow()
 const confirmReset = ref(false)
 function reset() {
   resetGame()
+  clearResults()
   confirmReset.value = false
   closeSheet()
   showToast(t('profile.resetDone'))
