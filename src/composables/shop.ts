@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { BOOSTS, GENERATORS, UPGRADES } from '../game/config.ts'
 import type { BoostId, GenId } from '../game/config.ts'
-import { genCost, genUnlocked, nextBoost, upgradeVisible } from '../game/logic.ts'
+import { boostUnlocked, genCost, genUnlocked, nextBoost, upgradeVisible } from '../game/logic.ts'
 import { state } from '../game/state.ts'
 import { t } from '../i18n/index.ts'
 import { sfx } from '../sound.ts'
@@ -46,6 +46,6 @@ export const affordTrain = computed(
 )
 export const affordGear = computed(
   () =>
-    GEAR_BOOSTS.filter((b) => (nextBoost(state, b.id)?.cost ?? Infinity) <= state.km).length +
+    GEAR_BOOSTS.filter((b) => boostUnlocked(state, b.id) && (nextBoost(state, b.id)?.cost ?? Infinity) <= state.km).length +
     UPGRADES.filter((u) => upgradeVisible(state, u.id) && state.km >= u.cost).length,
 )

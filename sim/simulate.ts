@@ -3,7 +3,7 @@
 import { BOOSTS, GENERATORS, RACES, UPGRADES } from '../src/game/config.ts'
 import type { BoostId, GenId, RaceId, UpgradeId } from '../src/game/config.ts'
 import {
-  buyBoost, buyGen, buyUpgrade, canStartRace, click, clickValue, fmt, fmtTime, genCost, genUnlocked,
+  boostUnlocked, buyBoost, buyGen, buyUpgrade, canStartRace, click, clickValue, fmt, fmtTime, genCost, genUnlocked,
   forecast, bestForecast, race, income, raceLive, tapEnergy, tapKm, catchRaceGel, feedDue, kmPerSec, newState, nextBoost, raceReady, runSpeed, startRace, statMult, tick, upgradeVisible,
 } from '../src/game/logic.ts'
 import type { GameState } from '../src/game/logic.ts'
@@ -26,7 +26,7 @@ const pendingRace = (s: GameState) => RACES.find((r) => !s.races.includes(r.id))
  */
 function value(s: GameState): number {
   const base = kmPerSec(s) + clickValue(s) * CPS
-  return pendingRace(s) ? base * statMult(s, 'stamina') : base
+  return pendingRace(s) ? base * statMult(s, 'stamina') * statMult(s, 'ultra') ** 3 : base
 }
 
 function options(s: GameState): Option[] {
@@ -35,7 +35,7 @@ function options(s: GameState): Option[] {
   for (const u of UPGRADES) if (upgradeVisible(s, u.id)) res.push({ kind: 'up', id: u.id, cost: u.cost })
   for (const b of BOOSTS) {
     const next = nextBoost(s, b.id)
-    if (next) res.push({ kind: 'boost', id: b.id, cost: next.cost })
+    if (next && boostUnlocked(s, b.id)) res.push({ kind: 'boost', id: b.id, cost: next.cost })
   }
   return res
 }
@@ -82,7 +82,7 @@ while (t < MAX_T && pendingRace(s)) {
   // RUSH=1 — нетерпеливый игрок: стартует, как только лучший прогноз (рывки + гели) в лимите
   const go = (id: RaceId) => (process.env.RUSH ? bestForecast(s, id) <= race(id).cutoff : raceReady(s, id))
   for (const r of RACES.filter((x) => x === pendingRace(s))) if (canStartRace(s, r.id) && go(r.id)) { startRace(s, r.id); mark(t, `старт забега ${r.id}, прогноз ${forecast(s, r.km).toFixed(1)} мин (трусца ${s.owned.jog}, клуб ${s.owned.club})`) }
-  if (process.env.TRACE && Math.round(t * 10) % 300 === 0) console.log('TRACE', fmtTime(t), runSpeed(s).toFixed(1), statMult(s, 'stamina').toFixed(2), 'lab', s.owned.lab, RACES.map((r) => `${r.id}:${forecast(s, r.km).toFixed(1)}`).join(' '))
+  if (process.env.TRACE && Math.round(t * 10) % 300 === 0) console.log('TRACE', fmtTime(t), runSpeed(s).toFixed(1), statMult(s, 'stamina').toFixed(2), 'lab', s.owned.lab, 'ultra', s.boosts.ultra, RACES.map((r) => `${r.id}:${forecast(s, r.km).toFixed(1)}`).join(' '))
   const done = tick(s, DT)
   if (done) mark(t, `${done.ok ? 'финиш' : 'СХОД'} забега ${done.id} за ${done.time.toFixed(1)} мин`)
   t += DT

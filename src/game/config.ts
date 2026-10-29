@@ -72,6 +72,8 @@ export const RACES = [
   { id: 'half', km: 21.1, cutoff: 97, mult: 2 },
   { id: '30k', km: 30, cutoff: 136, mult: 1.5 },
   { id: 'marathon', km: 42.195, cutoff: 179, mult: 2 },
+  // ультра: сил без гелей не хватит (reserve < 0 — «стена» на ~70% дистанции), гели — каждые 1/6 дистанции
+  { id: '50k', km: 50, cutoff: 192, mult: 2, feeds: [1 / 6, 2 / 6, 3 / 6, 4 / 6, 5 / 6], reserve: -0.4 },
 ] as const
 
 export type RaceId = (typeof RACES)[number]['id']
@@ -85,7 +87,8 @@ export type UpgradeId = (typeof UPGRADES)[number]['id']
 
 /**
  * Бустеры: ветки, которые прокачиваются уровень за уровнем.
- * speed — множитель ко всему доходу; stamina — множитель к темпу на забегах; click — множитель рывка.
+ * speed — множитель ко всему доходу; stamina — множитель к темпу на забегах; click — множитель рывка;
+ * ultra — делитель базовой усталости (длинные дистанции). unlockRace — ветка закрыта до этого забега.
  * mult — итоговый множитель ветки на этом уровне (не накопительный).
  * pct (только техника) — доля секундного дохода, которую рывок добавляет сверху.
  */
@@ -132,6 +135,16 @@ export const BOOSTS = [
       { icon: 'shorts', cost: 150, mult: 1.2 },
       { icon: 'belt', cost: 4000, mult: 1.5 },
       { icon: 'vest', cost: 70000, mult: 2 },
+    ],
+  },
+  {
+    // ультра-снаряжение: открывается после марафона, снижает усталость на длинной дистанции (базовый показатель Ригеля)
+    id: 'ultra', stat: 'ultra', unlockRace: 'marathon',
+    levels: [
+      { icon: 'headlamp', cost: 3e9, mult: 1.25 },
+      { icon: 'poles', cost: 3e10, mult: 1.6 },
+      { icon: 'salt', cost: 3e11, mult: 2 },
+      { icon: 'ultra-shoes', cost: 3e12, mult: 2.5 },
     ],
   },
 ] as const

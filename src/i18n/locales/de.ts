@@ -55,6 +55,7 @@ const messages: Messages = {
   'race.half': 'Halbmarathon',
   'race.30k': '30 km',
   'race.marathon': 'Marathon',
+  'race.50k': '50 km',
 
   // --- next race card
   'nextRace.ready': 'Startklar ✓',
@@ -72,6 +73,7 @@ const messages: Messages = {
   'raceHud.wall': 'Der Mann mit dem Hammer! Fang ein Gel',
   'raceHud.enough': 'reicht bis ins Ziel',
   'raceHud.notEnough': 'reicht nicht bis ins Ziel',
+  'raceHud.enoughWithGels': 'reicht, wenn du die Gels fängst',
   'raceHud.quit': 'Aufgeben',
   'raceHud.quitAsk': 'Rennen aufgeben?',
   'raceHud.quitConfirm': 'Ja, aufgeben',
@@ -98,10 +100,12 @@ const messages: Messages = {
   'boost.level': 'Stufe {a} von {b}',
   'boost.next': 'Als Nächstes: {name}, {desc}',
   'boost.max': 'Höchste Stufe',
+  'boost.unlocksAfter': 'Freigeschaltet nach dem Rennen über {name}',
   'boost.techniqueBonus': '{m} und +{p}% des Einkommens pro Sekunde',
   'stat.speed': 'Tempo',
   'stat.stamina': 'Ausdauer',
   'stat.click': 'Sprint',
+  'stat.ultra': 'Ultra',
   'boost.technique': 'Lauftechnik',
   'boost.technique.0': 'Laufen, wie es kommt',
   'boost.technique.1': 'Kadenz 180',
@@ -131,6 +135,12 @@ const messages: Messages = {
   'boost.gear.1': 'Shorts mit Taschen',
   'boost.gear.2': 'Laufgürtel',
   'boost.gear.3': 'Trailweste',
+  'boost.ultra': 'Ultra-Ausrüstung',
+  'boost.ultra.0': 'Nichts Besonderes',
+  'boost.ultra.1': 'Stirnlampe',
+  'boost.ultra.2': 'Trekkingstöcke',
+  'boost.ultra.3': 'Salztabletten',
+  'boost.ultra.4': 'Maximal gedämpfte Trailschuhe',
 
   // --- gadgets
   'gear.owned': 'Gekauft ✓',
@@ -154,7 +164,7 @@ const messages: Messages = {
   'raceSheet.start': 'Start',
   'raceSheet.startRisky': 'Start — es riskieren',
   'raceSheet.allDone': 'Alle Rennen geschafft',
-  'raceSheet.comingSoon': 'Als Nächstes: 50 km und die Ultras. Kommen in der nächsten Version.',
+  'raceSheet.comingSoon': 'Als Nächstes: 100 km und 100 Meilen. Kommen in der nächsten Version.',
   'raceSheet.distances': 'Distanzen',
 
   // --- profile
@@ -200,7 +210,7 @@ const messages: Messages = {
   'result.medalsTotal': '· insgesamt {n}',
   'result.unlocked': 'Neues Training:',
   'result.nextRace': 'Nächstes Rennen:',
-  'result.allDone': 'Alle Distanzen geschafft — Ultramarathons kommen in der nächsten Version',
+  'result.allDone': 'Alle Distanzen geschafft — 100 km und 100 Meilen kommen in der nächsten Version',
   'result.next': 'Weiter',
   'result.dnfTitle': 'Ausgestiegen bei {c} von {k} km',
   'result.gaveUp.he': 'Du bist bei {t} ausgestiegen.',

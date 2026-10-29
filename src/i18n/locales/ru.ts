@@ -55,6 +55,7 @@ const messages: Messages = {
   'race.half': 'Полумарафон',
   'race.30k': '30 км',
   'race.marathon': 'Марафон',
+  'race.50k': '50 км',
 
   // --- next race card
   'nextRace.ready': 'Готов к старту ✓',
@@ -72,6 +73,7 @@ const messages: Messages = {
   'raceHud.wall': 'Стена! Лови гель',
   'raceHud.enough': 'хватит до финиша',
   'raceHud.notEnough': 'не хватит до финиша',
+  'raceHud.enoughWithGels': 'хватит, если ловить гели',
   'raceHud.quit': 'Сдаться',
   'raceHud.quitAsk': 'Сойти с дистанции?',
   'raceHud.quitConfirm': 'Да, сойти',
@@ -98,10 +100,12 @@ const messages: Messages = {
   'boost.level': 'Уровень {a} из {b}',
   'boost.next': 'Дальше: {name}, {desc}',
   'boost.max': 'Максимальный уровень',
+  'boost.unlocksAfter': 'Откроется после забега {name}',
   'boost.techniqueBonus': '{m} и +{p}% секундного дохода',
   'stat.speed': 'скорость',
   'stat.stamina': 'выносливость',
   'stat.click': 'рывок',
+  'stat.ultra': 'ультра',
   'boost.technique': 'Техника бега',
   'boost.technique.0': 'Бег как получится',
   'boost.technique.1': 'Каденс 180',
@@ -131,6 +135,12 @@ const messages: Messages = {
   'boost.gear.1': 'Шорты с карманами',
   'boost.gear.2': 'Беговой пояс',
   'boost.gear.3': 'Трейловый жилет',
+  'boost.ultra': 'Ультра-снаряжение',
+  'boost.ultra.0': 'Ничего особенного',
+  'boost.ultra.1': 'Налобный фонарь',
+  'boost.ultra.2': 'Трекинговые палки',
+  'boost.ultra.3': 'Солевые капсулы',
+  'boost.ultra.4': 'Ультра-кроссовки',
 
   // --- gadgets
   'gear.owned': 'Куплено ✓',
@@ -154,7 +164,7 @@ const messages: Messages = {
   'raceSheet.start': 'Старт',
   'raceSheet.startRisky': 'Старт — рискнуть',
   'raceSheet.allDone': 'Все забеги пройдены',
-  'raceSheet.comingSoon': 'Следующий старт — 50 км и ультра. Появятся в следующей версии.',
+  'raceSheet.comingSoon': 'Следующий старт — 100 км и 100 миль. Появятся в следующей версии.',
   'raceSheet.distances': 'Дистанции',
 
   // --- profile
@@ -200,7 +210,7 @@ const messages: Messages = {
   'result.medalsTotal': '· всего {n}',
   'result.unlocked': 'Открыта тренировка:',
   'result.nextRace': 'Следующий старт:',
-  'result.allDone': 'Все дистанции пройдены — дальше ультрамарафоны в следующей версии',
+  'result.allDone': 'Все дистанции пройдены — дальше 100 км и 100 миль в следующей версии',
   'result.next': 'Дальше',
   'result.dnfTitle': 'Сход на {c} из {k} км',
   'result.gaveUp.he': 'Ты сошёл с дистанции на {t}.',

@@ -55,6 +55,7 @@ const messages: Messages = {
   'race.half': 'Media maratón',
   'race.30k': '30 km',
   'race.marathon': 'Maratón',
+  'race.50k': '50 km',
 
   // --- next race card
   'nextRace.ready': 'Listo para salir ✓',
@@ -72,6 +73,7 @@ const messages: Messages = {
   'raceHud.wall': '¡El muro! Atrapa un gel',
   'raceHud.enough': 'alcanza para llegar',
   'raceHud.notEnough': 'no alcanza para llegar',
+  'raceHud.enoughWithGels': 'alcanza si atrapas los geles',
   'raceHud.quit': 'Abandonar',
   'raceHud.quitAsk': '¿Abandonar la carrera?',
   'raceHud.quitConfirm': 'Sí, abandonar',
@@ -98,10 +100,12 @@ const messages: Messages = {
   'boost.level': 'Nivel {a} de {b}',
   'boost.next': 'Siguiente: {name}, {desc}',
   'boost.max': 'Nivel máximo',
+  'boost.unlocksAfter': 'Se desbloquea tras la carrera de {name}',
   'boost.techniqueBonus': '{m} y +{p}% de los ingresos por segundo',
   'stat.speed': 'velocidad',
   'stat.stamina': 'resistencia',
   'stat.click': 'sprint',
+  'stat.ultra': 'ultra',
   'boost.technique': 'Técnica de carrera',
   'boost.technique.0': 'Correr como sea',
   'boost.technique.1': 'Cadencia 180',
@@ -131,6 +135,12 @@ const messages: Messages = {
   'boost.gear.1': 'Pantalón corto con bolsillos',
   'boost.gear.2': 'Cinturón de running',
   'boost.gear.3': 'Chaleco de trail',
+  'boost.ultra': 'Equipo de ultra',
+  'boost.ultra.0': 'Nada especial',
+  'boost.ultra.1': 'Linterna frontal',
+  'boost.ultra.2': 'Bastones de trekking',
+  'boost.ultra.3': 'Cápsulas de sal',
+  'boost.ultra.4': 'Zapatillas de trail con máxima amortiguación',
 
   // --- gadgets
   'gear.owned': 'Comprado ✓',
@@ -154,7 +164,7 @@ const messages: Messages = {
   'raceSheet.start': 'Salir',
   'raceSheet.startRisky': 'Salir — arriesgarse',
   'raceSheet.allDone': 'Todas las carreras completadas',
-  'raceSheet.comingSoon': 'Lo siguiente: 50 km y las ultras. Llegarán en la próxima versión.',
+  'raceSheet.comingSoon': 'Lo siguiente: 100 km y 100 millas. Llegarán en la próxima versión.',
   'raceSheet.distances': 'Distancias',
 
   // --- profile
@@ -200,7 +210,7 @@ const messages: Messages = {
   'result.medalsTotal': '· total {n}',
   'result.unlocked': 'Nuevo entrenamiento:',
   'result.nextRace': 'Próxima carrera:',
-  'result.allDone': 'Todas las distancias completadas: los ultramaratones llegan en la próxima versión',
+  'result.allDone': 'Todas las distancias completadas: 100 km y 100 millas llegan en la próxima versión',
   'result.next': 'Seguir',
   'result.dnfTitle': 'Abandono en {c} de {k} km',
   'result.gaveUp.he': 'Abandonaste en {t}.',

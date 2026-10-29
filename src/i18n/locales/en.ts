@@ -56,6 +56,7 @@ export const messages = {
   'race.half': 'Half marathon',
   'race.30k': '30 km',
   'race.marathon': 'Marathon',
+  'race.50k': '50 km',
 
   // --- next race card
   'nextRace.ready': 'Ready to start ✓',
@@ -73,6 +74,7 @@ export const messages = {
   'raceHud.wall': 'The wall! Catch a gel',
   'raceHud.enough': 'enough to finish',
   'raceHud.notEnough': 'not enough to finish',
+  'raceHud.enoughWithGels': 'enough if you catch the gels',
   'raceHud.quit': 'Give up',
   'raceHud.quitAsk': 'Drop out of the race?',
   'raceHud.quitConfirm': 'Yes, drop out',
@@ -99,10 +101,12 @@ export const messages = {
   'boost.level': 'Level {a} of {b}',
   'boost.next': 'Next: {name}, {desc}',
   'boost.max': 'Max level',
+  'boost.unlocksAfter': 'Unlocks after the {name} race',
   'boost.techniqueBonus': '{m} and +{p}% of per-second income',
   'stat.speed': 'speed',
   'stat.stamina': 'endurance',
   'stat.click': 'dash',
+  'stat.ultra': 'ultra',
   'boost.technique': 'Running form',
   'boost.technique.0': 'Running however',
   'boost.technique.1': 'Cadence 180',
@@ -132,6 +136,12 @@ export const messages = {
   'boost.gear.1': 'Shorts with pockets',
   'boost.gear.2': 'Running belt',
   'boost.gear.3': 'Trail vest',
+  'boost.ultra': 'Ultra gear',
+  'boost.ultra.0': 'Nothing special',
+  'boost.ultra.1': 'Headlamp',
+  'boost.ultra.2': 'Trekking poles',
+  'boost.ultra.3': 'Salt capsules',
+  'boost.ultra.4': 'Max-cushion trail shoes',
 
   // --- gadgets
   'gear.owned': 'Owned ✓',
@@ -155,7 +165,7 @@ export const messages = {
   'raceSheet.start': 'Start',
   'raceSheet.startRisky': 'Start — take the risk',
   'raceSheet.allDone': 'All races completed',
-  'raceSheet.comingSoon': 'Next up: 50 km and the ultras. Coming in the next version.',
+  'raceSheet.comingSoon': 'Next up: 100 km and 100 miles. Coming in the next version.',
   'raceSheet.distances': 'Distances',
 
   // --- profile
@@ -201,7 +211,7 @@ export const messages = {
   'result.medalsTotal': '· total {n}',
   'result.unlocked': 'New training unlocked:',
   'result.nextRace': 'Next race:',
-  'result.allDone': 'All distances done — ultramarathons come in the next version',
+  'result.allDone': 'All distances done — 100 km and 100 miles come in the next version',
   'result.next': 'Next',
   'result.dnfTitle': 'DNF at {c} of {k} km',
   'result.gaveUp.he': 'You dropped out at {t}.',

@@ -14,7 +14,7 @@
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
 
-    @each $stat, $color in (speed: var(--accent), stamina: var(--lane), click: var(--ok)) {
+    @each $stat, $color in (speed: var(--accent), stamina: var(--lane), click: var(--ok), ultra: #a26ad8) {
       &--#{$stat} {
         background: color-mix(in srgb, #{$color} 16%, transparent);
         color: $color;

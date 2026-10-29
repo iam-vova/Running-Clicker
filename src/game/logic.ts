@@ -62,6 +62,12 @@ export const boostMult = (s: GameState, id: BoostId) => {
 
 export const nextBoost = (s: GameState, id: BoostId) => boost(id).levels[s.boosts[id]] ?? null
 
+/** Ветка бустеров открыта (ультра-снаряжение — после марафона) */
+export const boostUnlocked = (s: GameState, id: BoostId) => {
+  const r = (boost(id) as { unlockRace?: RaceId }).unlockRace
+  return !r || s.races.includes(r)
+}
+
 export const statMult = (s: GameState, stat: Stat) =>
   BOOSTS.filter((b) => b.stat === stat).reduce((m, b) => m * boostMult(s, b.id), 1) * (stat === 'stamina' ? labStamina(s) : 1)
 /** Выносливость от «Спортивной лаборатории» */
@@ -121,7 +127,8 @@ export function runSpeed(s: GameState): number {
 }
 
 /** Показатель усталости Ригеля. Ниже — меньше замедление на длинной дистанции. */
-export const fatigueExp = (s: GameState) => RUNNER.fatigueBase + RUNNER.fatigueExtra / statMult(s, 'stamina')
+export const fatigueExp = (s: GameState) =>
+  1 + (RUNNER.fatigueBase - 1) / statMult(s, 'ultra') + RUNNER.fatigueExtra / statMult(s, 'stamina')
 
 /** Прогноз финиша на дистанции, минуты. */
 export const forecast = (s: GameState, km: number) => (60 * km ** fatigueExp(s)) / runSpeed(s)
@@ -164,8 +171,11 @@ export function catchGel(s: GameState): number {
 export const raceSpeed = (s: GameState, id: RaceId) =>
   (s.activeRace?.id === id && s.activeRace.pace) || race(id).km / forecast(s, race(id).km)
 
-/** Расход сил на километр ровного бега: на финише остаётся RUNNER.reserve. */
-const drainPerKm = (id: RaceId) => (1 - RUNNER.reserve) / race(id).km
+/** Пункты питания забега (доли дистанции) и сколько сил остаётся на финише ровным бегом без гелей (на ультра < 0) */
+export const raceFeeds = (id: RaceId): readonly number[] => (race(id) as { feeds?: readonly number[] }).feeds ?? RUNNER.feeds
+const raceReserve = (id: RaceId) => (race(id) as { reserve?: number }).reserve ?? RUNNER.reserve
+/** Расход сил на километр ровного бега. */
+const drainPerKm = (id: RaceId) => (1 - raceReserve(id)) / race(id).km
 
 /** Во сколько раз метр рывка дороже метра ровного бега. Выносливость делает спринт дешевле. */
 const sprintFactor = (s: GameState) => 1 + RUNNER.sprintCost / statMult(s, 'stamina') ** 0.25
@@ -177,11 +187,14 @@ export const tapKm = (s: GameState, id: RaceId) =>
 /** Цена рывка в силах. */
 export const tapEnergy = (s: GameState, id: RaceId) => tapKm(s, id) * drainPerKm(id) * sprintFactor(s)
 
-/** Время на оставшейся дистанции с учётом «стены», когда силы кончатся. */
+/** Сколько сил ещё вернут гели впереди, если ловить все */
+const gelsAhead = (a: ActiveRace) => (raceFeeds(a.id).length - a.fed) * RUNNER.feedEnergy
+
+/** Время на оставшейся дистанции с учётом «стены», когда силы кончатся (гели впереди считаем пойманными). */
 function timeLeft(s: GameState, a: ActiveRace): number {
   const v = raceSpeed(s, a.id)
   const rest = race(a.id).km - a.covered
-  const onEnergy = Math.min(rest, a.energy / drainPerKm(a.id))
+  const onEnergy = Math.min(rest, (a.energy + gelsAhead(a)) / drainPerKm(a.id))
   return onEnergy / v + (rest - onEnergy) / (v * RUNNER.wallSpeed)
 }
 
@@ -195,6 +208,7 @@ export function raceLive(s: GameState) {
     finish: a.elapsed + timeLeft(s, a),
     energy: a.energy,
     need,
+    gelsAhead: gelsAhead(a), // столько сил ещё вернут гели на пунктах питания
     wall: a.energy <= 0,
     canTap: a.energy >= tapEnergy(s, a.id),
     speed: raceSpeed(s, a.id) * (a.energy > 0 ? 1 : RUNNER.wallSpeed),
@@ -207,16 +221,17 @@ export function raceLive(s: GameState) {
  */
 export function bestForecast(s: GameState, id: RaceId): number {
   // каждый метр рывка экономит метр ровного бега, поэтому чистая цена — (sprintFactor − 1)
-  const surplus = RUNNER.reserve + RUNNER.feeds.length * RUNNER.feedEnergy
-  const saved = Math.min(surplus / ((1 - RUNNER.reserve) * (sprintFactor(s) - 1)), 0.5)
+  const surplus = raceReserve(id) + raceFeeds(id).length * RUNNER.feedEnergy
+  const saved = Math.max(0, Math.min(surplus / ((1 - raceReserve(id)) * (sprintFactor(s) - 1)), 0.5))
   return forecast(s, race(id).km) * (1 - saved)
 }
 
 /** Пора выпустить гель пункта питания? Отмечает пункт пройденным. */
 export function feedDue(s: GameState): boolean {
   const a = s.activeRace
-  if (!a || a.fed >= RUNNER.feeds.length) return false
-  if (a.covered / race(a.id).km < RUNNER.feeds[a.fed]) return false
+  const feeds = a ? raceFeeds(a.id) : []
+  if (!a || a.fed >= feeds.length) return false
+  if (a.covered / race(a.id).km < feeds[a.fed]) return false
   a.fed++
   return true
 }
@@ -298,7 +313,7 @@ export function buyUpgrade(s: GameState, id: UpgradeId): boolean {
 
 export function buyBoost(s: GameState, id: BoostId): boolean {
   const next = nextBoost(s, id)
-  if (!next || s.km < next.cost) return false
+  if (!next || !boostUnlocked(s, id) || s.km < next.cost) return false
   s.km -= next.cost
   s.boosts[id]++
   return true
