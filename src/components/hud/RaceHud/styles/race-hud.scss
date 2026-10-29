@@ -29,6 +29,17 @@
     white-space: nowrap;
   }
 
+  // подсказка новичку: заметная плашка внутри карточки
+  &__tip {
+    margin: 2px 0 0;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    color: var(--fg);
+    font-weight: 600;
+    text-align: center;
+  }
+
   &__timer {
     display: inline-flex;
     align-items: center;

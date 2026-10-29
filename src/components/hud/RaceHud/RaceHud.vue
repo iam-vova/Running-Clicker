@@ -16,6 +16,13 @@ const confirmQuit = ref(false)
 const enough = computed(() => !!live.value && live.value.energy >= live.value.need)
 /** На ультра сил без гелей не хватит — но хватит, если ловить гели впереди */
 const enoughWithGels = computed(() => !!live.value && live.value.energy + live.value.gelsAhead >= live.value.need)
+/** Подсказка на первых двух забегах: как тратить силы. В карточке забега — на сцене её закрывали бегуны и плашки */
+const tip = computed(() => {
+  const l = live.value
+  if (!l || state.races.length >= 2) return ''
+  if (l.spareTaps > 0) return t('raceHud.tipTap')
+  return l.gelsAhead > 0 ? t('raceHud.tipGel') : t('raceHud.tipSave')
+})
 /** Что делать с силами: сколько рывков в запасе, или беречь их до геля / до финиша */
 const energyHint = computed(() => {
   const l = live.value
@@ -58,6 +65,7 @@ const energyHint = computed(() => {
       <i class="race-hud__energy-fill" :class="{ 'race-hud__energy-fill--ok': enough }" :style="{ width: live.energy * 100 + '%' }"></i>
       <span class="race-hud__energy-need" :style="{ left: Math.min(live.need, 1) * 100 + '%' }"></span>
     </div>
+    <p v-if="tip" class="race-hud__tip">{{ tip }}</p>
     <div class="race-hud__quit-row">
       <button v-if="!confirmQuit" class="race-hud__quit" @click="confirmQuit = true">{{ t('raceHud.quit') }}</button>
       <template v-else>

@@ -267,14 +267,6 @@ function pop(x: number, y: number, text: string, warn = false) {
   setTimeout(() => (pops.value = pops.value.filter((p) => p.id !== id)), 800)
 }
 
-// --- подсказки на первых двух забегах: как тратить силы ---
-const raceHint = computed(() => {
-  const l = live.value
-  if (!l || state.races.length >= 2) return ''
-  if (gel.value?.race) return t('stage.raceHintGel')
-  return l.spareTaps === 0 ? t('stage.raceHintSave') : t('stage.raceHintTap')
-})
-
 // --- рывок ---
 let dashTimer = 0
 function dash(e?: PointerEvent) {
@@ -401,7 +393,6 @@ onBeforeUnmount(() => {
     ></button>
     <span v-for="p in pops" :key="p.id" class="game-stage__pop" :class="{ 'game-stage__pop--warn': p.warn }" :style="{ left: p.x + 'px', top: p.y + 'px' }">{{ p.text }}</span>
     <p v-if="state.clicks < 5 && !state.activeRace && !runout && !celebrating" class="game-stage__hint">{{ t('stage.hint') }}</p>
-    <p v-else-if="raceHint" :key="raceHint" class="game-stage__hint game-stage__hint--race">{{ raceHint }}</p>
   </div>
 </template>
 
