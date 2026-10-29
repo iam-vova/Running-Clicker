@@ -44,7 +44,6 @@ const live = computed(() => {
     runner,
     ghost,
     leadM: (runner - ghost) * r.km * 1000, // отрыв от тени лимита, м (минус — тень впереди)
-    ghostX: -Math.max(-170, Math.min(170, (runner - ghost) * 1500)), // сдвиг тени на сцене, в пределах экрана
     tapM: tapKm(state, r.id) * 1000,
   }
 })
