@@ -4,7 +4,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { catchGel, catchRaceGel, click, clickValue, feedDue, fmt, fmtClock, forecast, raceSpeed } from '../../../game/logic.ts'
 import { paused, state } from '../../../game/state.ts'
-import { t } from '../../../i18n.ts'
+import { t } from '../../../i18n/index.ts'
 import { sfx } from '../../../sound.ts'
 import { useRace } from '../../../composables/useRace.ts'
 import { useRaceFlow } from '../../../composables/useRaceFlow.ts'
@@ -105,7 +105,7 @@ function pop(x: number, y: number, text: string) {
 let dashTimer = 0
 function dash(e?: PointerEvent) {
   const inRace = live.value
-  const text = inRace ? (inRace.canTap ? t('+{n} м', { n: Math.round(inRace.tapM) }) : t('нет сил')) : t('+{n} км', { n: fmt(clickValue(state)) })
+  const text = inRace ? (inRace.canTap ? t('stage.plusMeters', { n: Math.round(inRace.tapM) }) : t('stage.noEnergy')) : t('stage.plusKm', { n: fmt(clickValue(state)) })
   // рывок на трассе — бегун продвинулся: сдвигаем землю на столько же, чтобы арка и фон двигались вместе
   if (inRace && inRace.canTap) groundBoost += (inRace.tapM / 1000 / inRace.speed) * GROUND_SPEED
   if (inRace && !inRace.canTap) sfx.noEnergy()
@@ -154,7 +154,7 @@ function raceGelBand(): [number, number] {
 }
 function grabGel(e: PointerEvent) {
   sfx.gel()
-  const text = gel.value?.race ? t('+{n}% сил', { n: Math.round(catchRaceGel(state) * 100) }) : t('+{n} км', { n: fmt(catchGel(state)) })
+  const text = gel.value?.race ? t('stage.plusEnergy', { n: Math.round(catchRaceGel(state) * 100) }) : t('stage.plusKm', { n: fmt(catchGel(state)) })
   const box = (e.currentTarget as HTMLElement).getBoundingClientRect()
   const stage = stageEl.value!.getBoundingClientRect()
   pop(box.left - stage.left + box.width / 2, box.top - stage.top, text)
@@ -181,7 +181,7 @@ onBeforeUnmount(() => {
     <!-- Тень лимита: силуэт бегуна в темп контрольного времени — позади, если успеваешь, впереди, если отстаёшь -->
     <template v-if="live && activeRace">
       <span class="sprite sprite--run game-stage__hero game-stage__hero--ghost" :style="{ '--gx': ghostX + 'px' }" aria-hidden="true"></span>
-      <span class="game-stage__ghost-tag" :style="{ '--gx': ghostX + 'px' }">{{ t('лимит {t}', { t: fmtClock(activeRace.cutoff) }) }}</span>
+      <span class="game-stage__ghost-tag" :style="{ '--gx': ghostX + 'px' }">{{ t('race.cutoffShort', { t: fmtClock(activeRace.cutoff) }) }}</span>
     </template>
     <span ref="heroEl" class="sprite game-stage__hero" :class="`sprite--${heroPose}`" aria-hidden="true"></span>
     <button
@@ -189,12 +189,12 @@ onBeforeUnmount(() => {
       :key="gel.id"
       class="game-stage__gel"
       :style="{ top: gel.top * 100 + '%', animationDuration: gel.dur + 's', backgroundImage: `url(${gelImg})` }"
-      :aria-label="t('Поймать гель')"
+      :aria-label="t('stage.catchGel')"
       @pointerdown.stop="grabGel"
       @animationend="gel = null"
     ></button>
     <span v-for="p in pops" :key="p.id" class="game-stage__pop" :style="{ left: p.x + 'px', top: p.y + 'px' }">{{ p.text }}</span>
-    <p v-if="state.clicks < 5 && !state.activeRace && !runout && !celebrating" class="game-stage__hint">{{ t('Нажимай на экран, чтобы бежать') }}</p>
+    <p v-if="state.clicks < 5 && !state.activeRace && !runout && !celebrating" class="game-stage__hint">{{ t('stage.hint') }}</p>
   </div>
 </template>
 

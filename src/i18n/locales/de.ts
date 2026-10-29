@@ -1,0 +1,211 @@
+// Deutsch. Ключи и порядок — как в en.ts; тип Messages не даст пропустить или придумать ключ.
+import { defineLocale } from '../define.ts'
+import type { Messages } from '../define.ts'
+
+const messages: Messages = {
+  // --- common
+  'common.close': 'Schließen',
+  'common.cancel': 'Abbrechen',
+  'common.on': 'An',
+  'common.off': 'Aus',
+  'common.maxSuffix': ' (max.)',
+
+  // --- units
+  'units.km': '{v} km',
+  'units.kmh': '{v} km/h',
+  'units.perKm': '/km',
+  'units.hours': '{h} Std.',
+  'units.minutes': '{m} Min.',
+
+  // --- tabs
+  'tabs.train': 'Training',
+  'tabs.gear': 'Ausrüstung',
+  'tabs.race': 'Rennen',
+  'tabs.profile': 'Profil',
+  'tabs.raceLive': 'Rennen läuft',
+
+  // --- stage
+  'stage.noEnergy': 'keine Kraft',
+  'stage.plusMeters': '+{n} m',
+  'stage.plusKm': '+{n} km',
+  'stage.plusEnergy': '+{n}% Kraft',
+  'stage.catchGel': 'Gel fangen',
+  'stage.hint': 'Tippe auf den Bildschirm, um zu laufen',
+
+  // --- HUD
+  'hud.trainingKm': 'Trainings-km',
+  'hud.perSecond': 'pro Sekunde',
+  'hud.total': 'Gesamtstrecke {km} km',
+  'hud.mute': 'Stumm',
+
+  // --- races (shared)
+  'race.title': 'Rennen: {name}',
+  'race.cutoff': 'Zeitlimit',
+  'race.cutoffShort': 'Limit {t}',
+  'race.forecast': 'Prognose Zielzeit',
+  'race.pace': 'Pace',
+  'race.readiness': 'Rennbereitschaft',
+  'race.reward': 'Einkommen {x}',
+  'race.rewardWithTraining': '{reward} und das Training „{name}“',
+  'race.1k': '1 km',
+  'race.3k': '3 km',
+  'race.5k': '5 km',
+  'race.10k': '10 km',
+  'race.15k': '15 km',
+  'race.half': 'Halbmarathon',
+
+  // --- next race card
+  'nextRace.ready': 'Startklar ✓',
+  'nextRace.maybe': 'Mit Sprints machbar',
+  'nextRace.readiness': 'Bereitschaft {p}%',
+
+  // --- race HUD
+  'raceHud.title': 'Auf der Strecke: {name}',
+  'raceHud.distance': 'Zurückgelegte Strecke',
+  'raceHud.covered': '{c} von {k} km',
+  'raceHud.ahead': '+{m} m vor dem Zeitlimit-Schatten',
+  'raceHud.behind': 'Schatten {m} m voraus',
+  'raceHud.energy': 'Kraft',
+  'raceHud.energyReserve': 'Kraftreserve',
+  'raceHud.wall': 'Der Mann mit dem Hammer! Fang ein Gel',
+  'raceHud.enough': 'reicht bis ins Ziel',
+  'raceHud.notEnough': 'reicht nicht bis ins Ziel',
+  'raceHud.quit': 'Aufgeben',
+  'raceHud.quitAsk': 'Rennen aufgeben?',
+  'raceHud.quitConfirm': 'Ja, aufgeben',
+  'raceHud.keepRunning': 'Weiterlaufen',
+
+  // --- training
+  'train.bulk': 'Kaufen',
+  'train.bulkLabel': 'Wie viele Stufen kaufen',
+  'train.level': 'St. {n}',
+  'train.perLevel': '+{v} km/s pro Stufe',
+  'train.total': 'gesamt {v} km/s · ×2 ab St. {n}',
+  'train.unlocksAfter': 'Freigeschaltet nach dem Rennen über {name}',
+  'train.offlineHours': 'offline bis {h}',
+  'train.offlineEff': 'offline {p} des Einkommens',
+  'gen.jog': 'Morgenlauf',
+  'gen.club': 'Laufverein',
+  'gen.intervals': 'Intervalle auf der Bahn',
+  'gen.coach': 'Personal Trainer',
+  'gen.camp': 'Höhentrainingslager',
+
+  // --- boosts (training form and gear)
+  'boost.level': 'Stufe {a} von {b}',
+  'boost.next': 'Als Nächstes: {name}, {desc}',
+  'boost.max': 'Höchste Stufe',
+  'boost.techniqueBonus': '{m} und +{p}% des Einkommens pro Sekunde',
+  'stat.speed': 'Tempo',
+  'stat.stamina': 'Ausdauer',
+  'stat.click': 'Sprint',
+  'boost.technique': 'Lauftechnik',
+  'boost.technique.0': 'Laufen, wie es kommt',
+  'boost.technique.1': 'Kadenz 180',
+  'boost.technique.2': 'Lauf-ABC',
+  'boost.technique.3': 'Plyometrie',
+  'boost.technique.4': 'Endspurt',
+  'boost.shoes': 'Schuhe',
+  'boost.shoes.0': 'Alte Turnschuhe',
+  'boost.shoes.1': 'Laufschuhe',
+  'boost.shoes.2': 'Gedämpfte Laufschuhe',
+  'boost.shoes.3': 'Tempo-Schuhe',
+  'boost.shoes.4': 'Carbonplatte',
+  'boost.food': 'Essen',
+  'boost.food.0': 'Mit leerem Magen',
+  'boost.food.1': 'Gekochte Kartoffeln',
+  'boost.food.2': 'Nudeln',
+  'boost.food.3': 'Datteln und Gummibärchen',
+  'boost.food.4': 'Energie-Gels',
+  'boost.drink': 'Getränke',
+  'boost.drink.0': 'Kein Wasser',
+  'boost.drink.1': 'Wasser',
+  'boost.drink.2': 'Cola an den Verpflegungsstellen',
+  'boost.drink.3': 'Elektrolyte',
+  'boost.gear': 'Bekleidung',
+  'boost.gear.0': 'T-Shirt und Jogginghose',
+  'boost.gear.1': 'Shorts mit Taschen',
+  'boost.gear.2': 'Laufgürtel',
+  'boost.gear.3': 'Trailweste',
+
+  // --- gadgets
+  'gear.owned': 'Gekauft ✓',
+  'gear.unlocksAt': 'Freigeschaltet ab St. {n} von „{gen}“',
+  'upgrade.hrm': 'Pulsuhr',
+  'upgrade.hrm.desc': '{gen} ×2',
+
+  // --- race sheet
+  'raceSheet.onCourse': 'Du läufst gerade {name}. Schließe dieses Fenster: Jedes Tippen ist ein Sprint und kostet Kraft, Gels an den Verpflegungsstellen geben sie zurück.',
+  'raceSheet.backToCourse': 'Zurück zur Strecke',
+  'raceSheet.ready': 'Bereit ✓',
+  'raceSheet.lastFinish': 'Letzter Versuch: {name} in {t} beendet',
+  'raceSheet.lastDnf': 'Letzter Versuch: ausgestiegen bei km {d}',
+  'raceSheet.late': '{t} zu langsam',
+  'raceSheet.onTime': 'Im Limit mit {t} Puffer',
+  'raceSheet.best': 'Mit Sprints und Gels — bis {t}.',
+  'raceSheet.chanceOk': 'Gute Chance auf eine Bestzeit.',
+  'raceSheet.chanceMaybe': 'Klappt, wenn du deine Kraft gut einteilst.',
+  'raceSheet.chanceLate': 'Reicht selbst damit noch nicht.',
+  'raceSheet.reward': 'Belohnung: {r}',
+  'raceSheet.start': 'Start',
+  'raceSheet.startRisky': 'Start — es riskieren',
+  'raceSheet.allDone': 'Alle Rennen geschafft',
+  'raceSheet.comingSoon': 'Als Nächstes: 30 km und der Marathon. Kommen in der nächsten Version.',
+  'raceSheet.distances': 'Distanzen',
+
+  // --- profile
+  'profile.medalsFor': { one: 'Medaille für Zieleinläufe', other: 'Medaillen für Zieleinläufe' },
+  'profile.finished': 'im Ziel',
+  'profile.total': 'Gesamtstrecke',
+  'profile.timeNote': 'Eine Sekunde im Spiel ist eine Minute auf der Strecke. Training bringt Kilometer, und mit ihnen wird dein Läufer schneller.',
+  'profile.offlineNote': 'Der Fortschritt wird in diesem Browser gespeichert. Solange das Spiel geschlossen ist, trainiert der Läufer bis zu {h} mit {p} Effizienz, und das Rennen ist pausiert.',
+  'profile.reset': 'Fortschritt zurücksetzen',
+  'profile.resetAsk': 'Alles löschen?',
+  'profile.resetConfirm': 'Ja, zurücksetzen',
+  'profile.resetDone': 'Wir fangen von vorn an',
+
+  // --- settings
+  'settings.title': 'Einstellungen',
+  'settings.character': 'Läufer',
+  'settings.theme': 'Design',
+  'settings.sound': 'Sound',
+  'settings.music': 'Musik',
+  'settings.language': 'Sprache',
+  'theme.auto': 'Auto',
+  'theme.light': 'Tag',
+  'theme.dark': 'Nacht',
+  'character.he': 'Läufer',
+  'character.she': 'Läuferin',
+
+  // --- back after being away
+  'away.title': 'Während du weg warst',
+  'away.subtitle': 'Dein Läufer hat weiter trainiert',
+  'away.timeAway': 'Abwesenheit',
+  'away.capped': 'Angerechnet: {h} — das ist das Limit (steigt mit dem Laufverein). ',
+  'away.efficiency': 'Offline läuft das Training mit {p} des Spieltempos (steigt mit dem Personal Trainer).',
+  'away.racePaused': 'Dein Rennen war pausiert — es geht an derselben Stelle weiter.',
+  'away.continue': 'Weiter',
+
+  // --- race result
+  'result.label': 'Rennergebnis',
+  'result.finishTitle': 'Im Ziel! {name}',
+  'result.time': 'Zeit',
+  'result.plusMedal': '+1 Medaille',
+  'result.medalsTotal': '· insgesamt {n}',
+  'result.unlocked': 'Neues Training:',
+  'result.nextRace': 'Nächstes Rennen:',
+  'result.allDone': 'Alle Distanzen geschafft — der Marathon kommt in der nächsten Version',
+  'result.next': 'Weiter',
+  'result.dnfTitle': 'Ausgestiegen bei {c} von {k} km',
+  'result.gaveUp.he': 'Du bist bei {t} ausgestiegen.',
+  'result.gaveUp.she': 'Du bist bei {t} ausgestiegen.',
+  'result.ghostPassed': 'Der Zeitlimit-Schatten hat dich bei {t} überholt.',
+  'result.levelUp': 'Verbessern',
+  'result.retry': 'Nochmal',
+
+  // --- character picker
+  'picker.label': 'Läufer wählen',
+  'picker.title': 'Wähle deinen Läufer',
+  'picker.subtitle': 'Die Werte sind gleich — nimm, wen du magst. Wechseln kannst du jederzeit in den Einstellungen.',
+}
+
+export default defineLocale({ code: 'de', name: 'Deutsch', messages })

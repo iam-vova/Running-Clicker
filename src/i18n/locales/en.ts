@@ -1,0 +1,212 @@
+// English — the source language and the fallback for every key.
+// Adding a language: copy this file to locales/<code>.ts, translate the values and set meta.name.
+// The `Messages` type makes the compiler complain about any missing or extra key.
+import { defineLocale } from '../define.ts'
+
+export const messages = {
+  // --- common
+  'common.close': 'Close',
+  'common.cancel': 'Cancel',
+  'common.on': 'On',
+  'common.off': 'Off',
+  'common.maxSuffix': ' (max)',
+
+  // --- units
+  'units.km': '{v} km',
+  'units.kmh': '{v} km/h',
+  'units.perKm': '/km',
+  'units.hours': '{h} h',
+  'units.minutes': '{m} min',
+
+  // --- tabs
+  'tabs.train': 'Training',
+  'tabs.gear': 'Gear',
+  'tabs.race': 'Race',
+  'tabs.profile': 'Profile',
+  'tabs.raceLive': 'Race in progress',
+
+  // --- stage
+  'stage.noEnergy': 'no energy',
+  'stage.plusMeters': '+{n} m',
+  'stage.plusKm': '+{n} km',
+  'stage.plusEnergy': '+{n}% energy',
+  'stage.catchGel': 'Catch the gel',
+  'stage.hint': 'Tap the screen to run',
+
+  // --- HUD
+  'hud.trainingKm': 'Training km',
+  'hud.perSecond': 'per second',
+  'hud.total': 'Total distance {km} km',
+  'hud.mute': 'Mute',
+
+  // --- races (shared)
+  'race.title': 'Race: {name}',
+  'race.cutoff': 'Limit',
+  'race.cutoffShort': 'limit {t}',
+  'race.forecast': 'Finish forecast',
+  'race.pace': 'Pace',
+  'race.readiness': 'Race readiness',
+  'race.reward': 'income {x}',
+  'race.rewardWithTraining': '{reward} and the “{name}” training',
+  'race.1k': '1 km',
+  'race.3k': '3 km',
+  'race.5k': '5 km',
+  'race.10k': '10 km',
+  'race.15k': '15 km',
+  'race.half': 'Half marathon',
+
+  // --- next race card
+  'nextRace.ready': 'Ready to start ✓',
+  'nextRace.maybe': 'Doable with dashes',
+  'nextRace.readiness': 'Readiness {p}%',
+
+  // --- race HUD
+  'raceHud.title': 'On course: {name}',
+  'raceHud.distance': 'Distance covered',
+  'raceHud.covered': '{c} of {k} km',
+  'raceHud.ahead': '+{m} m ahead of the pace ghost',
+  'raceHud.behind': 'pace ghost {m} m ahead',
+  'raceHud.energy': 'Energy',
+  'raceHud.energyReserve': 'Energy reserve',
+  'raceHud.wall': 'The wall! Catch a gel',
+  'raceHud.enough': 'enough to finish',
+  'raceHud.notEnough': 'not enough to finish',
+  'raceHud.quit': 'Give up',
+  'raceHud.quitAsk': 'Drop out of the race?',
+  'raceHud.quitConfirm': 'Yes, drop out',
+  'raceHud.keepRunning': 'Keep running',
+
+  // --- training
+  'train.bulk': 'Buy',
+  'train.bulkLabel': 'How many levels to buy',
+  'train.level': 'lv. {n}',
+  'train.perLevel': '+{v} km/s per level',
+  'train.total': 'total {v} km/s · ×2 at lv. {n}',
+  'train.unlocksAfter': 'Unlocks after the {name} race',
+  'train.offlineHours': 'offline up to {h}',
+  'train.offlineEff': 'offline {p} of income',
+  'gen.jog': 'Morning jog',
+  'gen.club': 'Running club',
+  'gen.intervals': 'Track intervals',
+  'gen.coach': 'Personal coach',
+  'gen.camp': 'Altitude camp',
+
+  // --- boosts (training form and gear)
+  'boost.level': 'Level {a} of {b}',
+  'boost.next': 'Next: {name}, {desc}',
+  'boost.max': 'Max level',
+  'boost.techniqueBonus': '{m} and +{p}% of per-second income',
+  'stat.speed': 'speed',
+  'stat.stamina': 'endurance',
+  'stat.click': 'dash',
+  'boost.technique': 'Running form',
+  'boost.technique.0': 'Running however',
+  'boost.technique.1': 'Cadence 180',
+  'boost.technique.2': 'Running drills',
+  'boost.technique.3': 'Plyometrics',
+  'boost.technique.4': 'Finishing kick',
+  'boost.shoes': 'Shoes',
+  'boost.shoes.0': 'Old sneakers',
+  'boost.shoes.1': 'Running shoes',
+  'boost.shoes.2': 'Cushioned shoes',
+  'boost.shoes.3': 'Tempo shoes',
+  'boost.shoes.4': 'Carbon plate',
+  'boost.food': 'Food',
+  'boost.food.0': 'Running hungry',
+  'boost.food.1': 'Boiled potatoes',
+  'boost.food.2': 'Pasta',
+  'boost.food.3': 'Dates and gummies',
+  'boost.food.4': 'Energy gels',
+  'boost.drink': 'Drinks',
+  'boost.drink.0': 'No water',
+  'boost.drink.1': 'Water',
+  'boost.drink.2': 'Cola at aid stations',
+  'boost.drink.3': 'Electrolytes',
+  'boost.gear': 'Kit',
+  'boost.gear.0': 'T-shirt and sweatpants',
+  'boost.gear.1': 'Shorts with pockets',
+  'boost.gear.2': 'Running belt',
+  'boost.gear.3': 'Trail vest',
+
+  // --- gadgets
+  'gear.owned': 'Owned ✓',
+  'gear.unlocksAt': 'Unlocks at lv. {n} of “{gen}”',
+  'upgrade.hrm': 'Heart rate monitor',
+  'upgrade.hrm.desc': '{gen} ×2',
+
+  // --- race sheet
+  'raceSheet.onCourse': 'You are racing the {name}. Close this window: taps are dashes that spend energy, gels at aid stations restore it.',
+  'raceSheet.backToCourse': 'Back to the course',
+  'raceSheet.ready': 'Ready ✓',
+  'raceSheet.lastFinish': 'Last attempt: finished {name} in {t}',
+  'raceSheet.lastDnf': 'Last attempt: DNF at {d} km',
+  'raceSheet.late': 'Short by {t}',
+  'raceSheet.onTime': 'On time with {t} to spare',
+  'raceSheet.best': 'With dashes and gels — down to {t}.',
+  'raceSheet.chanceOk': 'Good chance for a personal best.',
+  'raceSheet.chanceMaybe': 'You’ll make it if you pace your energy.',
+  'raceSheet.chanceLate': 'Not enough even with them yet.',
+  'raceSheet.reward': 'Reward: {r}',
+  'raceSheet.start': 'Start',
+  'raceSheet.startRisky': 'Start — take the risk',
+  'raceSheet.allDone': 'All races completed',
+  'raceSheet.comingSoon': 'Next up: 30 km and the marathon. Coming in the next version.',
+  'raceSheet.distances': 'Distances',
+
+  // --- profile
+  'profile.medalsFor': { one: 'medal for finishes', other: 'medals for finishes' },
+  'profile.finished': 'finished',
+  'profile.total': 'Total distance',
+  'profile.timeNote': 'One second in the game is one minute on the course. Training adds kilometers, and the runner’s speed grows with them.',
+  'profile.offlineNote': 'Progress is saved in this browser. While the game is closed, the runner trains for up to {h} at {p} efficiency, and races are paused.',
+  'profile.reset': 'Reset progress',
+  'profile.resetAsk': 'Erase everything?',
+  'profile.resetConfirm': 'Yes, reset',
+  'profile.resetDone': 'Starting from scratch',
+
+  // --- settings
+  'settings.title': 'Settings',
+  'settings.character': 'Runner',
+  'settings.theme': 'Theme',
+  'settings.sound': 'Sound',
+  'settings.music': 'Music',
+  'settings.language': 'Language',
+  'theme.auto': 'Auto',
+  'theme.light': 'Day',
+  'theme.dark': 'Night',
+  'character.he': 'Male',
+  'character.she': 'Female',
+
+  // --- back after being away
+  'away.title': 'While you were away',
+  'away.subtitle': 'Your runner kept training',
+  'away.timeAway': 'Time away',
+  'away.capped': 'Counted {h} — that’s the limit (grows with Running club). ',
+  'away.efficiency': 'Offline training runs at {p} of the in-game rate (grows with Personal coach).',
+  'away.racePaused': 'Your race was paused — you’ll continue from the same spot.',
+  'away.continue': 'Continue',
+
+  // --- race result
+  'result.label': 'Race result',
+  'result.finishTitle': 'Finish! {name}',
+  'result.time': 'Time',
+  'result.plusMedal': '+1 medal',
+  'result.medalsTotal': '· total {n}',
+  'result.unlocked': 'New training unlocked:',
+  'result.nextRace': 'Next race:',
+  'result.allDone': 'All distances done — the marathon comes in the next version',
+  'result.next': 'Next',
+  'result.dnfTitle': 'DNF at {c} of {k} km',
+  'result.gaveUp.he': 'You dropped out at {t}.',
+  'result.gaveUp.she': 'You dropped out at {t}.',
+  'result.ghostPassed': 'The pace ghost passed you at {t}.',
+  'result.levelUp': 'Level up',
+  'result.retry': 'Try again',
+
+  // --- character picker
+  'picker.label': 'Choose runner',
+  'picker.title': 'Choose your runner',
+  'picker.subtitle': 'Stats are the same — pick whoever you like. You can switch anytime in Settings.',
+} as const
+
+export default defineLocale<typeof messages>({ code: 'en', name: 'English', messages })

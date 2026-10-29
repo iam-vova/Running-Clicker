@@ -4,8 +4,8 @@ import { computed } from 'vue'
 import { CHARACTERS } from '../../../game/config.ts'
 import type { CharId } from '../../../game/config.ts'
 import { state } from '../../../game/state.ts'
-import { lang, setLang, t } from '../../../i18n.ts'
-import type { Lang } from '../../../i18n.ts'
+import { LOCALES, lang, setLang, t } from '../../../i18n/index.ts'
+import { characterName } from '../../../i18n/names.ts'
 import { musicOn, setMusic, setSound, soundOn } from '../../../sound.ts'
 import { THEMES, useTheme } from '../../../composables/useTheme.ts'
 import { sheetVars } from '../../../utils/assets.ts'
@@ -17,43 +17,41 @@ const character = computed({ get: () => state.character ?? 'he', set: (v: CharId
 const theme = computed({ get: () => themePref.value, set: setTheme })
 const sound = computed({ get: () => soundOn.value, set: setSound })
 const music = computed({ get: () => musicOn.value, set: setMusic })
-const language = computed({ get: () => lang.value, set: setLang })
 
-const charOptions = computed(() => CHARACTERS.map((c) => ({ value: c.id, label: t(c.name), style: sheetVars(c.id) })))
+const charOptions = computed(() => CHARACTERS.map((c) => ({ value: c.id, label: characterName(c.id), style: sheetVars(c.id) })))
 const themeOptions = computed(() => THEMES.map((th) => ({ value: th.id, label: t(th.label) })))
 const onOff = computed(() => [
-  { value: true, label: t('Вкл') },
-  { value: false, label: t('Выкл') },
+  { value: true, label: t('common.on') },
+  { value: false, label: t('common.off') },
 ])
-const LANGS: { value: Lang; label: string }[] = [
-  { value: 'ru', label: 'RU' },
-  { value: 'en', label: 'EN' },
-]
 </script>
 
 <template>
   <div class="settings-sheet">
     <div class="setting-row">
-      <span>{{ t('Персонаж') }}</span>
-      <ToggleGroup v-model="character" :label="t('Персонаж')" :options="charOptions">
+      <span>{{ t('settings.character') }}</span>
+      <ToggleGroup v-model="character" :label="t('settings.character')" :options="charOptions">
         <template #option><span class="sprite sprite--idle sprite--tiny settings-sheet__character" aria-hidden="true"></span></template>
       </ToggleGroup>
     </div>
     <div class="setting-row">
-      <span>{{ t('Тема') }}</span>
-      <ToggleGroup v-model="theme" :label="t('Тема')" :options="themeOptions" />
+      <span>{{ t('settings.theme') }}</span>
+      <ToggleGroup v-model="theme" :label="t('settings.theme')" :options="themeOptions" />
     </div>
     <div class="setting-row">
-      <span>{{ t('Звук') }}</span>
-      <ToggleGroup v-model="sound" :label="t('Звук')" :options="onOff" />
+      <span>{{ t('settings.sound') }}</span>
+      <ToggleGroup v-model="sound" :label="t('settings.sound')" :options="onOff" />
     </div>
     <div class="setting-row">
-      <span>{{ t('Музыка') }}</span>
-      <ToggleGroup v-model="music" :label="t('Музыка')" :options="onOff" />
+      <span>{{ t('settings.music') }}</span>
+      <ToggleGroup v-model="music" :label="t('settings.music')" :options="onOff" />
     </div>
     <div class="setting-row">
-      <span>{{ t('Язык') }}</span>
-      <ToggleGroup v-model="language" :label="t('Язык')" :options="LANGS" />
+      <span>{{ t('settings.language') }}</span>
+      <!-- языков может быть много — список, а не переключатель; названия на самих языках -->
+      <select class="settings-sheet__language" :aria-label="t('settings.language')" :value="lang" @change="setLang(($event.target as HTMLSelectElement).value)">
+        <option v-for="l in LOCALES" :key="l.code" :value="l.code">{{ l.name }}</option>
+      </select>
     </div>
   </div>
 </template>

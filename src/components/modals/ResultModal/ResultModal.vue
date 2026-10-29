@@ -2,7 +2,9 @@
 // Результат забега: финиш (медаль, время, награды) или сход (где и почему, «Прокачаться» / «Ещё раз»).
 import { fmtClock } from '../../../game/logic.ts'
 import { state } from '../../../game/state.ts'
-import { t } from '../../../i18n.ts'
+import { t } from '../../../i18n/index.ts'
+import { genName, raceName } from '../../../i18n/names.ts'
+import { raceReward } from '../../../composables/useRace.ts'
 import { useRaceFlow } from '../../../composables/useRaceFlow.ts'
 import type { Result } from '../../../composables/useRaceFlow.ts'
 import { icon } from '../../../utils/assets.ts'
@@ -14,36 +16,36 @@ const { closeResult, goTrain, retry } = useRaceFlow()
 </script>
 
 <template>
-  <ModalCard class="result-modal" :label="t('Результат забега')" :align="result.ok ? 'center' : 'left'">
+  <ModalCard class="result-modal" :label="t('result.label')" :align="result.ok ? 'center' : 'left'">
     <template v-if="result.ok">
       <img class="icon icon--x2" :src="icon(`medal-${result.id}`)" alt="" />
-      <h2>{{ t('Финиш! {name}', { name: t(result.name) }) }}</h2>
+      <h2>{{ t('result.finishTitle', { name: raceName(result.id) }) }}</h2>
       <dl class="splits splits--two">
         <div>
-          <dt class="splits__label">{{ t('Время') }}</dt>
+          <dt class="splits__label">{{ t('result.time') }}</dt>
           <dd class="splits__value status status--ok">{{ fmtClock(result.time) }}</dd>
         </div>
         <div>
-          <dt class="splits__label">{{ t('Лимит') }}</dt>
+          <dt class="splits__label">{{ t('race.cutoff') }}</dt>
           <dd class="splits__value">{{ fmtClock(result.cutoff) }}</dd>
         </div>
       </dl>
       <ul class="result-modal__rewards">
-        <li><b>{{ t('+1 медаль') }}</b> {{ t('· всего {n}', { n: state.medals }) }}</li>
-        <li><b>{{ t(result.reward) }}</b></li>
-        <li v-if="result.unlocked">{{ t('Открыта тренировка:') }} <b>{{ t(result.unlocked) }}</b></li>
-        <li v-if="result.next">{{ t('Следующий старт:') }} <b>{{ t(result.next) }}</b></li>
-        <li v-else>{{ t('Все дистанции пройдены — дальше марафон в следующей версии') }}</li>
+        <li><b>{{ t('result.plusMedal') }}</b> {{ t('result.medalsTotal', { n: state.medals }) }}</li>
+        <li><b>{{ raceReward(result.id) }}</b></li>
+        <li v-if="result.unlocked">{{ t('result.unlocked') }} <b>{{ genName(result.unlocked) }}</b></li>
+        <li v-if="result.next">{{ t('result.nextRace') }} <b>{{ raceName(result.next) }}</b></li>
+        <li v-else>{{ t('result.allDone') }}</li>
       </ul>
-      <button class="button button--primary button--wide" @click="closeResult">{{ t('Дальше') }}</button>
+      <button class="button button--primary button--wide" @click="closeResult">{{ t('result.next') }}</button>
     </template>
     <template v-else>
-      <h2>{{ t('Сход на {c} из {k} км', { c: dnfKm(result.covered, result.km), k: result.km }) }}</h2>
-      <p v-if="result.gaveUp" class="text text--muted">{{ t(state.character === 'she' ? 'Ты сошла с дистанции на {t}.' : 'Ты сошёл с дистанции на {t}.', { t: fmtClock(result.time) }) }}</p>
-      <p v-else class="text text--muted">{{ t('Тень лимита обогнала тебя на {t}.', { t: fmtClock(result.cutoff) }) }}</p>
+      <h2>{{ t('result.dnfTitle', { c: dnfKm(result.covered, result.km), k: result.km }) }}</h2>
+      <p v-if="result.gaveUp" class="text text--muted">{{ t(state.character === 'she' ? 'result.gaveUp.she' : 'result.gaveUp.he', { t: fmtClock(result.time) }) }}</p>
+      <p v-else class="text text--muted">{{ t('result.ghostPassed', { t: fmtClock(result.cutoff) }) }}</p>
       <div class="result-modal__actions">
-        <button class="button button--primary button--wide" @click="goTrain">{{ t('Прокачаться') }}</button>
-        <button class="button result-modal__again" @click="retry">{{ t('Ещё раз') }}</button>
+        <button class="button button--primary button--wide" @click="goTrain">{{ t('result.levelUp') }}</button>
+        <button class="button result-modal__again" @click="retry">{{ t('result.retry') }}</button>
       </div>
     </template>
   </ModalCard>

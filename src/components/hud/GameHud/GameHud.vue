@@ -3,7 +3,7 @@
 import { computed } from 'vue'
 import { fmt, kmPerSec, runSpeed } from '../../../game/logic.ts'
 import { state } from '../../../game/state.ts'
-import { t } from '../../../i18n.ts'
+import { t } from '../../../i18n/index.ts'
 import { muted, setMuted } from '../../../sound.ts'
 import { useRace } from '../../../composables/useRace.ts'
 import { useSheets } from '../../../composables/useSheets.ts'
@@ -20,24 +20,24 @@ const speed = computed(() => runSpeed(state))
 <template>
   <header class="game-hud" aria-live="polite">
     <!-- Ресурс: тратится на тренировки и снаряжение -->
-    <div class="game-hud__label">{{ t('Тренировочные км') }}</div>
+    <div class="game-hud__label">{{ t('hud.trainingKm') }}</div>
     <!-- «Без звука» слева: глушит всё; раздельно звук и музыка — в настройках (шестерёнка справа) -->
-    <button class="game-hud__corner game-hud__corner--mute" :aria-label="t('Без звука')" :aria-pressed="muted" @click="setMuted(!muted)">
+    <button class="game-hud__corner game-hud__corner--mute" :aria-label="t('hud.mute')" :aria-pressed="muted" @click="setMuted(!muted)">
       <img class="icon" :src="icon(muted ? 'sound-off' : 'sound-on')" alt="" />
     </button>
-    <button class="game-hud__corner game-hud__corner--settings" :aria-label="t('Настройки')" @click="toggleSheet('settings')">
+    <button class="game-hud__corner game-hud__corner--settings" :aria-label="t('settings.title')" @click="toggleSheet('settings')">
       <img class="icon" :src="icon('gear')" alt="" />
     </button>
     <div class="game-hud__km">{{ fmt(state.km) }}</div>
-    <div class="game-hud__line"><b class="status status--accent">+{{ fmt(perSec) }}</b> {{ t('в секунду') }}</div>
+    <div class="game-hud__line"><b class="status status--accent">+{{ fmt(perSec) }}</b> {{ t('hud.perSecond') }}</div>
     <!-- Статистика: не тратится -->
-    <div class="game-hud__line game-hud__line--total">{{ t('Общий пробег {km} км', { km: fmt(state.totalKm) }) }}</div>
+    <div class="game-hud__line game-hud__line--total">{{ t('hud.total', { km: fmt(state.totalKm) }) }}</div>
 
     <RaceHud v-if="live" />
     <NextRaceCard v-else-if="nextRace" />
 
     <!-- Скорость бегуна — закреплена под карточкой забега, не зависит от персонажа -->
-    <span class="game-hud__speed">{{ t('{v} км/ч', { v: speed.toFixed(1) }) }}</span>
+    <span class="game-hud__speed">{{ t('units.kmh', { v: speed.toFixed(1) }) }}</span>
   </header>
 </template>
 

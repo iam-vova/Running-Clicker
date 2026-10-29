@@ -3,9 +3,9 @@ import { ref } from 'vue'
 
 export type ThemePref = 'auto' | 'light' | 'dark'
 export const THEMES = [
-  { id: 'auto', label: 'Авто' },
-  { id: 'light', label: 'День' },
-  { id: 'dark', label: 'Ночь' },
+  { id: 'auto', label: 'theme.auto' },
+  { id: 'light', label: 'theme.light' },
+  { id: 'dark', label: 'theme.dark' },
 ] as const
 
 const KEY = 'ultramarathon-theme'

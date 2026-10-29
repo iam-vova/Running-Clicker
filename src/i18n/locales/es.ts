@@ -1,0 +1,211 @@
+// Español. Ключи и порядок — как в en.ts; тип Messages не даст пропустить или придумать ключ.
+import { defineLocale } from '../define.ts'
+import type { Messages } from '../define.ts'
+
+const messages: Messages = {
+  // --- common
+  'common.close': 'Cerrar',
+  'common.cancel': 'Cancelar',
+  'common.on': 'Sí',
+  'common.off': 'No',
+  'common.maxSuffix': ' (máx.)',
+
+  // --- units
+  'units.km': '{v} km',
+  'units.kmh': '{v} km/h',
+  'units.perKm': '/km',
+  'units.hours': '{h} h',
+  'units.minutes': '{m} min',
+
+  // --- tabs
+  'tabs.train': 'Entrenar',
+  'tabs.gear': 'Equipo',
+  'tabs.race': 'Carrera',
+  'tabs.profile': 'Perfil',
+  'tabs.raceLive': 'Carrera en curso',
+
+  // --- stage
+  'stage.noEnergy': 'sin energía',
+  'stage.plusMeters': '+{n} m',
+  'stage.plusKm': '+{n} km',
+  'stage.plusEnergy': '+{n}% energía',
+  'stage.catchGel': 'Atrapa el gel',
+  'stage.hint': 'Toca la pantalla para correr',
+
+  // --- HUD
+  'hud.trainingKm': 'Km de entrenamiento',
+  'hud.perSecond': 'por segundo',
+  'hud.total': 'Distancia total {km} km',
+  'hud.mute': 'Silenciar',
+
+  // --- races (shared)
+  'race.title': 'Carrera: {name}',
+  'race.cutoff': 'Límite',
+  'race.cutoffShort': 'límite {t}',
+  'race.forecast': 'Llegada prevista',
+  'race.pace': 'Ritmo',
+  'race.readiness': 'Preparación para la carrera',
+  'race.reward': 'ingresos {x}',
+  'race.rewardWithTraining': '{reward} y el entrenamiento «{name}»',
+  'race.1k': '1 km',
+  'race.3k': '3 km',
+  'race.5k': '5 km',
+  'race.10k': '10 km',
+  'race.15k': '15 km',
+  'race.half': 'Media maratón',
+
+  // --- next race card
+  'nextRace.ready': 'Listo para salir ✓',
+  'nextRace.maybe': 'Posible con sprints',
+  'nextRace.readiness': 'Preparación {p}%',
+
+  // --- race HUD
+  'raceHud.title': 'En carrera: {name}',
+  'raceHud.distance': 'Distancia recorrida',
+  'raceHud.covered': '{c} de {k} km',
+  'raceHud.ahead': '+{m} m por delante de la sombra',
+  'raceHud.behind': 'la sombra va {m} m por delante',
+  'raceHud.energy': 'Energía',
+  'raceHud.energyReserve': 'Reserva de energía',
+  'raceHud.wall': '¡El muro! Atrapa un gel',
+  'raceHud.enough': 'alcanza para llegar',
+  'raceHud.notEnough': 'no alcanza para llegar',
+  'raceHud.quit': 'Abandonar',
+  'raceHud.quitAsk': '¿Abandonar la carrera?',
+  'raceHud.quitConfirm': 'Sí, abandonar',
+  'raceHud.keepRunning': 'Seguir corriendo',
+
+  // --- training
+  'train.bulk': 'Comprar',
+  'train.bulkLabel': 'Cuántos niveles comprar',
+  'train.level': 'nv. {n}',
+  'train.perLevel': '+{v} km/s por nivel',
+  'train.total': 'total {v} km/s · ×2 en nv. {n}',
+  'train.unlocksAfter': 'Se desbloquea tras la carrera de {name}',
+  'train.offlineHours': 'sin conexión hasta {h}',
+  'train.offlineEff': 'sin conexión {p} de ingresos',
+  'gen.jog': 'Trote matutino',
+  'gen.club': 'Club de running',
+  'gen.intervals': 'Series en pista',
+  'gen.coach': 'Entrenador personal',
+  'gen.camp': 'Concentración en altura',
+
+  // --- boosts (training form and gear)
+  'boost.level': 'Nivel {a} de {b}',
+  'boost.next': 'Siguiente: {name}, {desc}',
+  'boost.max': 'Nivel máximo',
+  'boost.techniqueBonus': '{m} y +{p}% de los ingresos por segundo',
+  'stat.speed': 'velocidad',
+  'stat.stamina': 'resistencia',
+  'stat.click': 'sprint',
+  'boost.technique': 'Técnica de carrera',
+  'boost.technique.0': 'Correr como sea',
+  'boost.technique.1': 'Cadencia 180',
+  'boost.technique.2': 'Ejercicios de técnica',
+  'boost.technique.3': 'Pliometría',
+  'boost.technique.4': 'Sprint final',
+  'boost.shoes': 'Zapatillas',
+  'boost.shoes.0': 'Zapatillas viejas',
+  'boost.shoes.1': 'Zapatillas de running',
+  'boost.shoes.2': 'Zapatillas con amortiguación',
+  'boost.shoes.3': 'Zapatillas de tempo',
+  'boost.shoes.4': 'Placa de carbono',
+  'boost.food': 'Comida',
+  'boost.food.0': 'Correr en ayunas',
+  'boost.food.1': 'Patatas cocidas',
+  'boost.food.2': 'Pasta',
+  'boost.food.3': 'Dátiles y gominolas',
+  'boost.food.4': 'Geles energéticos',
+  'boost.drink': 'Bebidas',
+  'boost.drink.0': 'Sin agua',
+  'boost.drink.1': 'Agua',
+  'boost.drink.2': 'Cola en los avituallamientos',
+  'boost.drink.3': 'Electrolitos',
+  'boost.gear': 'Equipación',
+  'boost.gear.0': 'Camiseta y chándal',
+  'boost.gear.1': 'Pantalón corto con bolsillos',
+  'boost.gear.2': 'Cinturón de running',
+  'boost.gear.3': 'Chaleco de trail',
+
+  // --- gadgets
+  'gear.owned': 'Comprado ✓',
+  'gear.unlocksAt': 'Se desbloquea en nv. {n} de «{gen}»',
+  'upgrade.hrm': 'Pulsómetro',
+  'upgrade.hrm.desc': '{gen} ×2',
+
+  // --- race sheet
+  'raceSheet.onCourse': 'Estás corriendo los {name}. Cierra esta ventana: cada toque es un sprint que gasta energía; los geles de los avituallamientos la recuperan.',
+  'raceSheet.backToCourse': 'Volver a la carrera',
+  'raceSheet.ready': 'Listo ✓',
+  'raceSheet.lastFinish': 'Último intento: terminaste {name} en {t}',
+  'raceSheet.lastDnf': 'Último intento: abandono en el km {d}',
+  'raceSheet.late': 'Te faltan {t}',
+  'raceSheet.onTime': 'Llegas con {t} de margen',
+  'raceSheet.best': 'Con sprints y geles — hasta {t}.',
+  'raceSheet.chanceOk': 'Buena oportunidad para una marca personal.',
+  'raceSheet.chanceMaybe': 'Llegarás si dosificas bien la energía.',
+  'raceSheet.chanceLate': 'Aún no alcanza ni con ellos.',
+  'raceSheet.reward': 'Premio: {r}',
+  'raceSheet.start': 'Salir',
+  'raceSheet.startRisky': 'Salir — arriesgarse',
+  'raceSheet.allDone': 'Todas las carreras completadas',
+  'raceSheet.comingSoon': 'Lo siguiente: 30 km y la maratón. Llegarán en la próxima versión.',
+  'raceSheet.distances': 'Distancias',
+
+  // --- profile
+  'profile.medalsFor': { one: 'medalla por llegar a meta', other: 'medallas por llegar a meta' },
+  'profile.finished': 'terminada',
+  'profile.total': 'Distancia total',
+  'profile.timeNote': 'Un segundo de juego es un minuto en carrera. El entrenamiento suma kilómetros y la velocidad del corredor crece con ellos.',
+  'profile.offlineNote': 'El progreso se guarda en este navegador. Con el juego cerrado, el corredor entrena hasta {h} con una eficiencia del {p}, y la carrera queda en pausa.',
+  'profile.reset': 'Reiniciar progreso',
+  'profile.resetAsk': '¿Borrarlo todo?',
+  'profile.resetConfirm': 'Sí, reiniciar',
+  'profile.resetDone': 'Empezamos de cero',
+
+  // --- settings
+  'settings.title': 'Ajustes',
+  'settings.character': 'Corredor',
+  'settings.theme': 'Tema',
+  'settings.sound': 'Sonido',
+  'settings.music': 'Música',
+  'settings.language': 'Idioma',
+  'theme.auto': 'Auto',
+  'theme.light': 'Día',
+  'theme.dark': 'Noche',
+  'character.he': 'Corredor',
+  'character.she': 'Corredora',
+
+  // --- back after being away
+  'away.title': 'Mientras no estabas',
+  'away.subtitle': 'Tu corredor siguió entrenando',
+  'away.timeAway': 'Tiempo fuera',
+  'away.capped': 'Contamos {h}: es el límite (crece con el Club de running). ',
+  'away.efficiency': 'Sin conexión se entrena al {p} del ritmo de juego (crece con el Entrenador personal).',
+  'away.racePaused': 'Tu carrera estaba en pausa: seguirás desde el mismo punto.',
+  'away.continue': 'Continuar',
+
+  // --- race result
+  'result.label': 'Resultado de la carrera',
+  'result.finishTitle': '¡Meta! {name}',
+  'result.time': 'Tiempo',
+  'result.plusMedal': '+1 medalla',
+  'result.medalsTotal': '· total {n}',
+  'result.unlocked': 'Nuevo entrenamiento:',
+  'result.nextRace': 'Próxima carrera:',
+  'result.allDone': 'Todas las distancias completadas: la maratón llega en la próxima versión',
+  'result.next': 'Seguir',
+  'result.dnfTitle': 'Abandono en {c} de {k} km',
+  'result.gaveUp.he': 'Abandonaste en {t}.',
+  'result.gaveUp.she': 'Abandonaste en {t}.',
+  'result.ghostPassed': 'La sombra del límite te adelantó en {t}.',
+  'result.levelUp': 'Mejorar',
+  'result.retry': 'Otra vez',
+
+  // --- character picker
+  'picker.label': 'Elegir corredor',
+  'picker.title': 'Elige tu corredor',
+  'picker.subtitle': 'Las estadísticas son iguales: elige el que más te guste. Puedes cambiarlo cuando quieras en Ajustes.',
+}
+
+export default defineLocale({ code: 'es', name: 'Español', messages })

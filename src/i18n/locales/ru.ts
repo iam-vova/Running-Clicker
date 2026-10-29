@@ -1,0 +1,211 @@
+// Русский. Ключи и порядок — как в en.ts; тип Messages не даст пропустить или придумать ключ.
+import { defineLocale } from '../define.ts'
+import type { Messages } from '../define.ts'
+
+const messages: Messages = {
+  // --- common
+  'common.close': 'Закрыть',
+  'common.cancel': 'Отмена',
+  'common.on': 'Вкл',
+  'common.off': 'Выкл',
+  'common.maxSuffix': ' (макс.)',
+
+  // --- units
+  'units.km': '{v} км',
+  'units.kmh': '{v} км/ч',
+  'units.perKm': '/км',
+  'units.hours': '{h} ч',
+  'units.minutes': '{m} мин',
+
+  // --- tabs
+  'tabs.train': 'Тренировки',
+  'tabs.gear': 'Снаряжение',
+  'tabs.race': 'Забег',
+  'tabs.profile': 'Профиль',
+  'tabs.raceLive': 'Забег идёт',
+
+  // --- stage
+  'stage.noEnergy': 'нет сил',
+  'stage.plusMeters': '+{n} м',
+  'stage.plusKm': '+{n} км',
+  'stage.plusEnergy': '+{n}% сил',
+  'stage.catchGel': 'Поймать гель',
+  'stage.hint': 'Нажимай на экран, чтобы бежать',
+
+  // --- HUD
+  'hud.trainingKm': 'Тренировочные км',
+  'hud.perSecond': 'в секунду',
+  'hud.total': 'Общий пробег {km} км',
+  'hud.mute': 'Без звука',
+
+  // --- races (shared)
+  'race.title': 'Забег {name}',
+  'race.cutoff': 'Лимит',
+  'race.cutoffShort': 'лимит {t}',
+  'race.forecast': 'Прогноз финиша',
+  'race.pace': 'Темп',
+  'race.readiness': 'Готовность к забегу',
+  'race.reward': 'доход {x}',
+  'race.rewardWithTraining': '{reward} и тренировка «{name}»',
+  'race.1k': '1 км',
+  'race.3k': '3 км',
+  'race.5k': '5 км',
+  'race.10k': '10 км',
+  'race.15k': '15 км',
+  'race.half': 'Полумарафон',
+
+  // --- next race card
+  'nextRace.ready': 'Готов к старту ✓',
+  'nextRace.maybe': 'Успеешь с рывками',
+  'nextRace.readiness': 'Готовность {p}%',
+
+  // --- race HUD
+  'raceHud.title': 'На трассе: {name}',
+  'raceHud.distance': 'Пройденная дистанция',
+  'raceHud.covered': '{c} из {k} км',
+  'raceHud.ahead': 'отрыв от тени +{m} м',
+  'raceHud.behind': 'тень впереди на {m} м',
+  'raceHud.energy': 'Силы',
+  'raceHud.energyReserve': 'Запас сил',
+  'raceHud.wall': 'Стена! Лови гель',
+  'raceHud.enough': 'хватит до финиша',
+  'raceHud.notEnough': 'не хватит до финиша',
+  'raceHud.quit': 'Сдаться',
+  'raceHud.quitAsk': 'Сойти с дистанции?',
+  'raceHud.quitConfirm': 'Да, сойти',
+  'raceHud.keepRunning': 'Бежать дальше',
+
+  // --- training
+  'train.bulk': 'Покупать по',
+  'train.bulkLabel': 'Сколько уровней покупать',
+  'train.level': 'ур. {n}',
+  'train.perLevel': '+{v} км/с за уровень',
+  'train.total': 'всего {v} км/с · ×2 на ур. {n}',
+  'train.unlocksAfter': 'Откроется после забега {name}',
+  'train.offlineHours': 'офлайн до {h}',
+  'train.offlineEff': 'офлайн {p} дохода',
+  'gen.jog': 'Утренняя трусца',
+  'gen.club': 'Беговой клуб',
+  'gen.intervals': 'Интервалы на стадионе',
+  'gen.coach': 'Личный тренер',
+  'gen.camp': 'Сборы в горах',
+
+  // --- boosts (training form and gear)
+  'boost.level': 'Уровень {a} из {b}',
+  'boost.next': 'Дальше: {name}, {desc}',
+  'boost.max': 'Максимальный уровень',
+  'boost.techniqueBonus': '{m} и +{p}% секундного дохода',
+  'stat.speed': 'скорость',
+  'stat.stamina': 'выносливость',
+  'stat.click': 'рывок',
+  'boost.technique': 'Техника бега',
+  'boost.technique.0': 'Бег как получится',
+  'boost.technique.1': 'Каденс 180',
+  'boost.technique.2': 'Беговые упражнения',
+  'boost.technique.3': 'Плиометрика',
+  'boost.technique.4': 'Финишный спурт',
+  'boost.shoes': 'Кроссовки',
+  'boost.shoes.0': 'Старые кеды',
+  'boost.shoes.1': 'Беговые кроссовки',
+  'boost.shoes.2': 'Кроссовки с амортизацией',
+  'boost.shoes.3': 'Темповые кроссовки',
+  'boost.shoes.4': 'Карбоновая пластина',
+  'boost.food': 'Еда',
+  'boost.food.0': 'Бегаешь голодным',
+  'boost.food.1': 'Варёная картошка',
+  'boost.food.2': 'Макароны',
+  'boost.food.3': 'Финики и мармелад',
+  'boost.food.4': 'Беговые гели',
+  'boost.drink': 'Напитки',
+  'boost.drink.0': 'Без воды',
+  'boost.drink.1': 'Вода',
+  'boost.drink.2': 'Кола на пунктах питания',
+  'boost.drink.3': 'Электролиты',
+  'boost.gear': 'Экипировка',
+  'boost.gear.0': 'Футболка и треники',
+  'boost.gear.1': 'Шорты с карманами',
+  'boost.gear.2': 'Беговой пояс',
+  'boost.gear.3': 'Трейловый жилет',
+
+  // --- gadgets
+  'gear.owned': 'Куплено ✓',
+  'gear.unlocksAt': 'Откроется на ур. {n} «{gen}»',
+  'upgrade.hrm': 'Пульсометр',
+  'upgrade.hrm.desc': '{gen} ×2',
+
+  // --- race sheet
+  'raceSheet.onCourse': 'Ты на трассе {name}. Закрой окно: тапы — рывки за счёт сил, гели на пунктах питания возвращают силы.',
+  'raceSheet.backToCourse': 'К трассе',
+  'raceSheet.ready': 'Готов ✓',
+  'raceSheet.lastFinish': 'Прошлая попытка: финиш {name} за {t}',
+  'raceSheet.lastDnf': 'Прошлая попытка: сход на {d} км',
+  'raceSheet.late': 'Не успеваешь на {t}',
+  'raceSheet.onTime': 'Успеваешь с запасом {t}',
+  'raceSheet.best': 'С рывками и гелями — до {t}.',
+  'raceSheet.chanceOk': 'Хороший шанс на личный рекорд.',
+  'raceSheet.chanceMaybe': 'Успеешь, если правильно расходовать силы.',
+  'raceSheet.chanceLate': 'Пока не хватит даже с ними.',
+  'raceSheet.reward': 'Награда: {r}',
+  'raceSheet.start': 'Старт',
+  'raceSheet.startRisky': 'Старт — рискнуть',
+  'raceSheet.allDone': 'Все забеги пройдены',
+  'raceSheet.comingSoon': 'Следующий старт — 30 км и марафон. Появятся в следующей версии.',
+  'raceSheet.distances': 'Дистанции',
+
+  // --- profile
+  'profile.medalsFor': { one: 'медаль за финиши', few: 'медали за финиши', many: 'медалей за финиши', other: 'медали за финиши' },
+  'profile.finished': 'финиш',
+  'profile.total': 'Общий пробег',
+  'profile.timeNote': 'Секунда в игре — минута на трассе. Тренировки набегают километры, а скорость бегуна растёт вместе с ними.',
+  'profile.offlineNote': 'Прогресс сохраняется в этом браузере. Пока игра закрыта, бегун тренируется до {h} с эффективностью {p}, а забег стоит на паузе.',
+  'profile.reset': 'Сбросить прогресс',
+  'profile.resetAsk': 'Стереть всё?',
+  'profile.resetConfirm': 'Да, сбросить',
+  'profile.resetDone': 'Начинаем с нуля',
+
+  // --- settings
+  'settings.title': 'Настройки',
+  'settings.character': 'Персонаж',
+  'settings.theme': 'Тема',
+  'settings.sound': 'Звук',
+  'settings.music': 'Музыка',
+  'settings.language': 'Язык',
+  'theme.auto': 'Авто',
+  'theme.light': 'День',
+  'theme.dark': 'Ночь',
+  'character.he': 'Бегун',
+  'character.she': 'Бегунья',
+
+  // --- back after being away
+  'away.title': 'Пока тебя не было',
+  'away.subtitle': 'Бегун продолжал тренироваться',
+  'away.timeAway': 'Время отсутствия',
+  'away.capped': 'Засчитано {h} — это лимит (растёт с «Беговым клубом»). ',
+  'away.efficiency': 'Офлайн тренировки идут на {p} от темпа в игре (растёт с «Личным тренером»).',
+  'away.racePaused': 'Забег стоял на паузе — продолжишь с того же места.',
+  'away.continue': 'Продолжить',
+
+  // --- race result
+  'result.label': 'Результат забега',
+  'result.finishTitle': 'Финиш! {name}',
+  'result.time': 'Время',
+  'result.plusMedal': '+1 медаль',
+  'result.medalsTotal': '· всего {n}',
+  'result.unlocked': 'Открыта тренировка:',
+  'result.nextRace': 'Следующий старт:',
+  'result.allDone': 'Все дистанции пройдены — дальше марафон в следующей версии',
+  'result.next': 'Дальше',
+  'result.dnfTitle': 'Сход на {c} из {k} км',
+  'result.gaveUp.he': 'Ты сошёл с дистанции на {t}.',
+  'result.gaveUp.she': 'Ты сошла с дистанции на {t}.',
+  'result.ghostPassed': 'Тень лимита обогнала тебя на {t}.',
+  'result.levelUp': 'Прокачаться',
+  'result.retry': 'Ещё раз',
+
+  // --- character picker
+  'picker.label': 'Выбор персонажа',
+  'picker.title': 'Выбери бегуна',
+  'picker.subtitle': 'Характеристики одинаковые — выбирай, кто нравится. Сменить можно в любой момент в настройках.',
+}
+
+export default defineLocale({ code: 'ru', name: 'Русский', messages })

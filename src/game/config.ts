@@ -1,4 +1,5 @@
 // Данные игры. Числа синхронизированы с GAME.md.
+// Тексты (названия забегов, тренировок, уровней) — не здесь, а в i18n/locales по id: race.5k, gen.jog, boost.shoes.2.
 
 export const CLICK_KM = 0.15
 /** 1 секунда реального времени = 1 минута на трассе: км за секунду = км/ч ÷ 60. */
@@ -37,38 +38,38 @@ export const OFFLINE = {
 
 /** Стартовые персонажи: одинаковые характеристики, различается только внешний вид (ТЗ v0.4, §3) */
 export const CHARACTERS = [
-  { id: 'he', name: 'Бегун' },
-  { id: 'she', name: 'Бегунья' },
+  { id: 'he' },
+  { id: 'she' },
 ] as const
 
 export type CharId = (typeof CHARACTERS)[number]['id']
 
 export const GENERATORS = [
-  { id: 'jog', name: 'Утренняя трусца', icon: 'jog', base: 10, rate: 6, growth: 1.15, unlockRace: null },
-  { id: 'club', name: 'Беговой клуб', icon: 'club', base: 100, rate: 60, growth: 1.15, unlockRace: null },
-  { id: 'intervals', name: 'Интервалы на стадионе', icon: 'stopwatch', base: 1100, rate: 480, growth: 1.14, unlockRace: '5k' },
-  { id: 'coach', name: 'Личный тренер', icon: 'coach', base: 12000, rate: 2820, growth: 1.13, unlockRace: '10k' },
-  { id: 'camp', name: 'Сборы в горах', icon: 'camp', base: 130000, rate: 15600, growth: 1.13, unlockRace: '15k' },
+  { id: 'jog', icon: 'jog', base: 10, rate: 6, growth: 1.15, unlockRace: null },
+  { id: 'club', icon: 'club', base: 100, rate: 60, growth: 1.15, unlockRace: null },
+  { id: 'intervals', icon: 'stopwatch', base: 1100, rate: 480, growth: 1.14, unlockRace: '5k' },
+  { id: 'coach', icon: 'coach', base: 12000, rate: 2820, growth: 1.13, unlockRace: '10k' },
+  { id: 'camp', icon: 'camp', base: 130000, rate: 15600, growth: 1.13, unlockRace: '15k' },
 ] as const
 
 export type GenId = (typeof GENERATORS)[number]['id']
 
 export const RACES = [
-  // reward — только множитель; открытую тренировку UI берёт из GENERATORS.unlockRace
+  // mult — награда (множитель дохода); открытую тренировку UI берёт из GENERATORS.unlockRace
   // cutoff — контрольное время, минуты на трассе. Цепочка из ТЗ v0.4, лимиты откалиброваны симуляцией
-  { id: '1k', name: '1 км', km: 1, cutoff: 5.5, mult: 1.2, reward: 'доход ×1.2' },
-  { id: '3k', name: '3 км', km: 3, cutoff: 15.5, mult: 1.3, reward: 'доход ×1.3' },
-  { id: '5k', name: '5 км', km: 5, cutoff: 27, mult: 1.5, reward: 'доход ×1.5' },
-  { id: '10k', name: '10 км', km: 10, cutoff: 50, mult: 1.5, reward: 'доход ×1.5' },
-  { id: '15k', name: '15 км', km: 15, cutoff: 70, mult: 1.5, reward: 'доход ×1.5' },
-  { id: 'half', name: 'Полумарафон', km: 21.1, cutoff: 97, mult: 2, reward: 'доход ×2' },
+  { id: '1k', km: 1, cutoff: 5.5, mult: 1.2 },
+  { id: '3k', km: 3, cutoff: 15.5, mult: 1.3 },
+  { id: '5k', km: 5, cutoff: 27, mult: 1.5 },
+  { id: '10k', km: 10, cutoff: 50, mult: 1.5 },
+  { id: '15k', km: 15, cutoff: 70, mult: 1.5 },
+  { id: 'half', km: 21.1, cutoff: 97, mult: 2 },
 ] as const
 
 export type RaceId = (typeof RACES)[number]['id']
 
 // rate генераторов — в км/ч
 export const UPGRADES = [
-  { id: 'hrm', name: 'Пульсометр', icon: 'heart', cost: 1000, desc: 'Беговой клуб ×2', gen: 'club', need: 10 },
+  { id: 'hrm', icon: 'heart', cost: 1000, gen: 'club', need: 10 },
 ] as const
 
 export type UpgradeId = (typeof UPGRADES)[number]['id']
@@ -81,46 +82,46 @@ export type UpgradeId = (typeof UPGRADES)[number]['id']
  */
 export const BOOSTS = [
   {
-    id: 'technique', name: 'Техника бега', stat: 'click', start: 'Бег как получится',
+    id: 'technique', stat: 'click',
     levels: [
-      { name: 'Каденс 180', icon: 'technique', cost: 50, mult: 5, pct: 0 },
-      { name: 'Беговые упражнения', icon: 'technique', cost: 500, mult: 8, pct: 0.03 },
-      { name: 'Плиометрика', icon: 'technique', cost: 5000, mult: 10, pct: 0.06 },
-      { name: 'Финишный спурт', icon: 'technique', cost: 60000, mult: 10, pct: 0.12 },
+      { icon: 'technique', cost: 50, mult: 5, pct: 0 },
+      { icon: 'technique', cost: 500, mult: 8, pct: 0.03 },
+      { icon: 'technique', cost: 5000, mult: 10, pct: 0.06 },
+      { icon: 'technique', cost: 60000, mult: 10, pct: 0.12 },
     ],
   },
   {
-    id: 'shoes', name: 'Кроссовки', stat: 'speed', start: 'Старые кеды',
+    id: 'shoes', stat: 'speed',
     levels: [
-      { name: 'Беговые кроссовки', icon: 'sneaker', cost: 60, mult: 1.25 },
-      { name: 'Кроссовки с амортизацией', icon: 'cushion', cost: 900, mult: 1.6 },
-      { name: 'Темповые кроссовки', icon: 'tempo', cost: 15000, mult: 2.2 },
-      { name: 'Карбоновая пластина', icon: 'carbon', cost: 250000, mult: 3.5 },
+      { icon: 'sneaker', cost: 60, mult: 1.25 },
+      { icon: 'cushion', cost: 900, mult: 1.6 },
+      { icon: 'tempo', cost: 15000, mult: 2.2 },
+      { icon: 'carbon', cost: 250000, mult: 3.5 },
     ],
   },
   {
-    id: 'food', name: 'Еда', stat: 'speed', start: 'Бегаешь голодным',
+    id: 'food', stat: 'speed',
     levels: [
-      { name: 'Варёная картошка', icon: 'potato', cost: 40, mult: 1.15 },
-      { name: 'Макароны', icon: 'pasta', cost: 600, mult: 1.4 },
-      { name: 'Финики и мармелад', icon: 'dates', cost: 8000, mult: 1.8 },
-      { name: 'Беговые гели', icon: 'gel', cost: 120000, mult: 2.6 },
+      { icon: 'potato', cost: 40, mult: 1.15 },
+      { icon: 'pasta', cost: 600, mult: 1.4 },
+      { icon: 'dates', cost: 8000, mult: 1.8 },
+      { icon: 'gel', cost: 120000, mult: 2.6 },
     ],
   },
   {
-    id: 'drink', name: 'Напитки', stat: 'stamina', start: 'Без воды',
+    id: 'drink', stat: 'stamina',
     levels: [
-      { name: 'Вода', icon: 'water', cost: 25, mult: 1.2 },
-      { name: 'Кола на пунктах питания', icon: 'cola', cost: 2500, mult: 1.6 },
-      { name: 'Электролиты', icon: 'electrolytes', cost: 40000, mult: 2.2 },
+      { icon: 'water', cost: 25, mult: 1.2 },
+      { icon: 'cola', cost: 2500, mult: 1.6 },
+      { icon: 'electrolytes', cost: 40000, mult: 2.2 },
     ],
   },
   {
-    id: 'gear', name: 'Экипировка', stat: 'stamina', start: 'Футболка и треники',
+    id: 'gear', stat: 'stamina',
     levels: [
-      { name: 'Шорты с карманами', icon: 'shorts', cost: 150, mult: 1.2 },
-      { name: 'Беговой пояс', icon: 'belt', cost: 4000, mult: 1.5 },
-      { name: 'Трейловый жилет', icon: 'vest', cost: 70000, mult: 2 },
+      { icon: 'shorts', cost: 150, mult: 1.2 },
+      { icon: 'belt', cost: 4000, mult: 1.5 },
+      { icon: 'vest', cost: 70000, mult: 2 },
     ],
   },
 ] as const

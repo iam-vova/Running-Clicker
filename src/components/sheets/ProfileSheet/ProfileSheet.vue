@@ -4,7 +4,8 @@ import { ref } from 'vue'
 import { RACES } from '../../../game/config.ts'
 import { fmt, fmtClock, offlineEff, offlineHours } from '../../../game/logic.ts'
 import { resetGame, showToast, state } from '../../../game/state.ts'
-import { medalsWord, t } from '../../../i18n.ts'
+import { t } from '../../../i18n/index.ts'
+import { raceName } from '../../../i18n/names.ts'
 import { useSheets } from '../../../composables/useSheets.ts'
 import { icon } from '../../../utils/assets.ts'
 import { fmtHours, pct } from '../../../utils/format.ts'
@@ -15,7 +16,7 @@ function reset() {
   resetGame()
   confirmReset.value = false
   closeSheet()
-  showToast(t('Начинаем с нуля'))
+  showToast(t('profile.resetDone'))
 }
 </script>
 
@@ -25,28 +26,28 @@ function reset() {
       <img class="icon icon--x2" :src="icon('medal')" alt="" />
       <div>
         <b class="profile-sheet__medal-count">{{ state.medals }}</b>
-        <span class="text text--muted">{{ t('{w} за финиши', { w: medalsWord(state.medals) }) }}</span>
+        <span class="text text--muted">{{ t('profile.medalsFor', { count: state.medals }) }}</span>
       </div>
     </div>
     <ul class="profile-sheet__medals">
       <li v-for="r in RACES" :key="r.id" class="profile-sheet__medal" :class="{ 'profile-sheet__medal--got': state.races.includes(r.id) }">
         <img class="icon profile-sheet__medal-icon" :src="icon(`medal-${r.id}`)" alt="" />
-        <span class="profile-sheet__medal-name">{{ t(r.name) }}</span>
-        <span class="profile-sheet__medal-time">{{ state.bestTimes[r.id] ? fmtClock(state.bestTimes[r.id]!) : state.races.includes(r.id) ? t('финиш') : '—' }}</span>
+        <span class="profile-sheet__medal-name">{{ raceName(r.id) }}</span>
+        <span class="profile-sheet__medal-time">{{ state.bestTimes[r.id] ? fmtClock(state.bestTimes[r.id]!) : state.races.includes(r.id) ? t('profile.finished') : '—' }}</span>
       </li>
     </ul>
     <div class="setting-row">
-      <span>{{ t('Общий пробег') }}</span>
-      <b>{{ t('{v} км', { v: fmt(state.totalKm) }) }}</b>
+      <span>{{ t('profile.total') }}</span>
+      <b>{{ t('units.km', { v: fmt(state.totalKm) }) }}</b>
     </div>
-    <p class="text text--muted text--small">{{ t('Секунда в игре — минута на трассе. Тренировки набегают километры, а скорость бегуна растёт вместе с ними.') }}</p>
-    <p class="text text--muted text--small">{{ t('Прогресс сохраняется в этом браузере. Пока игра закрыта, бегун тренируется до {h} с эффективностью {p}, а забег стоит на паузе.', { h: fmtHours(offlineHours(state)), p: pct(offlineEff(state)) }) }}</p>
+    <p class="text text--muted text--small">{{ t('profile.timeNote') }}</p>
+    <p class="text text--muted text--small">{{ t('profile.offlineNote', { h: fmtHours(offlineHours(state)), p: pct(offlineEff(state)) }) }}</p>
     <div class="setting-row">
-      <button v-if="!confirmReset" class="link-button" @click="confirmReset = true">{{ t('Сбросить прогресс') }}</button>
+      <button v-if="!confirmReset" class="link-button" @click="confirmReset = true">{{ t('profile.reset') }}</button>
       <span v-else>
-        {{ t('Стереть всё?') }}
-        <button class="link-button link-button--danger" @click="reset">{{ t('Да, сбросить') }}</button>
-        <button class="link-button" @click="confirmReset = false">{{ t('Отмена') }}</button>
+        {{ t('profile.resetAsk') }}
+        <button class="link-button link-button--danger" @click="reset">{{ t('profile.resetConfirm') }}</button>
+        <button class="link-button" @click="confirmReset = false">{{ t('common.cancel') }}</button>
       </span>
     </div>
   </div>

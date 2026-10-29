@@ -2,7 +2,7 @@
 // «Пока тебя не было»: сколько натренировал бегун офлайн и по каким правилам. Пока открыто — забег на паузе.
 import { fmt } from '../../../game/logic.ts'
 import type { OfflineReport } from '../../../game/logic.ts'
-import { t } from '../../../i18n.ts'
+import { t } from '../../../i18n/index.ts'
 import { useRaceFlow } from '../../../composables/useRaceFlow.ts'
 import { icon } from '../../../utils/assets.ts'
 import { fmtAway, fmtHours, pct } from '../../../utils/format.ts'
@@ -13,28 +13,28 @@ const { closeAway } = useRaceFlow()
 </script>
 
 <template>
-  <ModalCard class="away-modal" :label="t('Пока тебя не было')">
+  <ModalCard class="away-modal" :label="t('away.title')">
     <img class="icon icon--x2" :src="icon('jog')" alt="" />
     <div>
-      <h2>{{ t('Пока тебя не было') }}</h2>
-      <p class="text text--muted">{{ t('Бегун продолжал тренироваться') }}</p>
+      <h2>{{ t('away.title') }}</h2>
+      <p class="text text--muted">{{ t('away.subtitle') }}</p>
     </div>
     <dl class="splits splits--two">
       <div>
-        <dt class="splits__label">{{ t('Время отсутствия') }}</dt>
+        <dt class="splits__label">{{ t('away.timeAway') }}</dt>
         <dd class="splits__value">{{ fmtAway(report.away) }}</dd>
       </div>
       <div>
-        <dt class="splits__label">{{ t('Тренировочные км') }}</dt>
+        <dt class="splits__label">{{ t('hud.trainingKm') }}</dt>
         <dd class="splits__value status status--ok">+{{ fmt(report.km) }}</dd>
       </div>
     </dl>
     <p class="text text--muted text--small">
-      <template v-if="report.counted < report.away">{{ t('Засчитано {h} — это лимит (растёт с «Беговым клубом»). ', { h: fmtHours(report.hours) }) }}</template>
-      {{ t('Офлайн тренировки идут на {p} от темпа в игре (растёт с «Личным тренером»).', { p: pct(report.eff) }) }}
-      <template v-if="report.racePaused"><br />{{ t('Забег стоял на паузе — продолжишь с того же места.') }}</template>
+      <template v-if="report.counted < report.away">{{ t('away.capped', { h: fmtHours(report.hours) }) }}</template>
+      {{ t('away.efficiency', { p: pct(report.eff) }) }}
+      <template v-if="report.racePaused"><br />{{ t('away.racePaused') }}</template>
     </p>
-    <button class="button button--primary button--wide" @click="closeAway">{{ t('Продолжить') }}</button>
+    <button class="button button--primary button--wide" @click="closeAway">{{ t('away.continue') }}</button>
   </ModalCard>
 </template>
 

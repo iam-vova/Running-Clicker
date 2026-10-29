@@ -4,7 +4,9 @@ import { GENERATORS, RACES } from '../game/config.ts'
 import type { RaceId } from '../game/config.ts'
 import { bestForecast, forecast, raceLive, raceReady, startRace, tapKm } from '../game/logic.ts'
 import { state } from '../game/state.ts'
-import { t } from '../i18n.ts'
+import { t } from '../i18n/index.ts'
+import { genName } from '../i18n/names.ts'
+import { xMult } from '../utils/format.ts'
 import { sfx } from '../sound.ts'
 
 type Race = (typeof RACES)[number]
@@ -26,10 +28,13 @@ const readiness = computed(() =>
 )
 const readyPct = computed(() => (nextRace.value ? Math.min(nextRace.value.cutoff / eta.value, 1) : 1))
 const raceStatus = (id: RaceId) => (state.races.includes(id) ? 'done' : nextRace.value?.id === id ? 'next' : 'locked')
+/** Награда за забег: «доход ×1,5» */
+export const raceReward = (id: RaceId) => t('race.reward', { x: xMult(RACES.find((r) => r.id === id)!.mult) })
 /** Награда целиком: множитель + тренировка, которую открывает забег */
 function rewardText(r: Race) {
   const g = GENERATORS.find((g) => g.unlockRace === r.id)
-  return g ? t('{reward} и тренировка «{name}»', { reward: t(r.reward), name: t(g.name) }) : t(r.reward)
+  const reward = raceReward(r.id)
+  return g ? t('race.rewardWithTraining', { reward, name: genName(g.id) }) : reward
 }
 
 // --- на трассе ---

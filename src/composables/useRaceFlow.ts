@@ -2,7 +2,7 @@
 // и возвращение после офлайна. Запускается один раз из App.
 import { ref } from 'vue'
 import { GENERATORS, RACES } from '../game/config.ts'
-import type { RaceId } from '../game/config.ts'
+import type { GenId, RaceId } from '../game/config.ts'
 import { abandonRace, canStartRace, startRace } from '../game/logic.ts'
 import type { OfflineReport, RaceResult } from '../game/logic.ts'
 import { paused, startGame, state } from '../game/state.ts'
@@ -12,15 +12,13 @@ import { useSheets } from './useSheets.ts'
 /** Итог последней попытки — окно результата и строка в окне «Забег» */
 export type Result = {
   id: RaceId
-  name: string
   km: number
   ok: boolean
   covered: number
   time: number
   cutoff: number
-  reward: string
-  unlocked: string | null // какая тренировка открылась
-  next: string | null // следующая дистанция
+  unlocked: GenId | null // какая тренировка открылась
+  next: RaceId | null // следующая дистанция
   gaveUp: boolean // сошёл сам, а не обогнала тень
 }
 
@@ -44,15 +42,13 @@ function onRaceFinish(res: RaceResult) {
   const r = RACES.find((r) => r.id === res.id)!
   lastResult.value = {
     id: r.id,
-    name: r.name,
     km: r.km,
     ok: res.ok,
     covered: res.covered,
     time: res.time,
     cutoff: r.cutoff,
-    reward: r.reward,
-    unlocked: GENERATORS.find((g) => g.unlockRace === r.id)?.name ?? null,
-    next: RACES.find((x) => !state.races.includes(x.id))?.name ?? null,
+    unlocked: GENERATORS.find((g) => g.unlockRace === r.id)?.id ?? null,
+    next: RACES.find((x) => !state.races.includes(x.id))?.id ?? null,
     gaveUp: !!res.gaveUp,
   }
   closeSheet()
