@@ -30,6 +30,10 @@
     &--active {
       color: var(--accent);
     }
+
+    &:disabled {
+      opacity: 0.35;
+    }
   }
 
   &__tab:not(&__tab--active) &__icon {

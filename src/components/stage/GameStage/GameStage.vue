@@ -282,12 +282,12 @@ function moveMeter(dt: number) {
   meterP = ph < 0.5 ? ph * 2 : 2 - ph * 2 // треугольник: 0 → 1 → 0
   meterEl.value?.style.setProperty('--p', meterP.toFixed(4))
 }
-/** Куда попал тап; тап, пока указатель стоит после прошлого, — «мимо» (иначе частые тапы ловили бы одну зону) */
+/** Указатель ещё стоит после прошлого рывка — тап не засчитывается: без сил и без движения
+ *  (иначе частым тапом можно было сжечь все силы с одной точки шкалы) */
+const meterLocked = () => performance.now() < lockUntil
+/** Куда попал тап */
 function dashHit(): DashHit {
-  const now = performance.now()
-  const locked = now < lockUntil
-  lockUntil = now + TIMING.lock * 1000
-  if (locked) return 'miss'
+  lockUntil = performance.now() + TIMING.lock * 1000
   const d = Math.abs(meterP - 0.5)
   return d < TIMING.perfect ? 'perfect' : d < TIMING.good ? 'good' : 'miss'
 }
@@ -303,6 +303,7 @@ function flashMeter(hit: DashHit) {
 let dashTimer = 0
 function dash(e?: PointerEvent) {
   const inRace = live.value
+  if (inRace?.canTap && meterLocked()) return
   // рывок «в долг»: запаса нет, тратишь силы, нужные до финиша, — предупреждаем, но не запрещаем
   const debt = !!inRace && inRace.canTap && inRace.spareTaps === 0
   const hit: DashHit = inRace?.canTap ? dashHit() : 'good'

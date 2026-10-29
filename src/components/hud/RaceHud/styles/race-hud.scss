@@ -24,8 +24,20 @@
 
   // место в забеге: рядом с таймером, справа
   &__place {
-    margin-left: auto;
+    margin-left: 8px;
+    color: var(--muted);
     font-weight: 600;
+    white-space: nowrap;
+  }
+
+  &__energy-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__energy-hint {
+    font-size: 12px;
     white-space: nowrap;
   }
 
@@ -101,6 +113,7 @@
 
   // запас сил: метка — сколько нужно до финиша ровным бегом
   &__energy {
+    flex: 1;
     position: relative;
     height: 10px;
     border-radius: 5px;

@@ -6,7 +6,6 @@ import { state } from '../../../game/state.ts'
 import { t } from '../../../i18n/index.ts'
 import { raceName } from '../../../i18n/names.ts'
 import { useRace } from '../../../composables/useRace.ts'
-import { icon } from '../../../utils/assets.ts'
 
 const { activeRace, live } = useRace()
 const enough = computed(() => !!live.value && live.value.energy >= live.value.need)
@@ -32,34 +31,30 @@ const energyHint = computed(() => {
 
 <template>
   <div v-if="state.activeRace && activeRace && live" class="race-hud">
+    <!-- дистанция и место · прогноз финиша против лимита -->
     <div class="race-hud__row">
-      <b class="race-hud__title">{{ raceName(activeRace.id) }}</b>
-      <span class="race-hud__place">{{ t('raceHud.place', { p: live.place, n: live.field }) }}</span>
-      <span class="race-hud__timer"><img class="icon icon--inline" :src="icon('stopwatch')" alt="" />{{ fmtClock(state.activeRace.elapsed) }}</span>
-    </div>
-    <!-- прогноз финиша против лимита и отрыв от тени лимита -->
-    <div class="race-hud__row">
+      <span>
+        <b class="race-hud__title">{{ raceName(activeRace.id) }}</b>
+        <span class="race-hud__place">{{ t('raceHud.place', { p: live.place, n: live.field }) }}</span>
+      </span>
       <span>
         {{ t('raceHud.finish') }} <b class="status" :class="live.finish > activeRace.cutoff ? 'status--late' : 'status--ok'">{{ fmtClock(live.finish) }}</b>
         <span class="text text--muted"> / {{ fmtClock(activeRace.cutoff) }}</span>
       </span>
-      <b class="status" :class="live.leadM >= 0 ? 'status--ok' : 'status--late'">
-        {{ live.leadM >= 0 ? t('raceHud.ahead', { m: Math.round(live.leadM) }) : t('raceHud.behind', { m: Math.round(-live.leadM) }) }}
-      </b>
     </div>
+    <!-- пройдено: точка — бегун, силуэт — тень лимита; зелёная заливка — впереди тени -->
     <div class="race-hud__distance" :aria-label="t('raceHud.covered', { c: state.activeRace.covered.toFixed(2), k: activeRace.km })" role="progressbar" :aria-valuenow="Math.round(live.runner * 100)" aria-valuemin="0" aria-valuemax="100">
       <i class="race-hud__distance-fill" :class="{ 'race-hud__distance-fill--ok': live.leadM >= 0 }" :style="{ width: live.runner * 100 + '%' }"></i>
       <span class="sprite sprite--run race-hud__ghost" :style="{ left: live.ghost * 100 + '%' }" aria-hidden="true"></span>
       <span class="race-hud__dot" :style="{ left: live.runner * 100 + '%' }"></span>
     </div>
-    <!-- Запас сил: рывки тратят, гели на пунктах питания возвращают; отметка — сколько нужно до финиша ровным бегом -->
-    <div class="race-hud__row">
-      <span>{{ t('raceHud.energy') }} <b class="status" :class="live.wall ? 'status--late' : enough ? 'status--ok' : 'status--maybe'">{{ Math.round(live.energy * 100) }}%</b></span>
-      <span class="text text--muted">{{ energyHint }}</span>
-    </div>
-    <div class="race-hud__energy" role="progressbar" :aria-label="t('raceHud.energyReserve')" :aria-valuenow="Math.round(live.energy * 100)" aria-valuemin="0" aria-valuemax="100">
-      <i class="race-hud__energy-fill" :class="{ 'race-hud__energy-fill--ok': enough }" :style="{ width: live.energy * 100 + '%' }"></i>
-      <span class="race-hud__energy-need" :style="{ left: Math.min(live.need, 1) * 100 + '%' }"></span>
+    <!-- силы: рывки тратят, гели возвращают; отметка — сколько нужно до финиша ровным бегом; справа — что делать -->
+    <div class="race-hud__energy-row">
+      <div class="race-hud__energy" role="progressbar" :aria-label="t('raceHud.energyReserve')" :aria-valuenow="Math.round(live.energy * 100)" aria-valuemin="0" aria-valuemax="100">
+        <i class="race-hud__energy-fill" :class="{ 'race-hud__energy-fill--ok': enough }" :style="{ width: live.energy * 100 + '%' }"></i>
+        <span class="race-hud__energy-need" :style="{ left: Math.min(live.need, 1) * 100 + '%' }"></span>
+      </div>
+      <b class="race-hud__energy-hint status" :class="live.wall ? 'status--late' : live.spareTaps > 0 ? 'status--ok' : 'status--maybe'">{{ energyHint }}</b>
     </div>
     <p v-if="tip" class="race-hud__tip">{{ tip }}</p>
   </div>
