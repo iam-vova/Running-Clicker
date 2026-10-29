@@ -252,7 +252,6 @@ const messages: Messages = {
   'finale.continue': 'Тренироваться дальше',
   'result.label': 'Результат забега',
   'result.finishTitle': 'Финиш! {name}',
-  'result.place': 'Место',
   'result.time': 'Время',
   'result.plusMedal': '+1 медаль',
   'result.medalsTotal': '· всего {n}',

@@ -88,7 +88,6 @@ function go(): boolean {
 /** Старт состоялся (из окна «Забег» или «Ещё раз»): сигнал и статистика */
 function onStarted(id: RaceId) {
   sfx.start()
-  setTimeout(() => sfx.cheer(1.4), 900) // болельщики на старте
   raceStats.taps = 0
   raceStats.gels = 0
   raceStats.perfect = 0

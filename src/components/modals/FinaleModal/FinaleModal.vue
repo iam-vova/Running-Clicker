@@ -27,8 +27,8 @@ const { closeResult } = useRaceFlow()
         <dd class="splits__value status status--ok">{{ fmtClock(result.time) }}</dd>
       </div>
       <div>
-        <dt class="splits__label">{{ t('result.place') }}</dt>
-        <dd class="splits__value">{{ result.place }}/{{ result.field }}</dd>
+        <dt class="splits__label">{{ t('race.cutoff') }}</dt>
+        <dd class="splits__value">{{ fmtClock(result.cutoff) }}</dd>
       </div>
     </dl>
     <ul class="finale-modal__stats">

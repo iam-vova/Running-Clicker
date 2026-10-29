@@ -253,7 +253,6 @@ export const messages = {
   'finale.continue': 'Keep training',
   'result.label': 'Race result',
   'result.finishTitle': 'Finish! {name}',
-  'result.place': 'Place',
   'result.time': 'Time',
   'result.plusMedal': '+1 medal',
   'result.medalsTotal': '· total {n}',

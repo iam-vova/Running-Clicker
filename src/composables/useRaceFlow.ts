@@ -44,7 +44,6 @@ const { sheet, closeSheet } = useSheets()
 function onRaceFinish(res: RaceResult) {
   if (res.ok) {
     sfx.finish()
-    sfx.cheer(2.4, true)
   }
   else sfx.dnf()
   const r = RACES.find((r) => r.id === res.id)!

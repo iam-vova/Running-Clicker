@@ -20,14 +20,10 @@ const { closeResult, goTrain, retry } = useRaceFlow()
     <template v-if="result.ok">
       <img class="icon icon--x2" :src="icon(`medal-${result.id}`)" alt="" />
       <h2>{{ t('result.finishTitle', { name: raceName(result.id) }) }}</h2>
-      <dl class="splits" :class="{ 'splits--two': !result.place }">
+      <dl class="splits splits--two">
         <div>
           <dt class="splits__label">{{ t('result.time') }}</dt>
           <dd class="splits__value status status--ok">{{ fmtClock(result.time) }}</dd>
-        </div>
-        <div v-if="result.place">
-          <dt class="splits__label">{{ t('result.place') }}</dt>
-          <dd class="splits__value">{{ result.place }}/{{ result.field }}</dd>
         </div>
         <div>
           <dt class="splits__label">{{ t('race.cutoff') }}</dt>

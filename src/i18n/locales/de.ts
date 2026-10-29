@@ -252,7 +252,6 @@ const messages: Messages = {
   'finale.continue': 'Weiter trainieren',
   'result.label': 'Rennergebnis',
   'result.finishTitle': 'Im Ziel! {name}',
-  'result.place': 'Platz',
   'result.time': 'Zeit',
   'result.plusMedal': '+1 Medaille',
   'result.medalsTotal': '· insgesamt {n}',

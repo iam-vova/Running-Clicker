@@ -113,7 +113,7 @@ function placeArch() {
 }
 
 // --- болельщики и пункты питания: стоят на земле (координаты groundTotal) и уезжают вместе с фоном ---
-type Prop = { id: number; kind: 'crowd' | 'aid'; world: number; cheered?: boolean }
+type Prop = { id: number; kind: 'crowd' | 'aid'; world: number }
 const props = ref<Prop[]>([])
 let propId = 0
 const halfStage = () => (stageEl.value ? stageEl.value.clientWidth / 2 / px.value : 200) // полширины сцены, игровые px
@@ -127,10 +127,6 @@ function placeProps() {
     const x = p.world - groundTotal
     const el = stageEl.value.querySelector<HTMLElement>(`[data-prop="${p.id}"]`)
     el?.style.setProperty('--ax', `${Math.round(x) * px.value}px`)
-    if (p.kind === 'aid' && !p.cheered && x < 10) {
-      p.cheered = true
-      sfx.cheer(1.2)
-    }
   }
   if (props.value.some((p) => p.world - groundTotal < gone)) props.value = props.value.filter((p) => p.world - groundTotal >= gone)
 }
@@ -325,7 +321,6 @@ watch(
       ok: lead >= 0,
       text: t('stage.checkpoint', { km, t: fmtClock(a.elapsed), gap: (lead >= 0 ? '+' : '−') + fmtClock(Math.abs(lead)) }),
     }
-    sfx.cheer(0.8)
     clearTimeout(cpTimer)
     cpTimer = window.setTimeout(() => (checkpoint.value = null), 2600)
   },
