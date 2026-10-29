@@ -1,6 +1,6 @@
 // Чистая логика без Vue: её используют и игра, и симуляция баланса.
 import { finishPlace } from './field.ts'
-import { BOOSTS, CLICK_INCOME_PCT, CLICK_KM, GENERATORS, LAB_STAMINA_PER_LEVEL, OFFLINE, RACES, RUNNER, TIME_SCALE, UPGRADES } from './config.ts'
+import { BOOSTS, CLICK_INCOME_PCT, CLICK_KM, GENERATORS, LAB_STAMINA_PER_LEVEL, OFFLINE, RACES, RUNNER, TIME_SCALE, TRAIL_ULTRA_PER_LEVEL, UPGRADES } from './config.ts'
 import type { BoostId, CharId, GenId, RaceId, Stat, UpgradeId } from './config.ts'
 
 export const SAVE_VERSION = 9
@@ -71,9 +71,12 @@ export const boostUnlocked = (s: GameState, id: BoostId) => {
 }
 
 export const statMult = (s: GameState, stat: Stat) =>
-  BOOSTS.filter((b) => b.stat === stat).reduce((m, b) => m * boostMult(s, b.id), 1) * (stat === 'stamina' ? labStamina(s) : 1)
+  BOOSTS.filter((b) => b.stat === stat).reduce((m, b) => m * boostMult(s, b.id), 1) *
+  (stat === 'stamina' ? labStamina(s) : stat === 'ultra' ? trailUltra(s) : 1)
 /** Выносливость от «Спортивной лаборатории» */
 export const labStamina = (s: GameState) => 1 + LAB_STAMINA_PER_LEVEL * (s.owned.lab ?? 0)
+/** «Ультра» от «Трейловых тренировок» */
+export const trailUltra = (s: GameState) => 1 + TRAIL_ULTRA_PER_LEVEL * (s.owned.trail ?? 0)
 
 export const genCost = (id: GenId, owned: number) => gen(id).base * gen(id).growth ** owned
 
@@ -133,7 +136,18 @@ export const fatigueExp = (s: GameState) =>
   1 + (RUNNER.fatigueBase - 1) / statMult(s, 'ultra') + RUNNER.fatigueExtra / statMult(s, 'stamina')
 
 /** Прогноз финиша на дистанции, минуты. */
-export const forecast = (s: GameState, km: number) => (60 * km ** fatigueExp(s)) / runSpeed(s)
+/** Ночной участок забега (доли дистанции), если есть */
+const nightOf = (km: number) => (RACES.find((r) => r.km === km) as { night?: readonly [number, number] } | undefined)?.night
+/** Темп ночью — доля дневного: растёт с уровнями ультра-снаряжения */
+export const nightPace = (s: GameState) => RUNNER.nightPace[s.boosts.ultra ?? 0] ?? 1
+/** Доля ночи в забеге на km (0 — без ночи) */
+export const nightShare = (km: number) => {
+  const n = nightOf(km)
+  return n ? n[1] - n[0] : 0
+}
+/** Прогноз финиша, минуты: Ригель, а ночной участок бежится медленнее (nightPace) */
+export const forecast = (s: GameState, km: number) =>
+  ((60 * km ** fatigueExp(s)) / runSpeed(s)) * (1 - nightShare(km) + nightShare(km) / nightPace(s))
 
 /** Укладывается ли прогноз в контрольное время. Стартовать можно и без этого. */
 export const raceReady = (s: GameState, id: RaceId) => forecast(s, race(id).km) <= race(id).cutoff

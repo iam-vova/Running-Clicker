@@ -64,6 +64,12 @@ function spareTaps(energy: number, need: number, restKm: number, id: RaceId): nu
   if (net <= 0 || energy < cost) return 0
   return Math.max(0, Math.min(Math.floor((energy - need) / net + 1e-9), Math.floor(energy / cost)))
 }
+/** Забег сейчас на ночном участке (100 км, 100 миль): сцена темнеет */
+const nightNow = computed(() => {
+  const r = activeRace.value as { night?: readonly [number, number] } | null
+  const l = live.value
+  return !!(r?.night && l && l.runner >= r.night[0] && l.runner < r.night[1])
+})
 /** Сколько секунд бежать до финиша (секунда = минута на трассе) */
 const timeLeft = () => (live.value && state.activeRace ? Math.max(0, live.value.finish - state.activeRace.elapsed) : 0)
 
@@ -98,5 +104,5 @@ function onStarted(id: RaceId) {
 
 export const useRace = () => ({
   nextRace, activeRace, eta, etaBest, avgSpeed, gap, readiness, readyPct, raceStatus, rewardText,
-  live, timeLeft, go, onStarted, ready: (id: RaceId) => raceReady(state, id),
+  live, nightNow, timeLeft, go, onStarted, ready: (id: RaceId) => raceReady(state, id),
 })

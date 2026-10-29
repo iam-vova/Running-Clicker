@@ -107,6 +107,20 @@
     }
   }
 
+  // луч налобного фонаря: от головы бегуна вперёд, светлый конус
+  &__headlamp {
+    position: absolute;
+    left: calc(50% + 10px * var(--px));
+    bottom: calc(var(--nav-h) + 27px * var(--px) + 38px * var(--px));
+    width: calc(150px * var(--px));
+    height: calc(56px * var(--px));
+    transform: translateY(50%);
+    background: linear-gradient(to right, rgb(255 244 190 / 0.7), rgb(255 244 190 / 0));
+    clip-path: polygon(0 44%, 100% 0, 100% 100%, 0 56%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
   // шкала рывка: серые края — мимо, жёлтое — обычный рывок, зелёный центр — вдвое дальше (зоны — RUNNER.timing)
   &__meter {
     position: absolute;

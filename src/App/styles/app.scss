@@ -42,6 +42,11 @@
     @include night;
   }
 
+  // ночной участок забега (100 км, 100 миль) — ночь на сцене и в светлой теме
+  &--night {
+    @include night;
+  }
+
   &__toast {
     position: absolute;
     left: 50%;

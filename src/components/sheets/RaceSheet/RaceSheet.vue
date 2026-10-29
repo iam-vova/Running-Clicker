@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 // «Забег»: следующий старт (прогноз, лимит, темп, готовность, награда) и список дистанций.
 import { RACES } from '../../../game/config.ts'
 import type { RaceId } from '../../../game/config.ts'
-import { canStartRace, fmtClock } from '../../../game/logic.ts'
+import { canStartRace, fmtClock, nightPace } from '../../../game/logic.ts'
 import { state } from '../../../game/state.ts'
 import { t } from '../../../i18n/index.ts'
 import { raceName } from '../../../i18n/names.ts'
@@ -23,6 +23,8 @@ const quit = () => {
 }
 const { closeSheet } = useSheets()
 const start = () => go() && closeSheet()
+/** Ночной участок следующего забега (доли дистанции) */
+const night = computed(() => (nextRace.value as { night?: readonly [number, number] } | null)?.night ?? null)
 const MARK = { done: 'check', next: 'next', locked: 'lock' } as const
 const mark = (id: RaceId) => MARK[raceStatus(id)]
 </script>
@@ -74,6 +76,7 @@ const mark = (id: RaceId) => MARK[raceStatus(id)]
         {{ t('raceSheet.best', { t: fmtClock(etaBest) }) }}
         {{ readiness === 'ok' ? t('raceSheet.chanceOk') : readiness === 'maybe' ? t('raceSheet.chanceMaybe') : t('raceSheet.chanceLate') }}
       </p>
+      <p v-if="night" class="text text--muted">{{ t('raceSheet.night', { from: Math.round(night[0] * 100), p: Math.round(nightPace(state) * 100) }) }}</p>
       <p class="text text--muted">{{ t('raceSheet.reward', { r: rewardText(nextRace) }) }}</p>
       <button class="button button--primary" :class="{ 'button--risky': !ready(nextRace.id) }" :disabled="!canStartRace(state, nextRace.id)" @click="start">
         {{ ready(nextRace.id) ? t('raceSheet.start') : t('raceSheet.startRisky') }}

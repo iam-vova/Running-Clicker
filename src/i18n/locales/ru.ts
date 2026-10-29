@@ -59,6 +59,8 @@ const messages: Messages = {
   'race.30k': '30 км',
   'race.marathon': 'Марафон',
   'race.50k': '50 км',
+  'race.100k': '100 км',
+  'race.100mi': '100 миль',
 
   // --- next race card
   'nextRace.ready': 'Готов к старту ✓',
@@ -100,12 +102,14 @@ const messages: Messages = {
   'train.offlineHours': 'офлайн до {h}',
   'train.offlineEff': 'офлайн {p} дохода',
   'train.labStamina': 'выносливость {x}',
+  'train.trailUltra': 'ультра {x}',
   'gen.jog': 'Утренняя трусца',
   'gen.club': 'Беговой клуб',
   'gen.intervals': 'Интервалы на стадионе',
   'gen.coach': 'Личный тренер',
   'gen.camp': 'Сборы в горах',
   'gen.lab': 'Спортивная лаборатория',
+  'gen.trail': 'Трейловые тренировки',
 
   // --- boosts (training form and gear)
   'boost.level': 'Уровень {a} из {b}',
@@ -152,6 +156,8 @@ const messages: Messages = {
   'boost.ultra.2': 'Трекинговые палки',
   'boost.ultra.3': 'Солевые капсулы',
   'boost.ultra.4': 'Ультра-кроссовки',
+  'boost.ultra.5': 'GPS-часы с навигацией',
+  'boost.ultra.6': 'Опыт ночных стартов',
 
   // --- gadgets
   'gear.owned': 'Куплено ✓',
@@ -181,6 +187,7 @@ const messages: Messages = {
   'raceSheet.chanceOk': 'Хороший шанс на личный рекорд.',
   'raceSheet.chanceMaybe': 'Успеешь, если правильно расходовать силы.',
   'raceSheet.chanceLate': 'Пока не хватит даже с ними.',
+  'raceSheet.night': 'Ночной участок с {from}% дистанции: темп {p}% от дневного — его поднимает ультра-снаряжение',
   'raceSheet.reward': 'Награда: {r}',
   'raceSheet.start': 'Старт',
   'raceSheet.startRisky': 'Старт — рискнуть',
@@ -224,6 +231,13 @@ const messages: Messages = {
   'away.continue': 'Продолжить',
 
   // --- race result
+  'finale.title': '100 миль!',
+  'finale.subtitle': 'От первой утренней трусцы до ста миль. Пряжка твоя.',
+  'finale.playTime': 'В игре',
+  'finale.totalKm': 'Пробежал всего',
+  'finale.medals': 'Медалей',
+  'finale.taps': 'Тапов',
+  'finale.continue': 'Тренироваться дальше',
   'result.label': 'Результат забега',
   'result.finishTitle': 'Финиш! {name}',
   'result.place': 'Место',
@@ -232,7 +246,7 @@ const messages: Messages = {
   'result.medalsTotal': '· всего {n}',
   'result.unlocked': 'Открыта тренировка:',
   'result.nextRace': 'Следующий старт:',
-  'result.allDone': 'Все дистанции пройдены — дальше 100 км и 100 миль в следующей версии',
+  'result.allDone': 'Все дистанции пройдены!',
   'result.next': 'Дальше',
   'result.dnfTitle': 'Сход на {c} из {k} км',
   'result.gaveUp.he': 'Ты сошёл с дистанции на {t}.',

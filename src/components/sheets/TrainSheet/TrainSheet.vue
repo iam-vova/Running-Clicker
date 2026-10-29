@@ -3,7 +3,7 @@
 import { computed } from 'vue'
 import { GENERATORS, OFFLINE } from '../../../game/config.ts'
 import type { GenId } from '../../../game/config.ts'
-import { buyGen, fmt, genCostN, genLevelRate, genRate, genUnlocked, labStamina, offlineEff, offlineHours } from '../../../game/logic.ts'
+import { buyGen, fmt, genCostN, genLevelRate, genRate, genUnlocked, labStamina, offlineEff, trailUltra, offlineHours } from '../../../game/logic.ts'
 import { state } from '../../../game/state.ts'
 import { t } from '../../../i18n/index.ts'
 import { genName, raceName } from '../../../i18n/names.ts'
@@ -27,6 +27,7 @@ const cost = (id: GenId) => genCostN(id, state.owned[id], bulk.value)
 function offlineEffect(id: GenId) {
   if (id === 'club') return t('train.offlineHours', { h: fmtHours(offlineHours(state)) }) + (offlineHours(state) < OFFLINE.maxHours ? '' : t('common.maxSuffix'))
   if (id === 'lab') return t('train.labStamina', { x: xMult(labStamina(state)) })
+  if (id === 'trail') return t('train.trailUltra', { x: xMult(trailUltra(state)) })
   if (id === 'coach') return t('train.offlineEff', { p: pct(offlineEff(state)) }) + (offlineEff(state) < OFFLINE.maxEff ? '' : t('common.maxSuffix'))
   return null
 }

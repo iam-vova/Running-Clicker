@@ -51,6 +51,9 @@ setInterval(() => {
   write(PLAY_KEY, String(playSec))
 }, 5000)
 
+/** Минуты активной игры с первого запуска (итоги финала) */
+export const playMinutes = () => playSec / 60
+
 /** Счётчики текущего забега: рывки и пойманные гели */
 export const raceStats = { taps: 0, gels: 0, perfect: 0 }
 

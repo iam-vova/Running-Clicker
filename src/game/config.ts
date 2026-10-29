@@ -26,6 +26,9 @@ export const RUNNER = {
   wallSpeed: 0.6, // силы кончились — «стена»: скорость падает до этой доли
   feeds: [1 / 3, 2 / 3], // пункты питания: на этих долях дистанции пролетает гель
   feedEnergy: 0.15, // столько сил возвращает гель на трассе
+  // ночной участок (100 км, 100 миль): темп там — такая доля дневного по уровню ультра-снаряжения (0 — без него).
+  // Фонарь, палки, соль, ультра-кроссовки, GPS-часы, опыт ночных стартов — каждая покупка заметно ускоряет ночь
+  nightPace: [0.7, 0.8, 0.84, 0.87, 0.9, 0.95, 1],
   // шкала рывка: указатель бегает туда-обратно; попал в центр — рывок дальше за те же силы
   timing: {
     period: 1.2, // с, полный цикл туда-обратно
@@ -44,6 +47,11 @@ export const RUNNER = {
  * без неё марафон не пробежать, напитки и экипировка к этому моменту уже на максимуме.
  */
 export const LAB_STAMINA_PER_LEVEL = 0.03
+/**
+ * «Трейловые тренировки» (после 50 км): кроме км, каждый уровень усиливает «ультра» (меньше усталость на длинной
+ * дистанции). Скорость бегуна к этому времени почти у потолка — к 100 км и 100 милям ведёт именно выносливость.
+ */
+export const TRAIL_ULTRA_PER_LEVEL = 0.04
 
 export const OFFLINE = {
   // вся игра до 50 км — около 2 ч активной игры, поэтому офлайн скромный: база — 15 мин дохода за возвращение
@@ -69,6 +77,7 @@ export const GENERATORS = [
   { id: 'coach', icon: 'coach', base: 12000, rate: 705, growth: 1.13, unlockRace: '10k' },
   { id: 'camp', icon: 'camp', base: 130000, rate: 3900, growth: 1.13, unlockRace: '15k' },
   { id: 'lab', icon: 'lab', base: 1500000, rate: 22500, growth: 1.12, unlockRace: '30k' },
+  { id: 'trail', icon: 'trail', base: 5e9, rate: 7.5e7, growth: 1.15, unlockRace: '50k' },
 ] as const
 
 export type GenId = (typeof GENERATORS)[number]['id']
@@ -86,6 +95,9 @@ export const RACES = [
   { id: 'marathon', km: 42.195, cutoff: 177.5, mult: 2 },
   // ультра: сил без гелей не хватит (reserve < 0 — «стена» на ~70% дистанции), гели — каждые 1/6 дистанции
   { id: '50k', km: 50, cutoff: 188, mult: 2, feeds: [1 / 6, 2 / 6, 3 / 6, 4 / 6, 5 / 6], reserve: -0.4 },
+  // финал: гели чаще, без них «стена» ещё раньше; night — участок дистанции в темноте (доли от старта)
+  { id: '100k', km: 100, cutoff: 340, mult: 2, feeds: [1, 2, 3, 4, 5, 6, 7].map((i) => i / 8), reserve: -0.8, night: [0.55, 1] },
+  { id: '100mi', km: 160.9, cutoff: 535, mult: 3, feeds: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => i / 10), reserve: -1.2, night: [0.35, 0.8] },
 ] as const
 
 export type RaceId = (typeof RACES)[number]['id']
@@ -163,6 +175,8 @@ export const BOOSTS = [
       { icon: 'poles', cost: 3e10, mult: 1.6 },
       { icon: 'salt', cost: 3e11, mult: 2 },
       { icon: 'ultra-shoes', cost: 3e12, mult: 2.5 },
+      { icon: 'gps-watch', cost: 2e14, mult: 3 },
+      { icon: 'night-run', cost: 5e14, mult: 3.5 },
     ],
   },
 ] as const

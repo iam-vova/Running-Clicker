@@ -24,7 +24,7 @@ import { fieldTimes } from '../../../game/field.ts'
 const RIVAL_SHEETS = Object.values(import.meta.glob('../../../assets/sprites/rivals/*.png', { eager: true, import: 'default' }) as Record<string, string>)
 
 const { px } = useScale()
-const { activeRace, live, timeLeft } = useRace()
+const { activeRace, live, nightNow, timeLeft } = useRace()
 const { runout, celebrating, showResult } = useRaceFlow()
 const { sheet } = useSheets()
 
@@ -418,6 +418,8 @@ onBeforeUnmount(() => {
       <i class="game-stage__meter-pointer"></i>
     </div>
     <span ref="heroEl" class="sprite game-stage__hero" :class="`sprite--${heroPose}`" aria-hidden="true"></span>
+    <!-- налобный фонарь светит вперёд на ночном участке, если куплен (ультра-снаряжение ур. 1+) -->
+    <span v-if="nightNow && state.boosts.ultra >= 1" class="game-stage__headlamp" aria-hidden="true"></span>
     <Transition name="game-stage-fade">
       <div v-show="archOn" ref="archFrontEl" class="game-stage__finish" aria-hidden="true">
         <img class="game-stage__arch" :src="archFrontImg" alt="" />

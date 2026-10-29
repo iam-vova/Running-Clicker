@@ -1,0 +1,34 @@
+// Миксуется с .modal-card: итоги игры
+.finale-modal {
+  &__stats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+  }
+
+  // лучшие времена: две колонки, компактно
+  &__times {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 12px;
+    font-size: 13px;
+    text-align: left;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    b {
+      margin-left: auto;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}

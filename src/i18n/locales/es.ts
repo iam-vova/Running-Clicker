@@ -59,6 +59,8 @@ const messages: Messages = {
   'race.30k': '30 km',
   'race.marathon': 'Maratón',
   'race.50k': '50 km',
+  'race.100k': '100 km',
+  'race.100mi': '100 millas',
 
   // --- next race card
   'nextRace.ready': 'Listo para salir ✓',
@@ -100,12 +102,14 @@ const messages: Messages = {
   'train.offlineHours': 'sin conexión hasta {h}',
   'train.offlineEff': 'sin conexión {p} de ingresos',
   'train.labStamina': 'resistencia {x}',
+  'train.trailUltra': 'ultra {x}',
   'gen.jog': 'Trote matutino',
   'gen.club': 'Club de running',
   'gen.intervals': 'Series en pista',
   'gen.coach': 'Entrenador personal',
   'gen.camp': 'Concentración en altura',
   'gen.lab': 'Laboratorio deportivo',
+  'gen.trail': 'Entrenamiento de trail',
 
   // --- boosts (training form and gear)
   'boost.level': 'Nivel {a} de {b}',
@@ -152,6 +156,8 @@ const messages: Messages = {
   'boost.ultra.2': 'Bastones de trekking',
   'boost.ultra.3': 'Cápsulas de sal',
   'boost.ultra.4': 'Zapatillas de trail con máxima amortiguación',
+  'boost.ultra.5': 'Reloj GPS con navegación',
+  'boost.ultra.6': 'Experiencia en carreras nocturnas',
 
   // --- gadgets
   'gear.owned': 'Comprado ✓',
@@ -181,6 +187,7 @@ const messages: Messages = {
   'raceSheet.chanceOk': 'Buena oportunidad para una marca personal.',
   'raceSheet.chanceMaybe': 'Llegarás si dosificas bien la energía.',
   'raceSheet.chanceLate': 'Aún no alcanza ni con ellos.',
+  'raceSheet.night': 'Tramo nocturno desde el {from}% de la distancia: ritmo al {p}% del diurno; el equipo ultra lo mejora',
   'raceSheet.reward': 'Premio: {r}',
   'raceSheet.start': 'Salir',
   'raceSheet.startRisky': 'Salir — arriesgarse',
@@ -224,6 +231,13 @@ const messages: Messages = {
   'away.continue': 'Continuar',
 
   // --- race result
+  'finale.title': '¡100 millas!',
+  'finale.subtitle': 'Del primer trote matinal a cien millas. La hebilla es tuya.',
+  'finale.playTime': 'En el juego',
+  'finale.totalKm': 'Distancia total',
+  'finale.medals': 'Medallas',
+  'finale.taps': 'Toques',
+  'finale.continue': 'Seguir entrenando',
   'result.label': 'Resultado de la carrera',
   'result.finishTitle': '¡Meta! {name}',
   'result.place': 'Puesto',
@@ -232,7 +246,7 @@ const messages: Messages = {
   'result.medalsTotal': '· total {n}',
   'result.unlocked': 'Nuevo entrenamiento:',
   'result.nextRace': 'Próxima carrera:',
-  'result.allDone': 'Todas las distancias completadas: 100 km y 100 millas llegan en la próxima versión',
+  'result.allDone': '¡Todas las distancias completadas!',
   'result.next': 'Seguir',
   'result.dnfTitle': 'Abandono en {c} de {k} km',
   'result.gaveUp.he': 'Abandonaste en {t}.',

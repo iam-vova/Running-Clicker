@@ -4,6 +4,7 @@
 import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { state, toast } from '../game/state.ts'
 import { startMusic, unlock } from '../sound.ts'
+import { useRace } from '../composables/useRace.ts'
 import { useRaceFlow } from '../composables/useRaceFlow.ts'
 import { useScale } from '../composables/useScale.ts'
 import { useSheets } from '../composables/useSheets.ts'
@@ -19,11 +20,14 @@ import ProfileSheet from '../components/sheets/ProfileSheet/ProfileSheet.vue'
 import SettingsSheet from '../components/sheets/SettingsSheet/SettingsSheet.vue'
 import AwayModal from '../components/modals/AwayModal/AwayModal.vue'
 import ResultModal from '../components/modals/ResultModal/ResultModal.vue'
+import FinaleModal from '../components/modals/FinaleModal/FinaleModal.vue'
 import CharacterPicker from '../components/modals/CharacterPicker/CharacterPicker.vue'
 
 const { px } = useScale()
 const { sheet, sheetTitle, closeSheet } = useSheets()
 const { lastResult, showResult, away, startFlow } = useRaceFlow()
+/** Ночной участок забега: сцена ночная при любой теме */
+const { nightNow } = useRace()
 startFlow()
 
 const SHEETS = { train: TrainSheet, gear: GearSheet, race: RaceSheet, more: ProfileSheet, settings: SettingsSheet }
@@ -43,7 +47,7 @@ onBeforeUnmount(() => GESTURES.forEach((g) => removeEventListener(g, onFirstTouc
 </script>
 
 <template>
-  <main class="app" :style="rootVars">
+  <main class="app" :class="{ 'app--night': nightNow }" :style="rootVars">
     <GameStage />
     <GameHud />
     <TabBar />
@@ -54,7 +58,9 @@ onBeforeUnmount(() => GESTURES.forEach((g) => removeEventListener(g, onFirstTouc
 
     <div v-if="toast" class="app__toast" role="status">{{ toast }}</div>
 
-    <ResultModal v-if="showResult && lastResult" :result="lastResult" />
+    <!-- финиш 100 миль — финал игры с итогами вместо обычного результата -->
+    <FinaleModal v-if="showResult && lastResult?.ok && lastResult.id === '100mi'" :result="lastResult" />
+    <ResultModal v-else-if="showResult && lastResult" :result="lastResult" />
     <AwayModal v-else-if="away" :report="away" />
     <CharacterPicker v-if="!state.character" />
   </main>

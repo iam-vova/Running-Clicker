@@ -60,6 +60,8 @@ export const messages = {
   'race.30k': '30 km',
   'race.marathon': 'Marathon',
   'race.50k': '50 km',
+  'race.100k': '100 km',
+  'race.100mi': '100 miles',
 
   // --- next race card
   'nextRace.ready': 'Ready to start ✓',
@@ -101,12 +103,14 @@ export const messages = {
   'train.offlineHours': 'offline up to {h}',
   'train.offlineEff': 'offline {p} of income',
   'train.labStamina': 'endurance {x}',
+  'train.trailUltra': 'ultra {x}',
   'gen.jog': 'Morning jog',
   'gen.club': 'Running club',
   'gen.intervals': 'Track intervals',
   'gen.coach': 'Personal coach',
   'gen.camp': 'Altitude camp',
   'gen.lab': 'Sports science lab',
+  'gen.trail': 'Trail running',
 
   // --- boosts (training form and gear)
   'boost.level': 'Level {a} of {b}',
@@ -153,6 +157,8 @@ export const messages = {
   'boost.ultra.2': 'Trekking poles',
   'boost.ultra.3': 'Salt capsules',
   'boost.ultra.4': 'Max-cushion trail shoes',
+  'boost.ultra.5': 'GPS watch with navigation',
+  'boost.ultra.6': 'Night race experience',
 
   // --- gadgets
   'gear.owned': 'Owned ✓',
@@ -182,6 +188,7 @@ export const messages = {
   'raceSheet.chanceOk': 'Good chance for a personal best.',
   'raceSheet.chanceMaybe': 'You’ll make it if you pace your energy.',
   'raceSheet.chanceLate': 'Not enough even with them yet.',
+  'raceSheet.night': 'Night section from {from}% of the distance: pace {p}% of daytime — ultra gear raises it',
   'raceSheet.reward': 'Reward: {r}',
   'raceSheet.start': 'Start',
   'raceSheet.startRisky': 'Start — take the risk',
@@ -225,6 +232,13 @@ export const messages = {
   'away.continue': 'Continue',
 
   // --- race result
+  'finale.title': '100 miles!',
+  'finale.subtitle': 'From the first morning jog to a hundred miles. The buckle is yours.',
+  'finale.playTime': 'In game',
+  'finale.totalKm': 'Total distance',
+  'finale.medals': 'Medals',
+  'finale.taps': 'Taps',
+  'finale.continue': 'Keep training',
   'result.label': 'Race result',
   'result.finishTitle': 'Finish! {name}',
   'result.place': 'Place',
@@ -233,7 +247,7 @@ export const messages = {
   'result.medalsTotal': '· total {n}',
   'result.unlocked': 'New training unlocked:',
   'result.nextRace': 'Next race:',
-  'result.allDone': 'All distances done — 100 km and 100 miles come in the next version',
+  'result.allDone': 'All distances done!',
   'result.next': 'Next',
   'result.dnfTitle': 'DNF at {c} of {k} km',
   'result.gaveUp.he': 'You dropped out at {t}.',
