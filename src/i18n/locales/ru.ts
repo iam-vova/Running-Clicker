@@ -184,6 +184,14 @@ const messages: Messages = {
   'upgrade.oximeter.desc': '{gen} ×2',
   'upgrade.lactate': 'Лактатометр',
   'upgrade.lactate.desc': '{gen} ×2',
+  'upgrade.massage': 'Массажный пистолет',
+  'upgrade.massage.desc': '{gen} ×2',
+  'upgrade.zones': 'Пульсовые зоны',
+  'upgrade.zones.desc': '{gen} ×2',
+  'upgrade.trailShoes': 'Трейловые кроссовки',
+  'upgrade.trailShoes.desc': '{gen} ×2',
+  'upgrade.pacer': 'Пейсер',
+  'upgrade.pacer.desc': '{gen} ×2',
 
   // --- race sheet
   'raceSheet.onCourse': 'Ты на трассе {name}. Закрой окно: тапы — рывки за счёт сил, гели на пунктах питания возвращают силы.',

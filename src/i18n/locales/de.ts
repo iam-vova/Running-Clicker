@@ -184,6 +184,14 @@ const messages: Messages = {
   'upgrade.oximeter.desc': '{gen} ×2',
   'upgrade.lactate': 'Laktatmessgerät',
   'upgrade.lactate.desc': '{gen} ×2',
+  'upgrade.massage': 'Massagepistole',
+  'upgrade.massage.desc': '{gen} ×2',
+  'upgrade.zones': 'Pulszonen',
+  'upgrade.zones.desc': '{gen} ×2',
+  'upgrade.trailShoes': 'Trailschuhe',
+  'upgrade.trailShoes.desc': '{gen} ×2',
+  'upgrade.pacer': 'Tempomacher',
+  'upgrade.pacer.desc': '{gen} ×2',
 
   // --- race sheet
   'raceSheet.onCourse': 'Du läufst gerade {name}. Schließe dieses Fenster: Jedes Tippen ist ein Sprint und kostet Kraft, Gels an den Verpflegungsstellen geben sie zurück.',

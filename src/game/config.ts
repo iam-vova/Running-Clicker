@@ -117,6 +117,11 @@ export const UPGRADES = [
   { id: 'plan', icon: 'calendar', cost: 160000, gen: 'coach', need: 10 },
   { id: 'oximeter', icon: 'oximeter', cost: 1.8e6, gen: 'camp', need: 10 },
   { id: 'lactate', icon: 'lactate', cost: 2e7, gen: 'lab', need: 10 },
+  // второй круг: закрывают долгие паузы второй половины (между 30 км и марафоном, перед 100 км и перед 100 милями)
+  { id: 'massage', icon: 'massage', cost: 1e8, gen: 'camp', need: 55 },
+  { id: 'zones', icon: 'zones', cost: 1e10, gen: 'lab', need: 66 },
+  { id: 'trailShoes', icon: 'trail-shoes', cost: 2e13, gen: 'trail', need: 40 },
+  { id: 'pacer', icon: 'pacer', cost: 5e13, gen: 'trail', need: 55 },
 ] as const
 
 export type UpgradeId = (typeof UPGRADES)[number]['id']

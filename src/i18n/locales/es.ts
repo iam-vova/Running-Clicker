@@ -184,6 +184,14 @@ const messages: Messages = {
   'upgrade.oximeter.desc': '{gen} ×2',
   'upgrade.lactate': 'Lactatómetro',
   'upgrade.lactate.desc': '{gen} ×2',
+  'upgrade.massage': 'Pistola de masaje',
+  'upgrade.massage.desc': '{gen} ×2',
+  'upgrade.zones': 'Zonas de pulso',
+  'upgrade.zones.desc': '{gen} ×2',
+  'upgrade.trailShoes': 'Zapatillas de trail',
+  'upgrade.trailShoes.desc': '{gen} ×2',
+  'upgrade.pacer': 'Liebre',
+  'upgrade.pacer.desc': '{gen} ×2',
 
   // --- race sheet
   'raceSheet.onCourse': 'Estás corriendo los {name}. Cierra esta ventana: cada toque es un sprint que gasta energía; los geles de los avituallamientos la recuperan.',

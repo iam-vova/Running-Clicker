@@ -185,6 +185,14 @@ export const messages = {
   'upgrade.oximeter.desc': '{gen} ×2',
   'upgrade.lactate': 'Lactate meter',
   'upgrade.lactate.desc': '{gen} ×2',
+  'upgrade.massage': 'Massage gun',
+  'upgrade.massage.desc': '{gen} ×2',
+  'upgrade.zones': 'Heart rate zones',
+  'upgrade.zones.desc': '{gen} ×2',
+  'upgrade.trailShoes': 'Trail shoes',
+  'upgrade.trailShoes.desc': '{gen} ×2',
+  'upgrade.pacer': 'Pacer',
+  'upgrade.pacer.desc': '{gen} ×2',
 
   // --- race sheet
   'raceSheet.onCourse': 'You are racing the {name}. Close this window: taps are dashes that spend energy, gels at aid stations restore it.',
