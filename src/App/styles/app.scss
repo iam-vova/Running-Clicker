@@ -3,6 +3,7 @@
   --route: var(--route-night);
   --stadium: var(--stadium-night);
   --sky: #070a1f;
+  --grass: #325441;
   --btn-neutral: url('../../assets/ui/btn-light.png');
   --btn-neutral-down: url('../../assets/ui/btn-light-down.png');
   --btn-off: url('../../assets/ui/btn-off-dark.png');
@@ -19,6 +20,9 @@
   --btn-off: url('../../assets/ui/btn-off-light.png');
   --tile: calc(64px * var(--px));
   --nav-h: calc(64px + env(safe-area-inset-bottom, 0px));
+  // земля сцены поднята над панелью вкладок: снизу — полоса травы под скорость и панель рывка
+  --floor: calc(var(--nav-h) + 60px);
+  --grass: #92d94f; // = нижняя строка панорамы
   position: relative;
   height: 100%;
   // телефон — во весь экран; монитор/планшет — колонка с пропорциями телефона (1:2), а не узкая полоса

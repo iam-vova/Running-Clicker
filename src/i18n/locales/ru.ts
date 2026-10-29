@@ -36,6 +36,10 @@ const messages: Messages = {
   'stage.hint': 'Нажимай на экран, чтобы бежать',
 
   // --- HUD
+  'hud.odometer': 'пробег',
+  'hud.kmUnit': 'км',
+  'hud.raceTitle': 'Забег',
+  'units.kmhShort': 'км/ч',
   'hud.trainingKm': 'Тренировочные км',
   'hud.perSecond': 'в секунду',
   'hud.total': 'Общий пробег {km} км',
@@ -77,6 +81,11 @@ const messages: Messages = {
   'raceHud.tipGel': 'Запас сил кончился — не тапай, лови гель на пункте питания',
   'raceHud.tipSave': 'Запас сил кончился — не тапай',
   'raceHud.finish': 'Финиш',
+  'raceHud.distanceLabel': 'Дистанция',
+  'raceHud.stOk': 'Хватает',
+  'raceHud.stWaitGel': 'Жди гель',
+  'raceHud.stNotEnough': 'Не хватит',
+  'raceHud.stWall': 'Стена!',
   'raceHud.covered': '{c} из {k} км',
   'raceHud.ahead': 'отрыв от тени +{m} м',
   'raceHud.behind': 'тень впереди на {m} м',

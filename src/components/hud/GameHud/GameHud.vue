@@ -17,13 +17,12 @@ const { toggleSheet } = useSheets()
 const { runout, celebrating, showResult } = useRaceFlow()
 const perSec = computed(() => kmPerSec(state))
 const speed = computed(() => runSpeed(state))
+/** Одометр: знаки общего пробега (как fmt), каждый в своей клетке */
+const odometer = computed(() => fmt(state.totalKm).split(''))
 </script>
 
 <template>
   <header class="game-hud" aria-live="polite">
-    <!-- Ресурс: тратится на тренировки и снаряжение -->
-    <!-- на забеге счётчик км, доход и скорость скрыты: на экране только забег -->
-    <div v-if="!live" class="game-hud__label">{{ t('hud.trainingKm') }}</div>
     <!-- «Без звука» слева: глушит всё; раздельно звук и музыка — в настройках (шестерёнка справа) -->
     <button class="game-hud__corner game-hud__corner--mute" :aria-label="t('hud.mute')" :aria-pressed="muted" @click="setMuted(!muted)">
       <img class="icon" :src="icon(muted ? 'sound-off' : 'sound-on')" alt="" />
@@ -32,19 +31,26 @@ const speed = computed(() => runSpeed(state))
       <img class="icon" :src="icon('gear')" alt="" />
     </button>
     <template v-if="!live">
+      <!-- общий пробег — счётчик-одометр: статистика, не тратится -->
+      <div class="game-hud__odometer" :aria-label="t('hud.total', { km: fmt(state.totalKm) })">
+        <span class="game-hud__odometer-label">{{ t('hud.odometer') }}</span>
+        <i v-for="(c, i) in odometer" :key="i" class="game-hud__odometer-cell" :class="{ 'game-hud__odometer-cell--dot': c === '.' }">{{ c }}</i>
+        <span class="game-hud__odometer-label">{{ t('hud.kmUnit') }}</span>
+      </div>
+      <!-- ресурс: тратится на тренировки и снаряжение -->
       <div class="game-hud__km">{{ fmt(state.km) }}</div>
+      <div class="game-hud__label">{{ t('hud.trainingKm') }}</div>
       <div class="game-hud__line"><b class="status status--accent">+{{ fmt(perSec) }}</b> {{ t('hud.perSecond') }}</div>
-      <!-- Статистика: не тратится -->
-      <div class="game-hud__line game-hud__line--total">{{ t('hud.total', { km: fmt(state.totalKm) }) }}</div>
     </template>
+    <!-- на забеге вместо счётчика — заголовок: на экране только забег -->
+    <div v-else class="game-hud__title">{{ t('hud.raceTitle') }}</div>
 
     <RaceHud v-if="live" />
     <!-- следующий забег — только когда итог прошлого закрыт: не раньше финишной анимации и окна результата -->
     <NextRaceCard v-else-if="nextRace && !runout && !celebrating && !showResult" />
-
-    <!-- Скорость бегуна — закреплена под карточкой забега, не зависит от персонажа -->
-    <span v-if="!live" class="game-hud__speed">{{ t('units.kmh', { v: speed.toFixed(1) }) }}</span>
   </header>
+  <!-- скорость бегуна — внизу над вкладками; на забеге не показываем: там панель рывка -->
+  <span v-if="!live" class="game-hud__speed"><b>{{ speed.toFixed(1) }}</b> {{ t('units.kmhShort') }}</span>
 </template>
 
 <style lang="scss" src="./styles/component.scss"></style>

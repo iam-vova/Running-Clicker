@@ -227,6 +227,9 @@ export function raceLive(s: GameState) {
     energy: a.energy,
     need,
     gelsAhead: gelsAhead(a), // столько сил ещё вернут гели на пунктах питания
+    // масштаб шкалы сил: на ультра до финиша нужно больше полного запаса (1 − reserve > 1) — шкала вмещает всю потребность,
+    // иначе отметка «нужно» стояла у правого края до середины забега
+    scale: Math.max(1, 1 - raceReserve(a.id)),
     wall: a.energy <= 0,
     canTap: a.energy >= tapEnergy(s, a.id),
     speed: raceSpeed(s, a.id) * (a.energy > 0 ? 1 : RUNNER.wallSpeed),

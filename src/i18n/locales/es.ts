@@ -36,6 +36,10 @@ const messages: Messages = {
   'stage.hint': 'Toca la pantalla para correr',
 
   // --- HUD
+  'hud.odometer': 'total',
+  'hud.kmUnit': 'km',
+  'hud.raceTitle': 'Carrera',
+  'units.kmhShort': 'km/h',
   'hud.trainingKm': 'Km de entrenamiento',
   'hud.perSecond': 'por segundo',
   'hud.total': 'Distancia total {km} km',
@@ -77,6 +81,11 @@ const messages: Messages = {
   'raceHud.tipGel': 'Sin energía de reserva: no toques y atrapa el gel del avituallamiento',
   'raceHud.tipSave': 'Sin energía de reserva: no toques',
   'raceHud.finish': 'Meta',
+  'raceHud.distanceLabel': 'Distancia',
+  'raceHud.stOk': 'Alcanza',
+  'raceHud.stWaitGel': 'Espera el gel',
+  'raceHud.stNotEnough': 'No alcanza',
+  'raceHud.stWall': '¡Muro!',
   'raceHud.covered': '{c} de {k} km',
   'raceHud.ahead': '+{m} m por delante de la sombra',
   'raceHud.behind': 'la sombra va {m} m por delante',

@@ -37,6 +37,10 @@ export const messages = {
   'stage.hint': 'Tap the screen to run',
 
   // --- HUD
+  'hud.odometer': 'distance',
+  'hud.kmUnit': 'km',
+  'hud.raceTitle': 'Race',
+  'units.kmhShort': 'km/h',
   'hud.trainingKm': 'Training km',
   'hud.perSecond': 'per second',
   'hud.total': 'Total distance {km} km',
@@ -78,6 +82,11 @@ export const messages = {
   'raceHud.tipGel': 'Spare energy is gone — stop tapping and catch the gel at the aid station',
   'raceHud.tipSave': 'Spare energy is gone — stop tapping',
   'raceHud.finish': 'Finish',
+  'raceHud.distanceLabel': 'Distance',
+  'raceHud.stOk': 'Enough',
+  'raceHud.stWaitGel': 'Wait for gel',
+  'raceHud.stNotEnough': 'Not enough',
+  'raceHud.stWall': 'Wall!',
   'raceHud.covered': '{c} of {k} km',
   'raceHud.ahead': '+{m} m ahead of the pace ghost',
   'raceHud.behind': 'pace ghost {m} m ahead',

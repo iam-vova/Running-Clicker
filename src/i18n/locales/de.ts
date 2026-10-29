@@ -36,6 +36,10 @@ const messages: Messages = {
   'stage.hint': 'Tippe auf den Bildschirm, um zu laufen',
 
   // --- HUD
+  'hud.odometer': 'gesamt',
+  'hud.kmUnit': 'km',
+  'hud.raceTitle': 'Rennen',
+  'units.kmhShort': 'km/h',
   'hud.trainingKm': 'Trainings-km',
   'hud.perSecond': 'pro Sekunde',
   'hud.total': 'Gesamtstrecke {km} km',
@@ -77,6 +81,11 @@ const messages: Messages = {
   'raceHud.tipGel': 'Keine Reserve mehr — nicht tippen, fang das Gel an der Verpflegung',
   'raceHud.tipSave': 'Keine Reserve mehr — nicht tippen',
   'raceHud.finish': 'Ziel',
+  'raceHud.distanceLabel': 'Strecke',
+  'raceHud.stOk': 'Reicht',
+  'raceHud.stWaitGel': 'Aufs Gel warten',
+  'raceHud.stNotEnough': 'Reicht nicht',
+  'raceHud.stWall': 'Wand!',
   'raceHud.covered': '{c} von {k} km',
   'raceHud.ahead': '+{m} m vor dem Zeitlimit-Schatten',
   'raceHud.behind': 'Schatten {m} m voraus',

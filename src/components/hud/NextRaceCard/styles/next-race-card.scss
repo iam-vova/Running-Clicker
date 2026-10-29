@@ -1,12 +1,14 @@
 .next-race-card {
-  margin-top: 10px;
+  margin-top: 14px;
   width: 100%;
   display: grid;
-  gap: 6px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
-  border: 1px solid var(--line);
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  // рамка цвета готовности: зелёная — успеваешь, жёлтая — с рывками, оранжевая — рано
+  border: 2px solid var(--frame, var(--line));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--frame, var(--line)) 22%, transparent), 0 6px 16px rgb(0 0 0 / 0.12);
   text-shadow: none;
   font-size: 13px;
   font-variant-numeric: tabular-nums;
@@ -15,6 +17,19 @@
   &__title {
     font-family: var(--display);
     font-weight: 600;
+    font-size: 15px;
+  }
+
+  &--ok {
+    --frame: var(--ok);
+  }
+
+  &--maybe {
+    --frame: var(--warn);
+  }
+
+  &--late {
+    --frame: var(--accent);
   }
 
   &__row {

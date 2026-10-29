@@ -413,9 +413,14 @@ onBeforeUnmount(() => {
     <template v-if="live && activeRace">
       <span ref="ghostEl" class="sprite sprite--run game-stage__hero game-stage__hero--ghost" aria-hidden="true"></span>
     </template>
-    <!-- Шкала рывка под ногами бегуна: тап в зелёную зону — рывок вдвое дальше -->
-    <div v-if="live && activeRace" ref="meterEl" class="game-stage__meter" :class="{ 'game-stage__meter--off': !live.canTap }" aria-hidden="true">
-      <i class="game-stage__meter-pointer"></i>
+    <!-- Панель рывка внизу: рывков в запасе и шкала — тап в зелёную зону, рывок вдвое дальше -->
+    <div v-if="live && activeRace" class="game-stage__dash" aria-hidden="true">
+      <b class="game-stage__dash-count status" :class="live.spareTaps > 0 ? 'status--ok' : 'status--maybe'">
+        {{ live.spareTaps > 0 ? t('raceHud.spareTaps', { count: live.spareTaps }) : t('raceHud.noSpare') }}
+      </b>
+      <div ref="meterEl" class="game-stage__meter" :class="{ 'game-stage__meter--off': !live.canTap }">
+        <i class="game-stage__meter-pointer"></i>
+      </div>
     </div>
     <span ref="heroEl" class="sprite game-stage__hero" :class="`sprite--${heroPose}`" aria-hidden="true"></span>
     <!-- налобный фонарь светит вперёд на ночном участке, если куплен (ультра-снаряжение ур. 1+) -->

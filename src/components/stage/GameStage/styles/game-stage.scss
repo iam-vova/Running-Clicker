@@ -16,7 +16,7 @@
 .game-stage {
   position: absolute;
   inset: 0;
-  background: var(--sky);
+  background: linear-gradient(to top, var(--grass) var(--floor), var(--sky) var(--floor));
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
@@ -28,7 +28,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: var(--nav-h);
+    bottom: var(--floor);
     height: calc(384px * var(--px)); // панорама 800×384, дорожка — нижние 66 строк
     background: var(--route) 0 0 / calc(800px * var(--px)) 100% repeat-x;
     image-rendering: pixelated;
@@ -39,7 +39,7 @@
     position: absolute;
     left: 50%;
     // ноги на середине дорожки: дорожка 318–384 строки фона, под кроссовками в кадре ~5px пустоты
-    bottom: calc(var(--nav-h) + 27px * var(--px));
+    bottom: calc(var(--floor) + 27px * var(--px));
     transform: translateX(-50%);
 
     // тень лимита: тёмный полупрозрачный силуэт за/перед бегуном
@@ -68,14 +68,14 @@
   }
 
   &__arch {
-    bottom: calc(var(--nav-h) + 25px * var(--px));
+    bottom: calc(var(--floor) + 25px * var(--px));
     width: calc(84px * var(--px));
     margin-left: calc(-42px * var(--px));
   }
 
   // толпа 160×64 стоит у дальнего края дорожки (в кадре под ногами 11 px пустоты)
   &__crowd {
-    bottom: calc(var(--nav-h) + 54px * var(--px));
+    bottom: calc(var(--floor) + 54px * var(--px));
     width: calc(160px * var(--px));
     margin-left: calc(-80px * var(--px));
 
@@ -89,7 +89,7 @@
   }
 
   &__aid {
-    bottom: calc(var(--nav-h) + 63px * var(--px));
+    bottom: calc(var(--floor) + 63px * var(--px));
     width: calc(96px * var(--px));
     margin-left: calc(-48px * var(--px));
   }
@@ -98,7 +98,7 @@
   &__rival {
     position: absolute;
     left: 50%;
-    bottom: calc(var(--nav-h) + (27px + 9px * var(--lane)) * var(--px));
+    bottom: calc(var(--floor) + (27px + 9px * var(--lane)) * var(--px));
     transform: translateX(calc(-50% + var(--gx, 0px)));
     filter: brightness(calc(1 - 0.07 * var(--lane)));
 
@@ -114,7 +114,7 @@
     --ly: 11;
     position: absolute;
     left: calc(50% + (var(--lx) - 32) * 1px * var(--px));
-    bottom: calc(var(--nav-h) + 27px * var(--px) + (64 - var(--ly)) * 1px * var(--px));
+    bottom: calc(var(--floor) + 27px * var(--px) + (64 - var(--ly)) * 1px * var(--px));
     width: calc(150px * var(--px));
     height: calc(56px * var(--px));
     transform: translateY(50%);
@@ -150,14 +150,37 @@
     }
   }
 
+  // панель рывка внизу над травой: сколько рывков в запасе и шкала попадания
+  &__dash {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: calc(var(--nav-h) + 10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    border: 1px solid var(--line);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  &__dash-count {
+    font-family: var(--display);
+    font-size: 13px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
   // шкала рывка: серые края — мимо, жёлтое — обычный рывок, зелёный центр — вдвое дальше (зоны — RUNNER.timing)
   &__meter {
-    position: absolute;
-    left: 50%;
-    bottom: calc(var(--nav-h) + 5px * var(--px));
-    width: min(160px, 46%);
-    height: 12px;
-    transform: translateX(-50%);
+    position: relative;
+    width: min(160px, 50%);
+    height: 14px;
+    flex-shrink: 0;
     border: 2px solid rgb(0 0 0 / 0.6);
     border-radius: 3px;
     background: linear-gradient(
@@ -168,7 +191,6 @@
       #f0bd3e 58% 75%,
       #8d939b 75%
     );
-    pointer-events: none;
     transition: box-shadow 0.15s;
 
     &--off {
@@ -232,7 +254,7 @@
   &__hint {
     position: absolute;
     left: 50%;
-    bottom: calc(var(--nav-h) + 27px * var(--px) + var(--tile) + 24px);
+    bottom: calc(var(--floor) + 27px * var(--px) + var(--tile) + 24px);
     transform: translateX(-50%);
     margin: 0;
     padding: 6px 14px;

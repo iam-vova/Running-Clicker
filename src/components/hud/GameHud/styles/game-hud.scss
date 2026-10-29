@@ -11,6 +11,7 @@
   text-shadow: 0 1px 0 color-mix(in srgb, var(--sky) 70%, transparent);
 
   &__label {
+    margin-top: 4px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     font-size: 12px;
@@ -35,18 +36,79 @@
     }
   }
 
+  // скорость бегуна: внизу над вкладками, на полосе травы
   &__speed {
-    margin-top: 6px;
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--nav-h) + 4px);
+    transform: translateX(-50%);
     padding: 2px 10px;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--surface) 70%, transparent);
-    text-shadow: none;
-    border: 1px solid var(--line);
-    font-size: 12px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 2px solid var(--fg);
+    color: var(--fg);
+    font-size: 11px;
     font-weight: 600;
-    font-variant-numeric: tabular-nums;
     white-space: nowrap;
     pointer-events: none;
+    z-index: 2;
+
+    b {
+      font-family: var(--num);
+      font-synthesis: none;
+      font-size: 14px;
+    }
+  }
+
+  // общий пробег: цифры в клетках, как у механического счётчика
+  &__odometer {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 4px;
+    text-shadow: none;
+  }
+
+  &__odometer-label {
+    margin: 0 4px;
+    font-family: var(--display);
+    font-size: 9px;
+  }
+
+  &__odometer-cell {
+    min-width: 16px;
+    padding: 3px 2px 2px;
+    border: 2px solid var(--fg);
+    border-radius: 3px;
+    background: var(--surface);
+    font-family: var(--num);
+    font-synthesis: none;
+    font-style: normal;
+    font-size: 11px;
+    line-height: 1;
+    text-align: center;
+
+    &--dot {
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      background: none;
+      align-self: flex-end;
+    }
+  }
+
+  // на забеге вместо счётчика км
+  &__title {
+    font-family: var(--display);
+    font-size: 26px;
+    line-height: 1;
+    padding-top: 2px;
+
+    // ночной участок в светлой теме: небо тёмное — заголовок светлый
+    .app--night & {
+      color: #f3f7f5;
+      text-shadow: 0 1px 0 #000;
+    }
   }
 
   &__corner {
