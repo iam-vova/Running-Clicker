@@ -67,6 +67,8 @@ export function track(event: string, props: Record<string, unknown> = {}) {
     properties: {
       distinct_id: playerId,
       $process_person_profile: false, // только события, без профилей людей
+      $current_url: location.origin + location.pathname, // где играли: Pages, локально — по нему фильтровать мусор
+      $host: location.host,
       play_min: Math.round(playSec / 6) / 10,
       races_done: state.races.length,
       income_kmh: Math.round(income(state)),

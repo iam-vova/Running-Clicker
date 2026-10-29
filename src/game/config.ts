@@ -29,6 +29,12 @@ export const RUNNER = {
  * Офлайн: пока игра закрыта, тренировки идут медленнее, чем при открытой игре, и не дольше лимита.
  * Забег на паузе — награды за забег офлайн не начисляются.
  */
+/**
+ * «Спортивная лаборатория» (открывается после 30 км): кроме км, каждый уровень даёт выносливость —
+ * без неё марафон не пробежать, напитки и экипировка к этому моменту уже на максимуме.
+ */
+export const LAB_STAMINA_PER_LEVEL = 0.03
+
 export const OFFLINE = {
   baseHours: 4, maxHours: 8, hoursPerClub: 0.1, // «Беговой клуб»: каждый уровень +6 мин к лимиту
   baseEff: 0.5, maxEff: 0.9, effPerCoach: 0.01, // «Личный тренер»: каждый уровень +1% эффективности
@@ -50,6 +56,7 @@ export const GENERATORS = [
   { id: 'intervals', icon: 'stopwatch', base: 1100, rate: 480, growth: 1.14, unlockRace: '5k' },
   { id: 'coach', icon: 'coach', base: 12000, rate: 2820, growth: 1.13, unlockRace: '10k' },
   { id: 'camp', icon: 'camp', base: 130000, rate: 15600, growth: 1.13, unlockRace: '15k' },
+  { id: 'lab', icon: 'lab', base: 1500000, rate: 90000, growth: 1.12, unlockRace: '30k' },
 ] as const
 
 export type GenId = (typeof GENERATORS)[number]['id']
@@ -63,6 +70,8 @@ export const RACES = [
   { id: '10k', km: 10, cutoff: 50, mult: 1.5 },
   { id: '15k', km: 15, cutoff: 70, mult: 1.5 },
   { id: 'half', km: 21.1, cutoff: 97, mult: 2 },
+  { id: '30k', km: 30, cutoff: 136, mult: 1.5 },
+  { id: 'marathon', km: 42.195, cutoff: 179, mult: 2 },
 ] as const
 
 export type RaceId = (typeof RACES)[number]['id']
@@ -88,6 +97,7 @@ export const BOOSTS = [
       { icon: 'technique', cost: 500, mult: 8, pct: 0.03 },
       { icon: 'technique', cost: 5000, mult: 10, pct: 0.06 },
       { icon: 'technique', cost: 60000, mult: 10, pct: 0.12 },
+      { icon: 'technique', cost: 900000, mult: 12, pct: 0.2 },
     ],
   },
   {

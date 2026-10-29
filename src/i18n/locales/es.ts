@@ -53,6 +53,8 @@ const messages: Messages = {
   'race.10k': '10 km',
   'race.15k': '15 km',
   'race.half': 'Media maratón',
+  'race.30k': '30 km',
+  'race.marathon': 'Maratón',
 
   // --- next race card
   'nextRace.ready': 'Listo para salir ✓',
@@ -84,11 +86,13 @@ const messages: Messages = {
   'train.unlocksAfter': 'Se desbloquea tras la carrera de {name}',
   'train.offlineHours': 'sin conexión hasta {h}',
   'train.offlineEff': 'sin conexión {p} de ingresos',
+  'train.labStamina': 'resistencia {x}',
   'gen.jog': 'Trote matutino',
   'gen.club': 'Club de running',
   'gen.intervals': 'Series en pista',
   'gen.coach': 'Entrenador personal',
   'gen.camp': 'Concentración en altura',
+  'gen.lab': 'Laboratorio deportivo',
 
   // --- boosts (training form and gear)
   'boost.level': 'Nivel {a} de {b}',
@@ -104,6 +108,7 @@ const messages: Messages = {
   'boost.technique.2': 'Ejercicios de técnica',
   'boost.technique.3': 'Pliometría',
   'boost.technique.4': 'Sprint final',
+  'boost.technique.5': 'Economía de carrera',
   'boost.shoes': 'Zapatillas',
   'boost.shoes.0': 'Zapatillas viejas',
   'boost.shoes.1': 'Zapatillas de running',
@@ -149,7 +154,7 @@ const messages: Messages = {
   'raceSheet.start': 'Salir',
   'raceSheet.startRisky': 'Salir — arriesgarse',
   'raceSheet.allDone': 'Todas las carreras completadas',
-  'raceSheet.comingSoon': 'Lo siguiente: 30 km y la maratón. Llegarán en la próxima versión.',
+  'raceSheet.comingSoon': 'Lo siguiente: 50 km y las ultras. Llegarán en la próxima versión.',
   'raceSheet.distances': 'Distancias',
 
   // --- profile
@@ -195,7 +200,7 @@ const messages: Messages = {
   'result.medalsTotal': '· total {n}',
   'result.unlocked': 'Nuevo entrenamiento:',
   'result.nextRace': 'Próxima carrera:',
-  'result.allDone': 'Todas las distancias completadas: la maratón llega en la próxima versión',
+  'result.allDone': 'Todas las distancias completadas: los ultramaratones llegan en la próxima versión',
   'result.next': 'Seguir',
   'result.dnfTitle': 'Abandono en {c} de {k} km',
   'result.gaveUp.he': 'Abandonaste en {t}.',

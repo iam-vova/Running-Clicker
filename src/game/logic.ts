@@ -1,5 +1,5 @@
 // Чистая логика без Vue: её используют и игра, и симуляция баланса.
-import { BOOSTS, CLICK_KM, GENERATORS, OFFLINE, RACES, RUNNER, TIME_SCALE, UPGRADES } from './config.ts'
+import { BOOSTS, CLICK_KM, GENERATORS, LAB_STAMINA_PER_LEVEL, OFFLINE, RACES, RUNNER, TIME_SCALE, UPGRADES } from './config.ts'
 import type { BoostId, CharId, GenId, RaceId, Stat, UpgradeId } from './config.ts'
 
 export const SAVE_VERSION = 9
@@ -28,7 +28,8 @@ export interface GameState {
   lastSave: number
 }
 
-export type ActiveRace = { id: RaceId; elapsed: number; covered: number; energy: number; fed: number }
+/** pace — темп, с которым вышел на старт (км за минуту трассы): форма на забеге не меняется от покупок по ходу */
+export type ActiveRace = { id: RaceId; elapsed: number; covered: number; energy: number; fed: number; pace?: number }
 
 export function newState(): GameState {
   return {
@@ -37,9 +38,9 @@ export function newState(): GameState {
     km: 0,
     totalKm: 0,
     clicks: 0,
-    owned: { jog: 0, club: 0, intervals: 0, coach: 0, camp: 0 },
+    owned: Object.fromEntries(GENERATORS.map((g) => [g.id, 0])) as Record<GenId, number>, // новые тренировки — сами
     upgrades: [],
-    boosts: { technique: 0, shoes: 0, food: 0, drink: 0, gear: 0 },
+    boosts: Object.fromEntries(BOOSTS.map((b) => [b.id, 0])) as Record<BoostId, number>,
     races: [],
     medals: 0,
     bestTimes: {},
@@ -62,7 +63,9 @@ export const boostMult = (s: GameState, id: BoostId) => {
 export const nextBoost = (s: GameState, id: BoostId) => boost(id).levels[s.boosts[id]] ?? null
 
 export const statMult = (s: GameState, stat: Stat) =>
-  BOOSTS.filter((b) => b.stat === stat).reduce((m, b) => m * boostMult(s, b.id), 1)
+  BOOSTS.filter((b) => b.stat === stat).reduce((m, b) => m * boostMult(s, b.id), 1) * (stat === 'stamina' ? labStamina(s) : 1)
+/** Выносливость от «Спортивной лаборатории» */
+export const labStamina = (s: GameState) => 1 + LAB_STAMINA_PER_LEVEL * (s.owned.lab ?? 0)
 
 export const genCost = (id: GenId, owned: number) => gen(id).base * gen(id).growth ** owned
 
@@ -158,7 +161,8 @@ export function catchGel(s: GameState): number {
 }
 
 /** Ровная скорость на трассе, км за реальную секунду: дистанция ÷ прогноз. */
-export const raceSpeed = (s: GameState, id: RaceId) => race(id).km / forecast(s, race(id).km)
+export const raceSpeed = (s: GameState, id: RaceId) =>
+  (s.activeRace?.id === id && s.activeRace.pace) || race(id).km / forecast(s, race(id).km)
 
 /** Расход сил на километр ровного бега: на финише остаётся RUNNER.reserve. */
 const drainPerKm = (id: RaceId) => (1 - RUNNER.reserve) / race(id).km
@@ -302,7 +306,7 @@ export function buyBoost(s: GameState, id: BoostId): boolean {
 
 export function startRace(s: GameState, id: RaceId): boolean {
   if (!canStartRace(s, id)) return false
-  s.activeRace = { id, elapsed: 0, covered: 0, energy: 1, fed: 0 }
+  s.activeRace = { id, elapsed: 0, covered: 0, energy: 1, fed: 0, pace: race(id).km / forecast(s, race(id).km) }
   return true
 }
 

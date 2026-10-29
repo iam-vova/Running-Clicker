@@ -2,14 +2,14 @@
 // «Тренировки»: генераторы км (покупка по ×1/×10/×100) и техника бега.
 import { GENERATORS, OFFLINE } from '../../../game/config.ts'
 import type { GenId } from '../../../game/config.ts'
-import { buyGen, fmt, genCostN, genLevelRate, genRate, genUnlocked, offlineEff, offlineHours } from '../../../game/logic.ts'
+import { buyGen, fmt, genCostN, genLevelRate, genRate, genUnlocked, labStamina, offlineEff, offlineHours } from '../../../game/logic.ts'
 import { state } from '../../../game/state.ts'
 import { t } from '../../../i18n/index.ts'
 import { genName, raceName } from '../../../i18n/names.ts'
 import { TRAIN_BOOSTS, bought } from '../../../composables/shop.ts'
 import { BULK, useBulk } from '../../../composables/useBulk.ts'
 import { icon } from '../../../utils/assets.ts'
-import { fmtHours, pct } from '../../../utils/format.ts'
+import { fmtHours, pct, xMult } from '../../../utils/format.ts'
 import BoostRow from '../BoostRow/BoostRow.vue'
 
 const { bulk, setBulk } = useBulk()
@@ -17,6 +17,7 @@ const cost = (id: GenId) => genCostN(id, state.owned[id], bulk.value)
 /** Как тренировка влияет на офлайн: клуб — лимит часов, тренер — эффективность */
 function offlineEffect(id: GenId) {
   if (id === 'club') return t('train.offlineHours', { h: fmtHours(offlineHours(state)) }) + (offlineHours(state) < OFFLINE.maxHours ? '' : t('common.maxSuffix'))
+  if (id === 'lab') return t('train.labStamina', { x: xMult(labStamina(state)) })
   if (id === 'coach') return t('train.offlineEff', { p: pct(offlineEff(state)) }) + (offlineEff(state) < OFFLINE.maxEff ? '' : t('common.maxSuffix'))
   return null
 }

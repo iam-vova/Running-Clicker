@@ -82,7 +82,7 @@ while (t < MAX_T && pendingRace(s)) {
   // RUSH=1 — нетерпеливый игрок: стартует, как только лучший прогноз (рывки + гели) в лимите
   const go = (id: RaceId) => (process.env.RUSH ? bestForecast(s, id) <= race(id).cutoff : raceReady(s, id))
   for (const r of RACES.filter((x) => x === pendingRace(s))) if (canStartRace(s, r.id) && go(r.id)) { startRace(s, r.id); mark(t, `старт забега ${r.id}, прогноз ${forecast(s, r.km).toFixed(1)} мин (трусца ${s.owned.jog}, клуб ${s.owned.club})`) }
-  if (process.env.TRACE && Math.round(t * 10) % 300 === 0) console.log('TRACE', fmtTime(t), runSpeed(s).toFixed(1), statMult(s, 'stamina').toFixed(2), RACES.map((r) => `${r.id}:${forecast(s, r.km).toFixed(1)}`).join(' '))
+  if (process.env.TRACE && Math.round(t * 10) % 300 === 0) console.log('TRACE', fmtTime(t), runSpeed(s).toFixed(1), statMult(s, 'stamina').toFixed(2), 'lab', s.owned.lab, RACES.map((r) => `${r.id}:${forecast(s, r.km).toFixed(1)}`).join(' '))
   const done = tick(s, DT)
   if (done) mark(t, `${done.ok ? 'финиш' : 'СХОД'} забега ${done.id} за ${done.time.toFixed(1)} мин`)
   t += DT

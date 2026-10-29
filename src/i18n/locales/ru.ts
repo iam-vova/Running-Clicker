@@ -53,6 +53,8 @@ const messages: Messages = {
   'race.10k': '10 км',
   'race.15k': '15 км',
   'race.half': 'Полумарафон',
+  'race.30k': '30 км',
+  'race.marathon': 'Марафон',
 
   // --- next race card
   'nextRace.ready': 'Готов к старту ✓',
@@ -84,11 +86,13 @@ const messages: Messages = {
   'train.unlocksAfter': 'Откроется после забега {name}',
   'train.offlineHours': 'офлайн до {h}',
   'train.offlineEff': 'офлайн {p} дохода',
+  'train.labStamina': 'выносливость {x}',
   'gen.jog': 'Утренняя трусца',
   'gen.club': 'Беговой клуб',
   'gen.intervals': 'Интервалы на стадионе',
   'gen.coach': 'Личный тренер',
   'gen.camp': 'Сборы в горах',
+  'gen.lab': 'Спортивная лаборатория',
 
   // --- boosts (training form and gear)
   'boost.level': 'Уровень {a} из {b}',
@@ -104,6 +108,7 @@ const messages: Messages = {
   'boost.technique.2': 'Беговые упражнения',
   'boost.technique.3': 'Плиометрика',
   'boost.technique.4': 'Финишный спурт',
+  'boost.technique.5': 'Экономичность бега',
   'boost.shoes': 'Кроссовки',
   'boost.shoes.0': 'Старые кеды',
   'boost.shoes.1': 'Беговые кроссовки',
@@ -149,7 +154,7 @@ const messages: Messages = {
   'raceSheet.start': 'Старт',
   'raceSheet.startRisky': 'Старт — рискнуть',
   'raceSheet.allDone': 'Все забеги пройдены',
-  'raceSheet.comingSoon': 'Следующий старт — 30 км и марафон. Появятся в следующей версии.',
+  'raceSheet.comingSoon': 'Следующий старт — 50 км и ультра. Появятся в следующей версии.',
   'raceSheet.distances': 'Дистанции',
 
   // --- profile
@@ -195,7 +200,7 @@ const messages: Messages = {
   'result.medalsTotal': '· всего {n}',
   'result.unlocked': 'Открыта тренировка:',
   'result.nextRace': 'Следующий старт:',
-  'result.allDone': 'Все дистанции пройдены — дальше марафон в следующей версии',
+  'result.allDone': 'Все дистанции пройдены — дальше ультрамарафоны в следующей версии',
   'result.next': 'Дальше',
   'result.dnfTitle': 'Сход на {c} из {k} км',
   'result.gaveUp.he': 'Ты сошёл с дистанции на {t}.',

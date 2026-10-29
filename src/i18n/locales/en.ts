@@ -54,6 +54,8 @@ export const messages = {
   'race.10k': '10 km',
   'race.15k': '15 km',
   'race.half': 'Half marathon',
+  'race.30k': '30 km',
+  'race.marathon': 'Marathon',
 
   // --- next race card
   'nextRace.ready': 'Ready to start ✓',
@@ -85,11 +87,13 @@ export const messages = {
   'train.unlocksAfter': 'Unlocks after the {name} race',
   'train.offlineHours': 'offline up to {h}',
   'train.offlineEff': 'offline {p} of income',
+  'train.labStamina': 'endurance {x}',
   'gen.jog': 'Morning jog',
   'gen.club': 'Running club',
   'gen.intervals': 'Track intervals',
   'gen.coach': 'Personal coach',
   'gen.camp': 'Altitude camp',
+  'gen.lab': 'Sports science lab',
 
   // --- boosts (training form and gear)
   'boost.level': 'Level {a} of {b}',
@@ -105,6 +109,7 @@ export const messages = {
   'boost.technique.2': 'Running drills',
   'boost.technique.3': 'Plyometrics',
   'boost.technique.4': 'Finishing kick',
+  'boost.technique.5': 'Running economy',
   'boost.shoes': 'Shoes',
   'boost.shoes.0': 'Old sneakers',
   'boost.shoes.1': 'Running shoes',
@@ -150,7 +155,7 @@ export const messages = {
   'raceSheet.start': 'Start',
   'raceSheet.startRisky': 'Start — take the risk',
   'raceSheet.allDone': 'All races completed',
-  'raceSheet.comingSoon': 'Next up: 30 km and the marathon. Coming in the next version.',
+  'raceSheet.comingSoon': 'Next up: 50 km and the ultras. Coming in the next version.',
   'raceSheet.distances': 'Distances',
 
   // --- profile
@@ -196,7 +201,7 @@ export const messages = {
   'result.medalsTotal': '· total {n}',
   'result.unlocked': 'New training unlocked:',
   'result.nextRace': 'Next race:',
-  'result.allDone': 'All distances done — the marathon comes in the next version',
+  'result.allDone': 'All distances done — ultramarathons come in the next version',
   'result.next': 'Next',
   'result.dnfTitle': 'DNF at {c} of {k} km',
   'result.gaveUp.he': 'You dropped out at {t}.',

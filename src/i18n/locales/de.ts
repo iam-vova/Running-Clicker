@@ -53,6 +53,8 @@ const messages: Messages = {
   'race.10k': '10 km',
   'race.15k': '15 km',
   'race.half': 'Halbmarathon',
+  'race.30k': '30 km',
+  'race.marathon': 'Marathon',
 
   // --- next race card
   'nextRace.ready': 'Startklar ✓',
@@ -84,11 +86,13 @@ const messages: Messages = {
   'train.unlocksAfter': 'Freigeschaltet nach dem Rennen über {name}',
   'train.offlineHours': 'offline bis {h}',
   'train.offlineEff': 'offline {p} des Einkommens',
+  'train.labStamina': 'Ausdauer {x}',
   'gen.jog': 'Morgenlauf',
   'gen.club': 'Laufverein',
   'gen.intervals': 'Intervalle auf der Bahn',
   'gen.coach': 'Personal Trainer',
   'gen.camp': 'Höhentrainingslager',
+  'gen.lab': 'Sportlabor',
 
   // --- boosts (training form and gear)
   'boost.level': 'Stufe {a} von {b}',
@@ -104,6 +108,7 @@ const messages: Messages = {
   'boost.technique.2': 'Lauf-ABC',
   'boost.technique.3': 'Plyometrie',
   'boost.technique.4': 'Endspurt',
+  'boost.technique.5': 'Laufökonomie',
   'boost.shoes': 'Schuhe',
   'boost.shoes.0': 'Alte Turnschuhe',
   'boost.shoes.1': 'Laufschuhe',
@@ -149,7 +154,7 @@ const messages: Messages = {
   'raceSheet.start': 'Start',
   'raceSheet.startRisky': 'Start — es riskieren',
   'raceSheet.allDone': 'Alle Rennen geschafft',
-  'raceSheet.comingSoon': 'Als Nächstes: 30 km und der Marathon. Kommen in der nächsten Version.',
+  'raceSheet.comingSoon': 'Als Nächstes: 50 km und die Ultras. Kommen in der nächsten Version.',
   'raceSheet.distances': 'Distanzen',
 
   // --- profile
@@ -195,7 +200,7 @@ const messages: Messages = {
   'result.medalsTotal': '· insgesamt {n}',
   'result.unlocked': 'Neues Training:',
   'result.nextRace': 'Nächstes Rennen:',
-  'result.allDone': 'Alle Distanzen geschafft — der Marathon kommt in der nächsten Version',
+  'result.allDone': 'Alle Distanzen geschafft — Ultramarathons kommen in der nächsten Version',
   'result.next': 'Weiter',
   'result.dnfTitle': 'Ausgestiegen bei {c} von {k} km',
   'result.gaveUp.he': 'Du bist bei {t} ausgestiegen.',
