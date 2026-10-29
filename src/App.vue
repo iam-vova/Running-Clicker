@@ -36,8 +36,10 @@ function onFirstTouch() {
   unlock()
   startMusic()
 }
-onMounted(() => addEventListener('pointerdown', onFirstTouch, true))
-onBeforeUnmount(() => removeEventListener('pointerdown', onFirstTouch, true))
+// и будят его на каждом касании: после сворачивания iOS прерывает звук. touchend/click — жесты, которые iOS точно считает «пользовательскими»
+const GESTURES = ['pointerdown', 'touchend', 'click'] as const
+onMounted(() => GESTURES.forEach((g) => addEventListener(g, onFirstTouch, true)))
+onBeforeUnmount(() => GESTURES.forEach((g) => removeEventListener(g, onFirstTouch, true)))
 </script>
 
 <template>
@@ -76,6 +78,11 @@ onBeforeUnmount(() => removeEventListener('pointerdown', onFirstTouch, true))
   margin: 0 auto;
   overflow: hidden;
   color: var(--fg);
+  /* игра, а не страница: без серо-белой подсветки тапа, выделения текста и меню долгого нажатия (iOS) */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .app {

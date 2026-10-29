@@ -48,17 +48,50 @@ const sfxOn = () => soundOn.value && !muted.value
 
 let ctx: AudioContext | null = null
 let master: GainNode | null = null
-/** Создать/разбудить аудио по жесту пользователя. */
+
+function createContext() {
+  const AC = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+  ctx = new AC()
+  master = ctx.createGain()
+  master.gain.value = 0.35
+  master.connect(ctx.destination)
+  musicGain = null // узлы старого контекста к новому не подключить
+  noiseBuf = null
+}
+
+/** Пересоздать аудио, если старый контекст «застрял» (iOS после звонка/сворачивания иногда не оживает) */
+function rebuild() {
+  const playing = !!timer
+  stopMusic()
+  try {
+    void ctx?.close()
+  } catch {
+    /* уже закрыт */
+  }
+  ctx = null
+  createContext()
+  if (playing) startMusic()
+}
+
+/**
+ * Создать/разбудить аудио по жесту пользователя. Вызывается на каждом касании:
+ * браузер мог приостановить звук (suspended) или iOS — прервать его (interrupted) после сворачивания игры.
+ */
 export function unlock() {
   try {
-    if (!ctx) {
-      const AC = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
-      ctx = new AC()
-      master = ctx.createGain()
-      master.gain.value = 0.35
-      master.connect(ctx.destination)
-    }
-    if (ctx.state === 'suspended') void ctx.resume()
+    if (!ctx) createContext()
+    const c = ctx!
+    if (c.state === 'running') return
+    c.resume().then(
+      () => {
+        if (c === ctx && c.state !== 'running') rebuild()
+      },
+      () => c === ctx && rebuild(),
+    )
+    // iOS: resume() у прерванного контекста может так и не завершиться — проверяем чуть позже
+    setTimeout(() => {
+      if (c === ctx && c.state !== 'running' && !document.hidden) rebuild()
+    }, 300)
   } catch {
     ctx = null
   }
@@ -272,8 +305,7 @@ function schedule() {
 }
 export function startMusic() {
   if (!musicOn.value || muted.value || timer) return
-  unlock()
-  if (!ctx || !master) return
+  if (!ctx || !master) return // аудио ещё не разбужено касанием
   if (!musicGain) {
     musicGain = ctx.createGain()
     musicGain.gain.value = 0.5
@@ -289,5 +321,8 @@ export function stopMusic() {
 // свернули вкладку — тишина, вернулись — продолжаем
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) stopMusic()
-  else startMusic()
+  else {
+    void ctx?.resume().catch(() => {}) // на десктопе оживает сразу; на iOS — по следующему касанию (unlock)
+    startMusic()
+  }
 })

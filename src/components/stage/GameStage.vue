@@ -30,6 +30,8 @@ let groundX = 0
 let groundTotal = 0 // пройдено фоном без зацикливания, игровые px — для объектов, стоящих на земле
 let last = 0
 let stepT = 0
+/** Сколько земли ещё «доехать» после рывков: сдвиг не скачком, а ускорением */
+let groundBoost = 0
 function moveGround(d: number) {
   groundX = (groundX + d) % ROUTE_W
   groundTotal += d
@@ -40,6 +42,12 @@ function loop(now: number) {
   last = now
   if (state.activeRace && feedDue(state)) spawnFeed()
   if (dashing.value || runout.value || state.activeRace) moveGround(GROUND_SPEED * dt)
+  if (groundBoost > 0.01) {
+    // рывок = короткое ускорение: земля едет втрое быстрее обычного, пока не догонит (один рывок — ~0.07 с)
+    const d = Math.min(groundBoost, GROUND_SPEED * 2 * dt)
+    groundBoost -= d
+    moveGround(d)
+  }
   // шаги на трассе: два шага на цикл анимации бега (0.7 с)
   if (state.activeRace && !paused.value && !document.hidden) {
     stepT += dt
@@ -58,7 +66,7 @@ const archOn = ref(false)
 let archWorld = 0 // положение арки в координатах groundTotal
 function placeArch() {
   if (state.activeRace && live.value) {
-    const target = groundTotal + timeLeft() * GROUND_SPEED
+    const target = groundTotal + groundBoost + timeLeft() * GROUND_SPEED // groundBoost: рывок уже засчитан, земля его догоняет
     if (!archOn.value && (target - groundTotal) * px.value < 280) {
       archOn.value = true
       archWorld = target
@@ -91,7 +99,7 @@ function dash(e?: PointerEvent) {
   const inRace = live.value
   const text = inRace ? (inRace.canTap ? t('+{n} м', { n: Math.round(inRace.tapM) }) : t('нет сил')) : t('+{n} км', { n: fmt(clickValue(state)) })
   // рывок на трассе — бегун продвинулся: сдвигаем землю на столько же, чтобы арка и фон двигались вместе
-  if (inRace && inRace.canTap) moveGround((inRace.tapM / 1000 / inRace.speed) * GROUND_SPEED)
+  if (inRace && inRace.canTap) groundBoost += (inRace.tapM / 1000 / inRace.speed) * GROUND_SPEED
   if (inRace && !inRace.canTap) sfx.noEnergy()
   else sfx.dash()
   click(state)
