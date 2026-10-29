@@ -1,0 +1,114 @@
+// Ход игры вокруг забегов: финиш (добегание → празднование → окно результата), сход, повтор,
+// и возвращение после офлайна. Запускается один раз из App.
+import { ref } from 'vue'
+import { GENERATORS, RACES } from '../game/config.ts'
+import type { RaceId } from '../game/config.ts'
+import { abandonRace, canStartRace, startRace } from '../game/logic.ts'
+import type { OfflineReport, RaceResult } from '../game/logic.ts'
+import { paused, startGame, state } from '../game/state.ts'
+import { sfx } from '../sound.ts'
+import { useSheets } from './useSheets.ts'
+
+/** Итог последней попытки — окно результата и строка в окне «Забег» */
+export type Result = {
+  id: RaceId
+  name: string
+  km: number
+  ok: boolean
+  covered: number
+  time: number
+  cutoff: number
+  reward: string
+  unlocked: string | null // какая тренировка открылась
+  next: string | null // следующая дистанция
+  gaveUp: boolean // сошёл сам, а не обогнала тень
+}
+
+const FINISH_RUNOUT = 1300 // мс: бегун пробегает арку и отбегает от неё
+const FINISH_CELEBRATE = 1600 // мс: два цикла анимации победы, потом окно результата
+
+const lastResult = ref<Result | null>(null)
+const showResult = ref(false)
+/** Добегание после финиша: бегун ещё бежит, чтобы пересечь арку */
+const runout = ref(false)
+/** Празднует финиш */
+const celebrating = ref(false)
+/** Отчёт «Пока тебя не было» */
+const away = ref<OfflineReport | null>(null)
+
+const { sheet, closeSheet } = useSheets()
+
+function onRaceFinish(res: RaceResult) {
+  if (res.ok) sfx.finish()
+  else sfx.dnf()
+  const r = RACES.find((r) => r.id === res.id)!
+  lastResult.value = {
+    id: r.id,
+    name: r.name,
+    km: r.km,
+    ok: res.ok,
+    covered: res.covered,
+    time: res.time,
+    cutoff: r.cutoff,
+    reward: r.reward,
+    unlocked: GENERATORS.find((g) => g.unlockRace === r.id)?.name ?? null,
+    next: RACES.find((x) => !state.races.includes(x.id))?.name ?? null,
+    gaveUp: !!res.gaveUp,
+  }
+  closeSheet()
+  if (!res.ok) {
+    showResult.value = true
+    return
+  }
+  // победа: бегун пробегает под аркой, празднует, и только потом окно результата
+  runout.value = true
+  setTimeout(() => {
+    runout.value = false
+    celebrating.value = true
+  }, FINISH_RUNOUT)
+  setTimeout(() => {
+    closeSheet()
+    showResult.value = true
+  }, FINISH_RUNOUT + FINISH_CELEBRATE)
+  setTimeout(() => (celebrating.value = false), FINISH_RUNOUT + FINISH_CELEBRATE + 1000)
+}
+
+/** «Сдаться»: сход без награды, прогресс остаётся */
+function quitRace() {
+  const res = abandonRace(state)
+  if (res) onRaceFinish(res)
+}
+/** «Ещё раз» после схода */
+function retry() {
+  showResult.value = false
+  const id = lastResult.value?.id
+  if (id && canStartRace(state, id) && startRace(state, id)) sfx.start()
+}
+/** «Прокачаться» после схода — сразу в снаряжение */
+function goTrain() {
+  showResult.value = false
+  sheet.value = 'gear'
+}
+function closeResult() {
+  showResult.value = false
+}
+function closeAway() {
+  away.value = null
+  paused.value = false
+}
+
+let started = false
+/** Запуск игрового цикла: тики, сейвы, офлайн. Пока открыт отчёт об офлайне, забег на паузе. */
+function startFlow() {
+  if (started) return
+  started = true
+  startGame(onRaceFinish, (report) => {
+    away.value = report
+    paused.value = true
+  })
+}
+
+export const useRaceFlow = () => ({
+  lastResult, showResult, runout, celebrating, away,
+  quitRace, retry, goTrain, closeResult, closeAway, startFlow,
+})
