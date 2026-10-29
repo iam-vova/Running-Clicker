@@ -1,0 +1,25 @@
+// Пиксельные иконки 32×32 (PixelLab)
+.icon {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  display: block;
+
+  &--x2 {
+    width: 64px;
+    height: 64px;
+  }
+
+  // мелкая, в строке текста
+  &--inline {
+    display: inline;
+    width: 16px;
+    height: 16px;
+  }
+
+  // ещё не куплено — серая
+  &--start {
+    filter: grayscale(1);
+    opacity: 0.5;
+  }
+}

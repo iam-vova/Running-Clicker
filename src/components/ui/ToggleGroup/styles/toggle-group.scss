@@ -1,0 +1,35 @@
+.toggle-group {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border-radius: 999px;
+  background: var(--line);
+
+  &__option {
+    border: 0;
+    background: transparent;
+    height: 32px;
+    min-width: 44px;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--muted);
+
+    &--active {
+      background: var(--surface);
+      color: var(--fg);
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+    }
+
+    // сегмент с картинкой (персонаж): шире, без отступов
+    &--custom {
+      width: 52px;
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+}

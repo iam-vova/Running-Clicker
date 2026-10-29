@@ -1,0 +1,54 @@
+.character-picker {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 16px;
+  padding: 24px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px));
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  text-align: center;
+
+  &__title {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 34px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  &__subtitle {
+    margin: 0;
+    max-width: 30ch;
+    color: var(--muted);
+  }
+
+  &__options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+  }
+
+  &__option {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    padding: 20px 8px 28px;
+    border: 2px solid var(--line);
+    border-radius: 18px;
+    background: var(--stadium) center bottom / calc(512px * var(--px)) calc(384px * var(--px)) repeat-x;
+    image-rendering: pixelated;
+
+    &:hover {
+      border-color: var(--accent);
+    }
+  }
+
+  &__sprite {
+    width: calc(64px * var(--px));
+    height: calc(64px * var(--px));
+  }
+}

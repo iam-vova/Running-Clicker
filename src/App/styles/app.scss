@@ -1,0 +1,59 @@
+// Тема ночью: ночные фоны, тёмное небо, светлые нейтральные кнопки
+@mixin night {
+  --route: var(--route-night);
+  --stadium: var(--stadium-night);
+  --sky: #070a1f;
+  --btn-neutral: url('../../assets/ui/btn-light.png');
+  --btn-neutral-down: url('../../assets/ui/btn-light-down.png');
+  --btn-off: url('../../assets/ui/btn-off-dark.png');
+}
+
+.app {
+  // фоны сцены: день / ночь (картинки — из bgVars, чтобы не дублировать их в CSS)
+  --route: var(--route-day);
+  --stadium: var(--stadium-day);
+  --sky: #8ed6fa; // = голубое небо панорамы: выше картинки небо продолжается без шва
+  // пиксельные кнопки 9-slice (tools/sprites/buttons.py): нейтральная — тёмная днём, светлая ночью
+  --btn-neutral: url('../../assets/ui/btn-dark.png');
+  --btn-neutral-down: url('../../assets/ui/btn-dark-down.png');
+  --btn-off: url('../../assets/ui/btn-off-light.png');
+  --tile: calc(64px * var(--px));
+  --nav-h: calc(64px + env(safe-area-inset-bottom, 0px));
+  position: relative;
+  height: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  overflow: hidden;
+  color: var(--fg);
+  // игра, а не страница: без серо-белой подсветки тапа, выделения текста и меню долгого нажатия (iOS)
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) & {
+      @include night;
+    }
+  }
+
+  :root[data-theme='dark'] & {
+    @include night;
+  }
+
+  &__toast {
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--nav-h) + 12px);
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    background: var(--fg);
+    color: var(--bg);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.18);
+    z-index: 4;
+    pointer-events: none;
+  }
+}

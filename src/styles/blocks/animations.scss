@@ -1,0 +1,7 @@
+// Общие анимации: выезд окон и карточек
+@keyframes sheet-in {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}

@@ -1,0 +1,44 @@
+<script setup lang="ts">
+// HUD поверх сцены: углы (без звука, настройки), счётчик км, карточка следующего забега или забега на трассе, скорость.
+import { computed } from 'vue'
+import { fmt, kmPerSec, runSpeed } from '../../../game/logic.ts'
+import { state } from '../../../game/state.ts'
+import { t } from '../../../i18n.ts'
+import { muted, setMuted } from '../../../sound.ts'
+import { useRace } from '../../../composables/useRace.ts'
+import { useSheets } from '../../../composables/useSheets.ts'
+import { icon } from '../../../utils/assets.ts'
+import NextRaceCard from '../NextRaceCard/NextRaceCard.vue'
+import RaceHud from '../RaceHud/RaceHud.vue'
+
+const { nextRace, live } = useRace()
+const { toggleSheet } = useSheets()
+const perSec = computed(() => kmPerSec(state))
+const speed = computed(() => runSpeed(state))
+</script>
+
+<template>
+  <header class="game-hud" aria-live="polite">
+    <!-- Ресурс: тратится на тренировки и снаряжение -->
+    <div class="game-hud__label">{{ t('Тренировочные км') }}</div>
+    <!-- «Без звука» слева: глушит всё; раздельно звук и музыка — в настройках (шестерёнка справа) -->
+    <button class="game-hud__corner game-hud__corner--mute" :aria-label="t('Без звука')" :aria-pressed="muted" @click="setMuted(!muted)">
+      <img class="icon" :src="icon(muted ? 'sound-off' : 'sound-on')" alt="" />
+    </button>
+    <button class="game-hud__corner game-hud__corner--settings" :aria-label="t('Настройки')" @click="toggleSheet('settings')">
+      <img class="icon" :src="icon('gear')" alt="" />
+    </button>
+    <div class="game-hud__km">{{ fmt(state.km) }}</div>
+    <div class="game-hud__line"><b class="status status--accent">+{{ fmt(perSec) }}</b> {{ t('в секунду') }}</div>
+    <!-- Статистика: не тратится -->
+    <div class="game-hud__line game-hud__line--total">{{ t('Общий пробег {km} км', { km: fmt(state.totalKm) }) }}</div>
+
+    <RaceHud v-if="live" />
+    <NextRaceCard v-else-if="nextRace" />
+
+    <!-- Скорость бегуна — закреплена под карточкой забега, не зависит от персонажа -->
+    <span class="game-hud__speed">{{ t('{v} км/ч', { v: speed.toFixed(1) }) }}</span>
+  </header>
+</template>
+
+<style lang="scss" src="./styles/component.scss"></style>

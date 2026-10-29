@@ -1,0 +1,15 @@
+// Цвет состояния: успеваешь / с рывками и гелями / не успеваешь
+.status {
+  &--ok {
+    color: var(--ok);
+  }
+
+  &--maybe {
+    color: var(--warn);
+  }
+
+  &--late,
+  &--accent {
+    color: var(--accent);
+  }
+}

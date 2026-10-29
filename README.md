@@ -17,23 +17,25 @@ npm run sim      # симуляция баланса (RUSH=1 — игрок, к�
 src/
   game/          логика без Vue: config (числа баланса), logic (чистые функции), state (сейв, цикл, офлайн)
   composables/   общее состояние интерфейса — синглтоны на уровне модуля:
-                 useRace (прогноз, готовность, живые показатели забега), useRaceFlow (финиш, сход, офлайн),
+                 useRace (прогноз, готовность, показатели забега), useRaceFlow (финиш, сход, офлайн),
                  useSheets (какое окно открыто), shop (бустеры, бейджи), useTheme, useScale, useBulk
-  components/
-    stage/       GameStage — сцена: фон, бегун, тень лимита, арка, гели, рывок
-    hud/         GameHud, NextRaceCard, RaceHud
-    sheets/      BottomSheet (обёртка) + Train/Gear/Race/Profile/Settings, BoostRow
-    modals/      ResultModal, AwayModal, CharacterPicker
-    ui/          ToggleGroup, ModalCard
-    TabBar.vue
-  utils/         assets (иконки, листы спрайтов, фоны), format (время, проценты, множители)
-  styles/        base.css (токены, шрифты), ui.css (общие примитивы: кнопки, списки, шкалы, спрайты)
+  components/    stage/GameStage · hud/{GameHud, NextRaceCard, RaceHud}
+                 sheets/{BottomSheet, TrainSheet, GearSheet, RaceSheet, ProfileSheet, SettingsSheet, BoostRow}
+                 modals/{ResultModal, AwayModal, CharacterPicker} · ui/{TabBar, ToggleGroup, ModalCard, ReadyBar}
+  App/           корневая раскладка
+  utils/         assets (иконки, спрайты, фоны), format (время, проценты, множители)
+  styles/        index.scss → base.scss (токены, шрифты) + blocks/ (общие БЭМ-блоки: button, icon, sprite, shop-item…)
   i18n.ts        ru/en: русская строка — ключ
   sound.ts       Web Audio: эффекты, музыка, вибрация
-  App.vue        только раскладка
 ```
 
-Правило: логика игры — в `game/` (её же гоняет `sim/`), стили компонента — в его `<style scoped>`, в `ui.css` — только то, что используют несколько компонентов.
+### Компоненты и стили
+
+- Каждый компонент — папка: `BoostRow/BoostRow.vue` + `BoostRow/styles/`.
+- Классы по БЭМ. Корневой блок называется как компонент в kebab-case: `BoostRow.vue` → `.boost-row`, элементы `.boost-row__pips`, модификаторы `.boost-row__pip--on`.
+- В `styles/` — по файлу на каждый блок компонента (`boost-row.scss`), все они подключаются в `styles/component.scss`, а он — в компоненте: `<style lang="scss" src="./styles/component.scss">`.
+- Блоки, которые нужны нескольким компонентам (кнопки, иконки, спрайт, строка магазина), — в `src/styles/blocks/`, компонент миксует их: `class="shop-item boost-row"`.
+- Логика игры — только в `game/` (её же гоняет `sim/`).
 
 ## Публикация
 

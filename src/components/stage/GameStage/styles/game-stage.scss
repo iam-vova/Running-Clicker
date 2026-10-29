@@ -1,0 +1,158 @@
+// Тень лимита ночью светлая
+@mixin ghost-night($opacity) {
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) & {
+      filter: brightness(0) invert(1);
+      opacity: $opacity;
+    }
+  }
+
+  :root[data-theme='dark'] & {
+    filter: brightness(0) invert(1);
+    opacity: $opacity;
+  }
+}
+
+.game-stage {
+  position: absolute;
+  inset: 0;
+  background: var(--sky);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+
+  // фон прокручивается из JS (loop): background-position на целые пиксели
+  &__ground {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--nav-h);
+    height: calc(384px * var(--px)); // панорама 800×384, дорожка — нижние 66 строк
+    background: var(--route) 0 0 / calc(800px * var(--px)) 100% repeat-x;
+    image-rendering: pixelated;
+    pointer-events: none;
+  }
+
+  &__hero {
+    position: absolute;
+    left: 50%;
+    // ноги на середине дорожки: дорожка 318–384 строки фона, под кроссовками в кадре ~5px пустоты
+    bottom: calc(var(--nav-h) + 27px * var(--px));
+    transform: translateX(-50%);
+
+    // тень лимита: тёмный полупрозрачный силуэт за/перед бегуном
+    &--ghost {
+      transform: translateX(calc(-50% + var(--gx, 0px)));
+      filter: brightness(0);
+      opacity: 0.32;
+      transition: transform 0.3s linear;
+      @include ghost-night(0.28);
+    }
+  }
+
+  &__ghost-tag {
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--nav-h) + 27px * var(--px) + var(--tile) + 4px);
+    transform: translateX(calc(-50% + var(--gx, 0px)));
+    transition: transform 0.3s linear;
+    padding: 1px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  &__arch {
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--nav-h) + 25px * var(--px));
+    width: calc(84px * var(--px));
+    transform: translateX(calc(-50% + var(--ax, 0px)));
+    image-rendering: pixelated;
+    pointer-events: none;
+  }
+
+  &__pop {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    font-family: var(--num);
+    font-synthesis: none;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--accent);
+    text-shadow: 0 1px 0 var(--bg), 0 0 6px var(--bg);
+    pointer-events: none;
+    animation: game-stage-pop 0.8s ease-out forwards;
+    white-space: nowrap;
+  }
+
+  &__gel {
+    position: absolute;
+    left: 0;
+    width: calc(32px * var(--px));
+    height: calc(32px * var(--px));
+    padding: 0;
+    border: 0;
+    background: transparent center / contain no-repeat;
+    image-rendering: pixelated;
+    z-index: 1;
+    animation: game-stage-gel linear forwards;
+    filter: drop-shadow(0 0 6px rgb(255 200 80 / 0.8));
+  }
+
+  // подсказка новичку: одна плашка для обеих тем — тёмная полупрозрачная, светлый текст
+  &__hint {
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--nav-h) + 27px * var(--px) + var(--tile) + 24px);
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(8, 14, 12, 0.62);
+    color: #f3f7f5;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: game-stage-hint 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes game-stage-pop {
+  to {
+    transform: translate(-50%, -220%);
+    opacity: 0;
+  }
+}
+
+$fly: min(480px, 100vw);
+@keyframes game-stage-gel {
+  0% {
+    transform: translate(-100%, 0) rotate(-12deg);
+  }
+  25% {
+    transform: translate(calc(#{$fly} * 0.25), -18px) rotate(10deg);
+  }
+  50% {
+    transform: translate(calc(#{$fly} * 0.5), 0) rotate(-10deg);
+  }
+  75% {
+    transform: translate(calc(#{$fly} * 0.75), -18px) rotate(10deg);
+  }
+  100% {
+    transform: translate(calc(#{$fly} + 10px), 0) rotate(-12deg);
+  }
+}
+
+@keyframes game-stage-hint {
+  50% {
+    opacity: 0.6;
+  }
+}

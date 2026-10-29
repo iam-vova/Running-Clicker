@@ -1,0 +1,11 @@
+// Второстепенный текст
+.text {
+  &--muted {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  &--small {
+    font-size: 13px;
+  }
+}

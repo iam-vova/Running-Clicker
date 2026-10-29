@@ -1,0 +1,60 @@
+// Пиксельные кнопки 9-slice (tools/sprites/buttons.py): ступенчатые углы, блик сверху, толщина снизу;
+// при нажатии «вдавливаются». --btn-* (нейтральная днём тёмная, ночью светлая) задаёт тема в App.
+.button {
+  border: 8px solid transparent;
+  border-bottom-width: 12px;
+  border-image: var(--btn-neutral) 4 4 6 4 fill / 8px 8px 12px 8px stretch;
+  image-rendering: pixelated;
+  background: none;
+  color: var(--bg);
+  font-weight: 600;
+
+  &:active:not(:disabled) {
+    border-image-source: var(--btn-neutral-down);
+  }
+
+  // главное действие — оранжевая
+  &--primary {
+    border-image-source: url('../../assets/ui/btn-accent.png');
+    padding: 7px;
+    color: #fff;
+    font-family: var(--body);
+    font-size: 17px;
+
+    &:active:not(:disabled) {
+      border-image-source: url('../../assets/ui/btn-accent-down.png');
+    }
+  }
+
+  // старт без запаса: такая же, но нейтральная, как кнопки покупки
+  &--risky {
+    border-image-source: var(--btn-neutral);
+    color: var(--bg);
+
+    &:active:not(:disabled) {
+      border-image-source: var(--btn-neutral-down);
+    }
+  }
+
+  // цена покупки: одна ширина у всех — края в столбик ровные (влезает самая длинная «1.23Qa км»)
+  &--price {
+    width: 132px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 2px 4px;
+    font-family: var(--num);
+    font-synthesis: none;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+
+    &:disabled {
+      border-image-source: var(--btn-off);
+      color: var(--muted);
+      cursor: default;
+    }
+  }
+
+  &--wide {
+    width: 100%;
+  }
+}

@@ -1,0 +1,53 @@
+// Спрайт персонажа: лист кадров в ряд; внутренний слой шириной N кадров сдвигается steps(N).
+// Листы (--run-sheet, --idle-sheet, --finish-sheet) задаются CSS-переменными (utils/assets.ts → sheetVars).
+.sprite {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: var(--tile);
+  height: var(--tile);
+  pointer-events: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: 0 0 / 100% 100% no-repeat;
+    image-rendering: pixelated;
+    will-change: transform;
+  }
+
+  &--run::before,
+  &--finish::before {
+    width: 800%;
+    animation: sprite-frames 0.7s steps(8) infinite;
+  }
+
+  &--run::before {
+    background-image: var(--run-sheet);
+  }
+
+  &--finish::before {
+    background-image: var(--finish-sheet);
+    animation-duration: 0.8s;
+  }
+
+  &--idle::before {
+    width: 400%;
+    background-image: var(--idle-sheet);
+    animation: sprite-frames 1.2s steps(4) infinite;
+  }
+
+  &--tiny {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@keyframes sprite-frames {
+  to {
+    transform: translateX(-100%);
+  }
+}

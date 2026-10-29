@@ -1,0 +1,47 @@
+// Миксуется с .shop-item: та же раскладка строки, плюс множитель и уровни ветки
+.boost-row {
+  &__name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__chip {
+    font-size: 12px;
+    border-radius: 999px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+
+    @each $stat, $color in (speed: var(--accent), stamina: var(--lane), click: var(--ok)) {
+      &--#{$stat} {
+        background: color-mix(in srgb, #{$color} 16%, transparent);
+        color: $color;
+      }
+    }
+  }
+
+  &__level {
+    font-size: 14px;
+    margin-top: 2px;
+  }
+
+  &__pips {
+    display: flex;
+    gap: 4px;
+    max-width: 160px;
+    margin: 6px 0 4px;
+  }
+
+  &__pip {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+
+    &--on {
+      background: var(--fg);
+    }
+  }
+}

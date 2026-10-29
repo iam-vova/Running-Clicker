@@ -1,0 +1,13 @@
+// Кнопка-ссылка: подчёркнутый текст без рамки (сброс прогресса, отмена)
+.link-button {
+  background: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  color: var(--muted);
+  margin-right: 10px;
+
+  &--danger {
+    color: var(--accent);
+  }
+}

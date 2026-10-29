@@ -1,0 +1,63 @@
+<script setup lang="ts">
+// Корневая раскладка: сцена на весь экран, HUD сверху, панель вкладок снизу, окна и карточки поверх.
+// Логика игры — в game/, общее состояние интерфейса — в composables/, экраны — в components/.
+import { computed, onBeforeUnmount, onMounted } from 'vue'
+import { state, toast } from '../game/state.ts'
+import { startMusic, unlock } from '../sound.ts'
+import { useRaceFlow } from '../composables/useRaceFlow.ts'
+import { useScale } from '../composables/useScale.ts'
+import { useSheets } from '../composables/useSheets.ts'
+import { bgVars, sheetVars } from '../utils/assets.ts'
+import GameStage from '../components/stage/GameStage/GameStage.vue'
+import GameHud from '../components/hud/GameHud/GameHud.vue'
+import TabBar from '../components/ui/TabBar/TabBar.vue'
+import BottomSheet from '../components/sheets/BottomSheet/BottomSheet.vue'
+import TrainSheet from '../components/sheets/TrainSheet/TrainSheet.vue'
+import GearSheet from '../components/sheets/GearSheet/GearSheet.vue'
+import RaceSheet from '../components/sheets/RaceSheet/RaceSheet.vue'
+import ProfileSheet from '../components/sheets/ProfileSheet/ProfileSheet.vue'
+import SettingsSheet from '../components/sheets/SettingsSheet/SettingsSheet.vue'
+import AwayModal from '../components/modals/AwayModal/AwayModal.vue'
+import ResultModal from '../components/modals/ResultModal/ResultModal.vue'
+import CharacterPicker from '../components/modals/CharacterPicker/CharacterPicker.vue'
+
+const { px } = useScale()
+const { sheet, sheetTitle, closeSheet } = useSheets()
+const { lastResult, showResult, away, startFlow } = useRaceFlow()
+startFlow()
+
+const SHEETS = { train: TrainSheet, gear: GearSheet, race: RaceSheet, more: ProfileSheet, settings: SettingsSheet }
+
+/** Масштаб и листы кадров персонажа — CSS-переменные для всей игры */
+const rootVars = computed(() => ({ '--px': px.value, ...bgVars, ...sheetVars(state.character ?? 'he') }))
+
+// звук и музыка включаются по первому касанию (требование браузеров, особенно iOS)
+function onFirstTouch() {
+  unlock()
+  startMusic()
+}
+// и будят его на каждом касании: после сворачивания iOS прерывает звук. touchend/click — жесты, которые iOS точно считает «пользовательскими»
+const GESTURES = ['pointerdown', 'touchend', 'click'] as const
+onMounted(() => GESTURES.forEach((g) => addEventListener(g, onFirstTouch, true)))
+onBeforeUnmount(() => GESTURES.forEach((g) => removeEventListener(g, onFirstTouch, true)))
+</script>
+
+<template>
+  <main class="app" :style="rootVars">
+    <GameStage />
+    <GameHud />
+    <TabBar />
+
+    <BottomSheet v-if="sheet" :title="sheetTitle" @close="closeSheet">
+      <component :is="SHEETS[sheet]" />
+    </BottomSheet>
+
+    <div v-if="toast" class="app__toast" role="status">{{ toast }}</div>
+
+    <ResultModal v-if="showResult && lastResult" :result="lastResult" />
+    <AwayModal v-else-if="away" :report="away" />
+    <CharacterPicker v-if="!state.character" />
+  </main>
+</template>
+
+<style lang="scss" src="./styles/component.scss"></style>

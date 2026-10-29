@@ -1,0 +1,14 @@
+// Глобальные стили: токены и сброс, затем общие БЭМ-блоки, которые используют несколько компонентов.
+// Стили конкретного компонента — в его папке: Component/styles/component.scss.
+@use './base';
+@use './blocks/button';
+@use './blocks/link-button';
+@use './blocks/icon';
+@use './blocks/sprite';
+@use './blocks/status';
+@use './blocks/text';
+@use './blocks/splits';
+@use './blocks/shop-list';
+@use './blocks/shop-item';
+@use './blocks/setting-row';
+@use './blocks/animations';

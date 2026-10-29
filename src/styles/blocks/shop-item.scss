@@ -1,0 +1,32 @@
+// Строка магазина: иконка · описание · цена (тренировки, ветки снаряжения, гаджеты)
+.shop-item {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  list-style: none;
+
+  &--locked {
+    opacity: 0.55;
+  }
+
+  &__info {
+    min-width: 0;
+  }
+
+  &__name {
+    font-weight: 600;
+  }
+
+  &__meta {
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+
+    &--owned {
+      color: var(--ok);
+    }
+  }
+}

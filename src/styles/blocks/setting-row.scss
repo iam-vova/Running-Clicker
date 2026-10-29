@@ -1,0 +1,9 @@
+// Строка «подпись слева — значение/переключатель справа» (настройки, профиль)
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}

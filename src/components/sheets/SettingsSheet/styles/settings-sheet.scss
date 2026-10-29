@@ -1,0 +1,10 @@
+.settings-sheet {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+
+  // персонаж в переключателе: не сжимается в узком сегменте
+  &__character {
+    flex: none;
+  }
+}

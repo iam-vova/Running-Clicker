@@ -1,0 +1,21 @@
+.next-race-card {
+  pointer-events: auto;
+  margin-top: 10px;
+  width: 100%;
+  display: grid;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  border: 1px solid var(--line);
+  text-shadow: none;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+}

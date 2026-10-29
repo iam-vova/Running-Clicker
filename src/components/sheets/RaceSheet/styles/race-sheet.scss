@@ -1,0 +1,73 @@
+.race-sheet {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+
+  &__lead,
+  &__verdict,
+  &__last {
+    margin: 0;
+  }
+
+  &__verdict {
+    font-weight: 600;
+  }
+
+  &__last {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  &__name {
+    font-size: 26px;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  &__section {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  &__races {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+  }
+
+  &__race {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+    font-variant-numeric: tabular-nums;
+
+    &--locked {
+      color: var(--muted);
+    }
+
+    &--next {
+      font-weight: 600;
+    }
+  }
+
+  &__race-mark {
+    width: 16px;
+    height: 16px;
+    image-rendering: pixelated;
+  }
+
+  &__race-cutoff {
+    color: var(--muted);
+    font-size: 13px;
+  }
+}
