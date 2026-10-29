@@ -31,6 +31,7 @@ const messages: Messages = {
   'stage.debt': '+{n} м · это силы на финиш!',
   'stage.perfect': 'Идеально! +{n} м',
   'stage.miss': 'мимо · +{n} м',
+  'stage.checkpoint': '{km} км · {t} · {gap} к тени',
   'stage.plusKm': '+{n} км',
   'stage.plusEnergy': '+{n}% сил',
   'stage.catchGel': 'Поймать гель',

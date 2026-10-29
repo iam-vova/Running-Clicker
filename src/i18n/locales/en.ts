@@ -32,6 +32,7 @@ export const messages = {
   'stage.debt': '+{n} m · energy for the finish!',
   'stage.perfect': 'Perfect! +{n} m',
   'stage.miss': 'miss · +{n} m',
+  'stage.checkpoint': '{km} km · {t} · {gap} vs pace',
   'stage.plusKm': '+{n} km',
   'stage.plusEnergy': '+{n}% energy',
   'stage.catchGel': 'Catch the gel',

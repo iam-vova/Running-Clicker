@@ -31,6 +31,7 @@ const messages: Messages = {
   'stage.debt': '+{n} m · ¡energía de la meta!',
   'stage.perfect': '¡Perfecto! +{n} m',
   'stage.miss': 'fallo · +{n} m',
+  'stage.checkpoint': '{km} km · {t} · {gap} al ritmo',
   'stage.plusKm': '+{n} km',
   'stage.plusEnergy': '+{n}% energía',
   'stage.catchGel': 'Atrapa el gel',

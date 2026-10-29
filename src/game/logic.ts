@@ -354,10 +354,14 @@ export function startRace(s: GameState, id: RaceId): boolean {
  * Продвигает игру на dt секунд. Возвращает результат забега, если он завершился в этом тике:
  * финиш в лимит — награда; лимит истёк раньше финиша — сход без награды.
  */
+/** Во сколько раз быстрее течёт время на трассе этого забега (ультра сжаты до ~3 минут реального времени) */
+export const raceTimeScale = (id: RaceId) => Math.max(1, race(id).cutoff / RUNNER.raceRealSec)
+
 export function tick(s: GameState, dt: number): RaceResult | null {
   earn(s, kmPerSec(s) * dt)
   // забег — мелкими шагами, чтобы точно поймать момент «стены» (важно для оффлайна)
-  for (let left = dt; left > 0 && s.activeRace; left -= 0.25) {
+  const raceDt = s.activeRace ? dt * raceTimeScale(s.activeRace.id) : 0
+  for (let left = raceDt; left > 0 && s.activeRace; left -= 0.25) {
     const done = raceStep(s, Math.min(left, 0.25))
     if (done) return done
   }

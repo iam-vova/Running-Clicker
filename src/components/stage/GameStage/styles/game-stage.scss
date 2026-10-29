@@ -250,6 +250,24 @@
     filter: drop-shadow(0 0 6px rgb(255 200 80 / 0.8));
   }
 
+  // контрольная точка на длинном забеге: плашка посередине сцены, всплывает и гаснет
+  &__checkpoint {
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    margin: 0;
+    padding: 8px 16px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    border: 2px solid currentColor;
+    font-family: var(--display);
+    font-size: 13px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 2;
+    animation: game-stage-checkpoint 2.6s ease-out forwards;
+  }
+
   // подсказка новичку: одна плашка для обеих тем — тёмная полупрозрачная, светлый текст
   &__hint {
     position: absolute;
@@ -321,5 +339,23 @@
 @keyframes game-stage-hint {
   50% {
     opacity: 0.6;
+  }
+}
+
+@keyframes game-stage-checkpoint {
+  0% {
+    transform: translate(-50%, 12px);
+    opacity: 0;
+  }
+
+  12%,
+  80% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -8px);
+    opacity: 0;
   }
 }

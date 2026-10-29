@@ -2,7 +2,7 @@
 // Сцена на весь экран: прокрутка трассы, бегун, тень лимита, финишная арка, гели и всплывающие «+км».
 // Тап в любое место (или пробел) — рывок.
 import { computed, onBeforeUnmount, onMounted, onUpdated, ref, watch } from 'vue'
-import { catchGel, catchRaceGel, click, clickValue, feedDue, fmt, forecast, raceSpeed } from '../../../game/logic.ts'
+import { catchGel, catchRaceGel, click, clickValue, feedDue, fmt, fmtClock, forecast, raceSpeed, raceTimeScale } from '../../../game/logic.ts'
 import type { DashHit } from '../../../game/logic.ts'
 import { RUNNER } from '../../../game/config.ts'
 import { paused, state } from '../../../game/state.ts'
@@ -51,10 +51,12 @@ function loop(now: number) {
   const dt = last ? Math.min((now - last) / 1000, 0.1) : 0
   last = now
   if (state.activeRace && feedDue(state)) spawnFeed()
-  if (dashing.value || runout.value || cooldown.value || state.activeRace) moveGround(GROUND_SPEED * dt)
+  // на ультра время на трассе ускорено (raceTimeScale) — земля и всё, что на ней, едут во столько же раз быстрее
+  const k = state.activeRace ? raceTimeScale(state.activeRace.id) : 1
+  if (dashing.value || runout.value || cooldown.value || state.activeRace) moveGround(GROUND_SPEED * k * dt)
   if (groundBoost > 0.01) {
     // рывок = короткое ускорение: земля едет втрое быстрее обычного, пока не догонит (один рывок — ~0.07 с)
-    const d = Math.min(groundBoost, GROUND_SPEED * 2 * dt)
+    const d = Math.min(groundBoost, GROUND_SPEED * 2 * k * dt)
     groundBoost -= d
     moveGround(d)
   }
@@ -299,6 +301,36 @@ function flashMeter(hit: DashHit) {
   flashTimer = window.setTimeout(() => delete el.dataset.hit, 300)
 }
 
+// --- контрольные точки на длинных забегах (от 30 км): каждые 10 км — сплит, запас к тени лимита и аплодисменты ---
+const checkpoint = ref<{ id: number; text: string; ok: boolean } | null>(null)
+let cpTimer = 0
+let cpNext = 10
+watch(
+  () => state.activeRace?.seed,
+  () => (cpNext = 10),
+)
+watch(
+  () => state.activeRace?.covered ?? 0,
+  (c) => {
+    const r = activeRace.value
+    const a = state.activeRace
+    if (!r || !a || r.km < 30) return
+    if (c < cpNext) return
+    while (cpNext <= c) cpNext += 10
+    const km = cpNext - 10
+    if (km >= r.km) return
+    const lead = (r.cutoff * km) / r.km - a.elapsed // минут в запасе к тени лимита на этой отметке
+    checkpoint.value = {
+      id: Date.now(),
+      ok: lead >= 0,
+      text: t('stage.checkpoint', { km, t: fmtClock(a.elapsed), gap: (lead >= 0 ? '+' : '−') + fmtClock(Math.abs(lead)) }),
+    }
+    sfx.cheer(0.8)
+    clearTimeout(cpTimer)
+    cpTimer = window.setTimeout(() => (checkpoint.value = null), 2600)
+  },
+)
+
 // --- рывок ---
 let dashTimer = 0
 function dash(e?: PointerEvent) {
@@ -439,6 +471,7 @@ onBeforeUnmount(() => {
       @pointerdown.stop="grabGel"
       @animationend="gel = null"
     ></button>
+    <p v-if="checkpoint" :key="checkpoint.id" class="game-stage__checkpoint" :class="checkpoint.ok ? 'status--ok' : 'status--late'">{{ checkpoint.text }}</p>
     <span v-for="p in pops" :key="p.id" class="game-stage__pop" :class="{ 'game-stage__pop--warn': p.warn }" :style="{ left: p.x + 'px', top: p.y + 'px' }">{{ p.text }}</span>
     <p v-if="state.clicks < 5 && !state.activeRace && !runout && !celebrating" class="game-stage__hint">{{ t('stage.hint') }}</p>
   </div>
