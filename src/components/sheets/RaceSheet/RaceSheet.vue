@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 // «Забег»: следующий старт (прогноз, лимит, темп, готовность, награда) и список дистанций.
 import { RACES } from '../../../game/config.ts'
 import type { RaceId } from '../../../game/config.ts'
@@ -14,7 +15,12 @@ import { paceText } from '../../../utils/format.ts'
 import ReadyBar from '../../ui/ReadyBar/ReadyBar.vue'
 
 const { nextRace, activeRace, eta, etaBest, avgSpeed, gap, readiness, readyPct, raceStatus, rewardText, ready, go } = useRace()
-const { lastResult } = useRaceFlow()
+const { lastResult, quitRace } = useRaceFlow()
+const confirmQuit = ref(false)
+const quit = () => {
+  confirmQuit.value = false
+  quitRace()
+}
 const { closeSheet } = useSheets()
 const start = () => go() && closeSheet()
 const MARK = { done: 'check', next: 'next', locked: 'lock' } as const
@@ -26,6 +32,15 @@ const mark = (id: RaceId) => MARK[raceStatus(id)]
     <template v-if="activeRace">
       <p class="race-sheet__lead">{{ t('raceSheet.onCourse', { name: raceName(activeRace.id) }) }}</p>
       <button class="button button--primary" @click="closeSheet">{{ t('raceSheet.backToCourse') }}</button>
+      <!-- «Сдаться»: первый тап просит подтверждения -->
+      <div class="race-sheet__quit">
+        <button v-if="!confirmQuit" class="link-button" @click="confirmQuit = true">{{ t('raceHud.quit') }}</button>
+        <template v-else>
+          <span class="text text--muted">{{ t('raceHud.quitAsk') }}</span>
+          <button class="link-button race-sheet__quit-confirm" @click="quit">{{ t('raceHud.quitConfirm') }}</button>
+          <button class="link-button" @click="confirmQuit = false">{{ t('raceHud.keepRunning') }}</button>
+        </template>
+      </div>
     </template>
     <template v-else-if="nextRace">
       <h3 class="race-sheet__name">{{ t('race.title', { name: raceName(nextRace.id) }) }}</h3>

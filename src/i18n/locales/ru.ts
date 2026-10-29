@@ -75,6 +75,7 @@ const messages: Messages = {
   'raceHud.tipTap': 'Тапай, когда указатель в зелёной зоне, — рывок вдвое дальше',
   'raceHud.tipGel': 'Запас сил кончился — не тапай, лови гель на пункте питания',
   'raceHud.tipSave': 'Запас сил кончился — не тапай',
+  'raceHud.finish': 'Финиш',
   'raceHud.covered': '{c} из {k} км',
   'raceHud.ahead': 'отрыв от тени +{m} м',
   'raceHud.behind': 'тень впереди на {m} м',

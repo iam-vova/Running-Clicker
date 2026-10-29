@@ -51,21 +51,6 @@
     }
   }
 
-  &__ghost-tag {
-    position: absolute;
-    left: 50%;
-    bottom: calc(var(--nav-h) + 27px * var(--px) + var(--tile) + 4px);
-    transform: translateX(calc(-50% + var(--gx, 0px)));
-    padding: 1px 8px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
-    background: color-mix(in srgb, var(--surface) 70%, transparent);
-    color: var(--muted);
-    pointer-events: none;
-  }
-
   // предметы на земле (финиш с болельщиками, толпа на старте, пункт питания). Обёртка без своей коробки
   // (display: contents) только передаёт детям сдвиг --ax из JS; каждый ребёнок стоит от земли под центром сцены.
   // Раньше обёртка была 0×0 с transform — Safari такие слои мог не рисовать.

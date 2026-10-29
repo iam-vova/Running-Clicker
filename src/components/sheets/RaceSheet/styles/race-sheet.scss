@@ -28,6 +28,20 @@
     gap: 8px;
   }
 
+  &__quit {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 14px;
+    font-size: 14px;
+  }
+
+  &__quit-confirm {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
   &__section {
     font-family: var(--display);
     text-transform: uppercase;

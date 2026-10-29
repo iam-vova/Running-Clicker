@@ -2,7 +2,7 @@
 // Сцена на весь экран: прокрутка трассы, бегун, тень лимита, финишная арка, гели и всплывающие «+км».
 // Тап в любое место (или пробел) — рывок.
 import { computed, onBeforeUnmount, onMounted, onUpdated, ref, watch } from 'vue'
-import { catchGel, catchRaceGel, click, clickValue, feedDue, fmt, fmtClock, forecast, raceSpeed } from '../../../game/logic.ts'
+import { catchGel, catchRaceGel, click, clickValue, feedDue, fmt, forecast, raceSpeed } from '../../../game/logic.ts'
 import type { DashHit } from '../../../game/logic.ts'
 import { RUNNER } from '../../../game/config.ts'
 import { paused, state } from '../../../game/state.ts'
@@ -221,7 +221,6 @@ const rivals = computed(() => {
 // --- тень лимита: стоит на трассе там же, где была бы, — в том же масштабе, что и земля.
 // Оторвался далеко — тень уходит за левый край экрана; отстал — убегает за правый ---
 const ghostEl = ref<HTMLElement | null>(null)
-const ghostTagEl = ref<HTMLElement | null>(null)
 function ghostOffset(): number {
   if (!live.value || !activeRace.value) return 0
   const secs = live.value.leadM / 1000 / raceSpeed(state, activeRace.value.id) // на сколько секунд бега отрыв
@@ -244,7 +243,6 @@ function placeRunners() {
   }
   const gx = `${Math.round(ghostOffset()) * px.value}px`
   ghostEl.value?.style.setProperty('--gx', gx)
-  ghostTagEl.value?.style.setProperty('--gx', gx)
   lastSeen = []
   for (const el of els) {
     const i = Number(el.dataset.rival)
@@ -413,7 +411,6 @@ onBeforeUnmount(() => {
     <!-- Тень лимита: силуэт бегуна в темп контрольного времени — позади, если успеваешь, впереди, если отстаёшь -->
     <template v-if="live && activeRace">
       <span ref="ghostEl" class="sprite sprite--run game-stage__hero game-stage__hero--ghost" aria-hidden="true"></span>
-      <span ref="ghostTagEl" class="game-stage__ghost-tag">{{ t('race.cutoffShort', { t: fmtClock(activeRace.cutoff) }) }}</span>
     </template>
     <!-- Шкала рывка под ногами бегуна: тап в зелёную зону — рывок вдвое дальше -->
     <div v-if="live && activeRace" ref="meterEl" class="game-stage__meter" :class="{ 'game-stage__meter--off': !live.canTap }" aria-hidden="true">

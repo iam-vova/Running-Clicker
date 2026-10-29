@@ -75,6 +75,7 @@ const messages: Messages = {
   'raceHud.tipTap': 'Toca cuando el indicador esté en la zona verde: el sprint llega el doble de lejos',
   'raceHud.tipGel': 'Sin energía de reserva: no toques y atrapa el gel del avituallamiento',
   'raceHud.tipSave': 'Sin energía de reserva: no toques',
+  'raceHud.finish': 'Meta',
   'raceHud.covered': '{c} de {k} km',
   'raceHud.ahead': '+{m} m por delante de la sombra',
   'raceHud.behind': 'la sombra va {m} m por delante',

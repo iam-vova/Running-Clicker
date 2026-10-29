@@ -76,6 +76,7 @@ export const messages = {
   'raceHud.tipTap': 'Tap when the pointer is in the green zone: the dash goes twice as far',
   'raceHud.tipGel': 'Spare energy is gone — stop tapping and catch the gel at the aid station',
   'raceHud.tipSave': 'Spare energy is gone — stop tapping',
+  'raceHud.finish': 'Finish',
   'raceHud.covered': '{c} of {k} km',
   'raceHud.ahead': '+{m} m ahead of the pace ghost',
   'raceHud.behind': 'pace ghost {m} m ahead',

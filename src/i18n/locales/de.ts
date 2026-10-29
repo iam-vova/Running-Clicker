@@ -75,6 +75,7 @@ const messages: Messages = {
   'raceHud.tipTap': 'Tippe, wenn der Zeiger im grünen Bereich ist: der Sprint geht doppelt so weit',
   'raceHud.tipGel': 'Keine Reserve mehr — nicht tippen, fang das Gel an der Verpflegung',
   'raceHud.tipSave': 'Keine Reserve mehr — nicht tippen',
+  'raceHud.finish': 'Ziel',
   'raceHud.covered': '{c} von {k} km',
   'raceHud.ahead': '+{m} m vor dem Zeitlimit-Schatten',
   'raceHud.behind': 'Schatten {m} m voraus',

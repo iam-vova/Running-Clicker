@@ -22,7 +22,8 @@ const speed = computed(() => runSpeed(state))
 <template>
   <header class="game-hud" aria-live="polite">
     <!-- Ресурс: тратится на тренировки и снаряжение -->
-    <div class="game-hud__label">{{ t('hud.trainingKm') }}</div>
+    <!-- на забеге счётчик км, доход и скорость скрыты: на экране только забег -->
+    <div v-if="!live" class="game-hud__label">{{ t('hud.trainingKm') }}</div>
     <!-- «Без звука» слева: глушит всё; раздельно звук и музыка — в настройках (шестерёнка справа) -->
     <button class="game-hud__corner game-hud__corner--mute" :aria-label="t('hud.mute')" :aria-pressed="muted" @click="setMuted(!muted)">
       <img class="icon" :src="icon(muted ? 'sound-off' : 'sound-on')" alt="" />
@@ -30,17 +31,19 @@ const speed = computed(() => runSpeed(state))
     <button class="game-hud__corner game-hud__corner--settings" :aria-label="t('settings.title')" @click="toggleSheet('settings')">
       <img class="icon" :src="icon('gear')" alt="" />
     </button>
-    <div class="game-hud__km">{{ fmt(state.km) }}</div>
-    <div class="game-hud__line"><b class="status status--accent">+{{ fmt(perSec) }}</b> {{ t('hud.perSecond') }}</div>
-    <!-- Статистика: не тратится -->
-    <div class="game-hud__line game-hud__line--total">{{ t('hud.total', { km: fmt(state.totalKm) }) }}</div>
+    <template v-if="!live">
+      <div class="game-hud__km">{{ fmt(state.km) }}</div>
+      <div class="game-hud__line"><b class="status status--accent">+{{ fmt(perSec) }}</b> {{ t('hud.perSecond') }}</div>
+      <!-- Статистика: не тратится -->
+      <div class="game-hud__line game-hud__line--total">{{ t('hud.total', { km: fmt(state.totalKm) }) }}</div>
+    </template>
 
     <RaceHud v-if="live" />
     <!-- следующий забег — только когда итог прошлого закрыт: не раньше финишной анимации и окна результата -->
     <NextRaceCard v-else-if="nextRace && !runout && !celebrating && !showResult" />
 
     <!-- Скорость бегуна — закреплена под карточкой забега, не зависит от персонажа -->
-    <span class="game-hud__speed">{{ t('units.kmh', { v: speed.toFixed(1) }) }}</span>
+    <span v-if="!live" class="game-hud__speed">{{ t('units.kmh', { v: speed.toFixed(1) }) }}</span>
   </header>
 </template>
 

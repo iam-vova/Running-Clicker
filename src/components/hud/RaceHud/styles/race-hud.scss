@@ -1,5 +1,5 @@
 .race-hud {
-  margin-top: 10px;
+  margin-top: 36px; // под угловыми кнопками: счётчик км на забеге скрыт
   width: 100%;
   display: grid;
   gap: 6px;
@@ -126,27 +126,5 @@
     width: 2px;
     margin-left: -1px;
     background: var(--fg);
-  }
-
-  &__quit-row {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 10px;
-    pointer-events: auto;
-  }
-
-  &__quit {
-    border: 0;
-    background: none;
-    padding: 2px 0;
-    font-size: 13px;
-    color: var(--muted);
-    text-decoration: underline;
-
-    &--danger {
-      color: var(--accent);
-      font-weight: 600;
-    }
   }
 }
