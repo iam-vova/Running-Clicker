@@ -15,7 +15,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    max-height: calc(100% - 72px);
+    max-height: calc(100% - max(72px, calc(env(safe-area-inset-top, 0px) + 16px))); // не заходит под чёлку
     display: flex;
     flex-direction: column;
     background: var(--bg);

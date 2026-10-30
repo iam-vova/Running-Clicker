@@ -7,7 +7,7 @@ import { state } from '../../../game/state.ts'
 import { LOCALES, lang, setLang, t } from '../../../i18n/index.ts'
 import { characterName } from '../../../i18n/names.ts'
 import { musicOn, setMusic, setSound, soundOn } from '../../../sound.ts'
-import { analyticsOn, setAnalytics } from '../../../analytics.ts'
+import { analyticsAvailable, analyticsOn, setAnalytics } from '../../../analytics.ts'
 import { THEMES, useTheme } from '../../../composables/useTheme.ts'
 import { icon, sheetVars } from '../../../utils/assets.ts'
 import ToggleGroup from '../../ui/ToggleGroup/ToggleGroup.vue'
@@ -55,11 +55,14 @@ const onOff = computed(() => [
         <option v-for="l in LOCALES" :key="l.code" :value="l.code">{{ l.name }}</option>
       </select>
     </div>
-    <div class="setting-row">
-      <span class="setting-row__label"><img class="icon" :src="icon('stats')" alt="" />{{ t('settings.analytics') }}</span>
-      <ToggleGroup v-model="analytics" :label="t('settings.analytics')" :options="onOff" />
-    </div>
-    <p class="text text--muted text--small">{{ t('settings.analyticsNote') }}</p>
+    <!-- статистика — где она есть (на CrazyGames выключена) -->
+    <template v-if="analyticsAvailable">
+      <div class="setting-row">
+        <span class="setting-row__label"><img class="icon" :src="icon('stats')" alt="" />{{ t('settings.analytics') }}</span>
+        <ToggleGroup v-model="analytics" :label="t('settings.analytics')" :options="onOff" />
+      </div>
+      <p class="text text--muted text--small">{{ t('settings.analyticsNote') }}</p>
+    </template>
   </div>
 </template>
 

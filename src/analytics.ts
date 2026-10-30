@@ -9,7 +9,12 @@ import { platformName } from './platform.ts'
 
 const API_KEY = 'phc_sQBsDea6EpnJTgJveep57PA2anvie3Z7xTgXcYmSrEyK' // публичный ключ проекта: им можно только отправлять события
 const HOST = 'https://us.i.posthog.com' // регион проекта: us или eu
-const ENABLED = import.meta.env.PROD
+/**
+ * Сборка для CrazyGames (`--mode crazygames`) — без аналитики вовсе: у площадки своя статистика, а сторонняя потребовала бы
+ * политики конфиденциальности. Условие известно при сборке — код отправки и ключ в бандл не попадают.
+ */
+export const analyticsAvailable = import.meta.env.MODE !== 'crazygames'
+const ENABLED = import.meta.env.PROD && analyticsAvailable
 
 // --- согласие: по умолчанию включено, выключается в настройках ---
 const OPT_KEY = 'ultramarathon-analytics'
@@ -96,7 +101,7 @@ export function track(event: string, props: Record<string, unknown> = {}) {
 }
 
 function flush(beacon = false) {
-  if (!queue.length) return
+  if (!ENABLED || !queue.length) return
   const body = JSON.stringify({ api_key: API_KEY, batch: queue.splice(0) })
   try {
     if (beacon && navigator.sendBeacon) navigator.sendBeacon(`${HOST}/batch/`, new Blob([body], { type: 'application/json' }))
@@ -105,6 +110,8 @@ function flush(beacon = false) {
     /* сеть недоступна — статистика не критична */
   }
 }
-setInterval(flush, 10_000)
-document.addEventListener('visibilitychange', () => document.hidden && flush(true))
-addEventListener('pagehide', () => flush(true))
+if (ENABLED) {
+  setInterval(flush, 10_000)
+  document.addEventListener('visibilitychange', () => document.hidden && flush(true))
+  addEventListener('pagehide', () => flush(true))
+}
