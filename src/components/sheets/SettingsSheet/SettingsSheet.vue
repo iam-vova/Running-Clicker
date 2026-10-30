@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// «Настройки»: подпись слева, переключатель справа — персонаж, тема, звук, музыка, язык.
+// «Настройки»: иконка и подпись слева, переключатель справа — персонаж, тема, звук, музыка, язык.
 import { computed } from 'vue'
 import { CHARACTERS } from '../../../game/config.ts'
 import type { CharId } from '../../../game/config.ts'
@@ -9,7 +9,7 @@ import { characterName } from '../../../i18n/names.ts'
 import { musicOn, setMusic, setSound, soundOn } from '../../../sound.ts'
 import { analyticsOn, setAnalytics } from '../../../analytics.ts'
 import { THEMES, useTheme } from '../../../composables/useTheme.ts'
-import { sheetVars } from '../../../utils/assets.ts'
+import { icon, sheetVars } from '../../../utils/assets.ts'
 import ToggleGroup from '../../ui/ToggleGroup/ToggleGroup.vue'
 
 const { themePref, setTheme } = useTheme()
@@ -31,32 +31,32 @@ const onOff = computed(() => [
 <template>
   <div class="settings-sheet">
     <div class="setting-row">
-      <span>{{ t('settings.character') }}</span>
+      <span class="setting-row__label"><img class="icon" :src="icon('jog')" alt="" />{{ t('settings.character') }}</span>
       <ToggleGroup v-model="character" :label="t('settings.character')" :options="charOptions">
         <template #option><span class="sprite sprite--idle sprite--tiny settings-sheet__character" aria-hidden="true"></span></template>
       </ToggleGroup>
     </div>
     <div class="setting-row">
-      <span>{{ t('settings.theme') }}</span>
+      <span class="setting-row__label"><img class="icon" :src="icon('theme')" alt="" />{{ t('settings.theme') }}</span>
       <ToggleGroup v-model="theme" :label="t('settings.theme')" :options="themeOptions" />
     </div>
     <div class="setting-row">
-      <span>{{ t('settings.sound') }}</span>
+      <span class="setting-row__label"><img class="icon" :src="icon('sound-on')" alt="" />{{ t('settings.sound') }}</span>
       <ToggleGroup v-model="sound" :label="t('settings.sound')" :options="onOff" />
     </div>
     <div class="setting-row">
-      <span>{{ t('settings.music') }}</span>
+      <span class="setting-row__label"><img class="icon" :src="icon('music')" alt="" />{{ t('settings.music') }}</span>
       <ToggleGroup v-model="music" :label="t('settings.music')" :options="onOff" />
     </div>
     <div class="setting-row">
-      <span>{{ t('settings.language') }}</span>
+      <span class="setting-row__label"><img class="icon" :src="icon('globe')" alt="" />{{ t('settings.language') }}</span>
       <!-- языков может быть много — список, а не переключатель; названия на самих языках -->
       <select class="settings-sheet__language" :aria-label="t('settings.language')" :value="lang" @change="setLang(($event.target as HTMLSelectElement).value)">
         <option v-for="l in LOCALES" :key="l.code" :value="l.code">{{ l.name }}</option>
       </select>
     </div>
     <div class="setting-row">
-      <span>{{ t('settings.analytics') }}</span>
+      <span class="setting-row__label"><img class="icon" :src="icon('stats')" alt="" />{{ t('settings.analytics') }}</span>
       <ToggleGroup v-model="analytics" :label="t('settings.analytics')" :options="onOff" />
     </div>
     <p class="text text--muted text--small">{{ t('settings.analyticsNote') }}</p>

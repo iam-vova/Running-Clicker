@@ -7,7 +7,11 @@
   padding: 10px 0;
   border-bottom: 1px solid var(--line);
 
-  // подпись слева — игровым шрифтом
-  > span:first-child {
+  // подпись слева: пиксельная иконка и текст
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
   }
 }
