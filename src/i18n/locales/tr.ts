@@ -220,7 +220,7 @@ const messages: Messages = {
   'profile.finished': 'bitirildi',
   'profile.total': 'Toplam mesafe',
   'profile.timeNote': 'Oyundaki bir saniye parkurda bir dakikadır. Antrenmanlar kilometre kazandırır ve koşucunun hızı onlarla artar.',
-  'profile.offlineNote': 'İlerleme bu tarayıcıda kaydedilir. Oyun kapalıyken koşucu {p} verimle {h} kadar antrenman yapar, yarışlar duraklatılır.',
+  'profile.offlineNote': 'İlerleme otomatik olarak kaydedilir. Oyun kapalıyken koşucu {p} verimle {h} kadar antrenman yapar, yarışlar duraklatılır.',
   'profile.reset': 'İlerlemeyi sıfırla',
   'profile.resetAsk': 'Her şey silinsin mi?',
   'profile.resetConfirm': 'Evet, sıfırla',
@@ -249,6 +249,7 @@ const messages: Messages = {
   'away.efficiency': 'Çevrimdışı antrenman oyun içi hızın {p} kadarıdır (Kişisel antrenörle artar).',
   'away.racePaused': 'Yarışın duraklatıldı — aynı yerden devam edeceksin.',
   'away.continue': 'Devam',
+  'away.double': '▶ Reklam izle, ×2 al',
 
   // --- race result
   'finale.title': '100 mil!',

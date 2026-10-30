@@ -14,8 +14,13 @@
 }
 
 .game-stage {
+  // на всю ширину окна, шире колонки интерфейса: на мониторе по бокам продолжается трасса
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
+  overflow: hidden;
   background: linear-gradient(to top, var(--grass) var(--floor), var(--sky) var(--floor));
   touch-action: manipulation;
   user-select: none;
@@ -153,8 +158,8 @@
   // панель рывка внизу над травой: сколько рывков в запасе и шкала попадания
   &__dash {
     position: absolute;
-    left: 16px;
-    right: 16px;
+    left: calc(50vw - var(--col-w) / 2 + 16px); // в колонке интерфейса
+    right: calc(50vw - var(--col-w) / 2 + 16px);
     bottom: calc(var(--nav-h) + 10px);
     display: flex;
     align-items: center;
@@ -312,26 +317,26 @@
   }
 }
 
-// летит через всю сцену: left в % от ширины игры, покачивание — transform
+// летит через колонку интерфейса (сцена шире неё на мониторе), покачивание — transform
 @keyframes game-stage-gel {
   0% {
-    left: 0;
+    left: calc(50vw - var(--col-w) / 2 + var(--col-w) * 0);
     transform: translate(-100%, 0) rotate(-12deg);
   }
   25% {
-    left: 25%;
+    left: calc(50vw - var(--col-w) / 2 + var(--col-w) * 0.25);
     transform: translate(-50%, -18px) rotate(10deg);
   }
   50% {
-    left: 50%;
+    left: calc(50vw - var(--col-w) / 2 + var(--col-w) * 0.5);
     transform: translate(-50%, 0) rotate(-10deg);
   }
   75% {
-    left: 75%;
+    left: calc(50vw - var(--col-w) / 2 + var(--col-w) * 0.75);
     transform: translate(-50%, -18px) rotate(10deg);
   }
   100% {
-    left: 100%;
+    left: calc(50vw - var(--col-w) / 2 + var(--col-w) * 1);
     transform: translate(10px, 0) rotate(-12deg);
   }
 }

@@ -3,6 +3,7 @@ import { reactive, ref } from 'vue'
 import { OFFLINE } from './config.ts'
 import { SAVE_VERSION, applyOffline, income, kmPerSec, newState, tick } from './logic.ts'
 import type { GameState, OfflineReport, RaceResult } from './logic.ts'
+import { cloudSave, platformPaused } from '../platform.ts'
 
 const SAVE_KEY = 'ultramarathon-save'
 
@@ -55,18 +56,21 @@ function load(): GameState {
   }
 }
 
-export function save() {
+/** force — уходим со страницы: в облако сразу, без ограничения частоты */
+export function save(force = false) {
   state.lastSave = Date.now()
+  const json = JSON.stringify(state)
   try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify(state))
+    localStorage.setItem(SAVE_KEY, json)
   } catch {
     /* хранилище недоступно — играем без сейвов */
   }
+  cloudSave(json, force)
 }
 
 export function resetGame() {
   Object.assign(state, newState())
-  save()
+  save(true)
 }
 
 let toastTimer = 0
@@ -101,17 +105,17 @@ export function startGame(onRaceFinish: (r: RaceResult) => void, onReturn: (r: O
     const now = performance.now()
     const dt = (now - last) / 1000
     last = now
-    if (document.hidden || paused.value) return
+    if (document.hidden || paused.value || platformPaused.value) return
     const done = tick(state, dt)
     if (done) onRaceFinish(done)
   }, 100)
 
   setInterval(save, 10_000)
-  addEventListener('beforeunload', save)
+  addEventListener('beforeunload', () => save(true))
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       hiddenAt = Date.now()
-      save()
+      save(true)
     } else if (hiddenAt) {
       last = performance.now()
       const report = settleAway((Date.now() - hiddenAt) / 1000)

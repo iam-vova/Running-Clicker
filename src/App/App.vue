@@ -47,7 +47,8 @@ onBeforeUnmount(() => GESTURES.forEach((g) => removeEventListener(g, onFirstTouc
 </script>
 
 <template>
-  <main class="app" :class="{ 'app--night': nightNow }" :style="rootVars">
+  <!-- правый клик и долгое нажатие не открывают меню браузера (игра, а не страница) -->
+  <main class="app" :class="{ 'app--night': nightNow }" :style="rootVars" @contextmenu.prevent>
     <GameStage />
     <GameHud />
     <ActionBar />

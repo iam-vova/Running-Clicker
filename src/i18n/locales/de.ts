@@ -219,7 +219,7 @@ const messages: Messages = {
   'profile.finished': 'im Ziel',
   'profile.total': 'Gesamtstrecke',
   'profile.timeNote': 'Eine Sekunde im Spiel ist eine Minute auf der Strecke. Training bringt Kilometer, und mit ihnen wird dein Läufer schneller.',
-  'profile.offlineNote': 'Der Fortschritt wird in diesem Browser gespeichert. Solange das Spiel geschlossen ist, trainiert der Läufer bis zu {h} mit {p} Effizienz, und das Rennen ist pausiert.',
+  'profile.offlineNote': 'Der Fortschritt wird automatisch gespeichert. Solange das Spiel geschlossen ist, trainiert der Läufer bis zu {h} mit {p} Effizienz, und das Rennen ist pausiert.',
   'profile.reset': 'Fortschritt zurücksetzen',
   'profile.resetAsk': 'Alles löschen?',
   'profile.resetConfirm': 'Ja, zurücksetzen',
@@ -248,6 +248,7 @@ const messages: Messages = {
   'away.efficiency': 'Offline läuft das Training mit {p} des Spieltempos (steigt mit dem Personal Trainer).',
   'away.racePaused': 'Dein Rennen war pausiert — es geht an derselben Stelle weiter.',
   'away.continue': 'Weiter',
+  'away.double': '▶ ×2 für Werbung ansehen',
 
   // --- race result
   'finale.title': '100 Meilen!',

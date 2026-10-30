@@ -4,6 +4,7 @@
 import { ref, watchEffect } from 'vue'
 import type { Locale, Message, MessageKey } from './define.ts'
 import en from './locales/en.ts'
+import { platformLang } from '../platform.ts'
 
 export type { MessageKey } from './define.ts'
 
@@ -24,7 +25,7 @@ function match(code: string | null | undefined): string | null {
 }
 
 const KEY = 'ultramarathon-lang'
-/** Сохранённый выбор → язык браузера → английский */
+/** Сохранённый выбор → язык площадки (Яндекс Игры) → язык браузера → английский */
 function initial(): string {
   try {
     const saved = match(localStorage.getItem(KEY))
@@ -32,6 +33,8 @@ function initial(): string {
   } catch {
     /* хранилище недоступно */
   }
+  const p = match(platformLang())
+  if (p) return p
   for (const l of navigator.languages ?? [navigator.language]) {
     const m = match(l)
     if (m) return m

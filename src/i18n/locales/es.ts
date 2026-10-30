@@ -219,7 +219,7 @@ const messages: Messages = {
   'profile.finished': 'terminada',
   'profile.total': 'Distancia total',
   'profile.timeNote': 'Un segundo de juego es un minuto en carrera. El entrenamiento suma kilómetros y la velocidad del corredor crece con ellos.',
-  'profile.offlineNote': 'El progreso se guarda en este navegador. Con el juego cerrado, el corredor entrena hasta {h} con una eficiencia del {p}, y la carrera queda en pausa.',
+  'profile.offlineNote': 'El progreso se guarda automáticamente. Con el juego cerrado, el corredor entrena hasta {h} con una eficiencia del {p}, y la carrera queda en pausa.',
   'profile.reset': 'Reiniciar progreso',
   'profile.resetAsk': '¿Borrarlo todo?',
   'profile.resetConfirm': 'Sí, reiniciar',
@@ -248,6 +248,7 @@ const messages: Messages = {
   'away.efficiency': 'Sin conexión se entrena al {p} del ritmo de juego (crece con el Entrenador personal).',
   'away.racePaused': 'Tu carrera estaba en pausa: seguirás desde el mismo punto.',
   'away.continue': 'Continuar',
+  'away.double': '▶ ×2 por ver un anuncio',
 
   // --- race result
   'finale.title': '¡100 millas!',

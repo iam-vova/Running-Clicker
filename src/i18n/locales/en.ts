@@ -220,7 +220,7 @@ export const messages = {
   'profile.finished': 'finished',
   'profile.total': 'Total distance',
   'profile.timeNote': 'One second in the game is one minute on the course. Training adds kilometers, and the runner’s speed grows with them.',
-  'profile.offlineNote': 'Progress is saved in this browser. While the game is closed, the runner trains for up to {h} at {p} efficiency, and races are paused.',
+  'profile.offlineNote': 'Progress is saved automatically. While the game is closed, the runner trains for up to {h} at {p} efficiency, and races are paused.',
   'profile.reset': 'Reset progress',
   'profile.resetAsk': 'Erase everything?',
   'profile.resetConfirm': 'Yes, reset',
@@ -249,6 +249,7 @@ export const messages = {
   'away.efficiency': 'Offline training runs at {p} of the in-game rate (grows with Personal coach).',
   'away.racePaused': 'Your race was paused — you’ll continue from the same spot.',
   'away.continue': 'Continue',
+  'away.double': '▶ ×2 for watching an ad',
 
   // --- race result
   'finale.title': '100 miles!',

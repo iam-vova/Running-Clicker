@@ -6,6 +6,7 @@ import { catchGel, catchRaceGel, click, clickValue, feedDue, fmt, fmtClock, fore
 import type { DashHit } from '../../../game/logic.ts'
 import { RUNNER } from '../../../game/config.ts'
 import { paused, state } from '../../../game/state.ts'
+import { platformPaused } from '../../../platform.ts'
 import { t } from '../../../i18n/index.ts'
 import { sfx } from '../../../sound.ts'
 import { raceStats } from '../../../analytics.ts'
@@ -61,7 +62,7 @@ function loop(now: number) {
     moveGround(d)
   }
   // шаги на трассе: два шага на цикл анимации бега (0.7 с)
-  if (state.activeRace && !paused.value && !document.hidden) {
+  if (state.activeRace && !paused.value && !platformPaused.value && !document.hidden) {
     stepT += dt
     if (stepT >= 0.35) {
       stepT -= 0.35
@@ -355,7 +356,7 @@ function dash(e?: PointerEvent) {
   pop(e ? e.offsetX : 0, e ? e.offsetY : 0, text, debt)
 }
 function onKey(e: KeyboardEvent) {
-  if (e.code === 'Space' && !sheet.value) {
+  if (e.code === 'Space' && !e.repeat && !sheet.value) {
     e.preventDefault()
     dash()
   }

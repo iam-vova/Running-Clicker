@@ -2,7 +2,10 @@
 .bottom-sheet {
   &__backdrop {
     position: absolute;
-    inset: 0;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 50vw); // затемняем всё окно, а не только колонку
+    right: calc(50% - 50vw);
     background: rgb(0 0 0 / 0.35);
     z-index: 4; // поверх игровых кнопок: окно открыто — кнопки не нужны
   }

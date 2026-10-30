@@ -1,6 +1,7 @@
 // Звук и вибрация: 8-битные эффекты синтезируются Web Audio (без аудиофайлов), вибрация — navigator.vibrate.
 // Аудио включается по первому касанию (требование браузеров, особенно Safari на iOS).
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { platformPaused } from './platform.ts'
 
 const KEY = 'ultramarathon-sound'
 function initial(): boolean {
@@ -337,6 +338,17 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) stopMusic()
   else {
     void ctx?.resume().catch(() => {}) // на десктопе оживает сразу; на iOS — по следующему касанию (unlock)
+    startMusic()
+  }
+})
+
+// пауза площадки (реклама, меню Яндекс Игр) — тишина, снята — звук и музыка как были
+watch(platformPaused, (p) => {
+  if (p) {
+    stopMusic()
+    void ctx?.suspend().catch(() => {})
+  } else if (!document.hidden) {
+    void ctx?.resume().catch(() => {})
     startMusic()
   }
 })
