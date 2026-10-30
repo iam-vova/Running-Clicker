@@ -1,4 +1,4 @@
-/* Roboto вшит в сборку: только латиница и кириллица, переменная толщина 100–900 */
+/* Roboto вшит в сборку: латиница (с расширенной — турецкие ş ğ İ) и кириллица, переменная толщина 100–900 */
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
@@ -14,6 +14,14 @@
   font-weight: 100 900;
   src: url('@fontsource-variable/roboto/files/roboto-cyrillic-wght-normal.woff2') format('woff2-variations');
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/roboto/files/roboto-latin-ext-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C0;
 }
 
 /* «Game» — пиксельный шрифт заголовков, кнопок и подписей: Press Start 2P, уменьшенный через size-adjust
@@ -33,6 +41,14 @@
   size-adjust: 72%;
   src: url('@fontsource/press-start-2p/files/press-start-2p-cyrillic-400-normal.woff2') format('woff2');
   unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Game';
+  font-display: swap;
+  font-weight: 100 900;
+  size-adjust: 72%;
+  src: url('@fontsource/press-start-2p/files/press-start-2p-latin-ext-400-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C0;
 }
 
 /* Layout: мобильная игра — сцена на весь экран, HUD сверху, панель вкладок снизу, окна выезжают снизу. */

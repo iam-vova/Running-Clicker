@@ -51,9 +51,34 @@
     }
   }
 
+  // карточка по центру: отступы от краёв, скругление со всех сторон, появляется из центра
+  &--dialog &__panel {
+    left: max(16px, env(safe-area-inset-left, 0px));
+    right: max(16px, env(safe-area-inset-right, 0px));
+    top: 50%;
+    bottom: auto;
+    max-height: calc(100% - 48px);
+    transform: translateY(-50%);
+    border-radius: 20px;
+    border: 2px solid var(--line);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+    animation: dialog-in 0.18s ease-out;
+  }
+
+  &--dialog &__body {
+    padding-bottom: 16px;
+  }
+
   &__body {
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(20px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.96);
   }
 }

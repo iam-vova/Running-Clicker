@@ -1,13 +1,14 @@
 <script setup lang="ts">
 // Окно, выезжающее снизу поверх игровых кнопок: затемнение, заголовок, крестик, прокручиваемое содержимое.
+// dialog — короткое служебное окно (настройки): карточкой по центру, а не панелью снизу.
 import { t } from '../../../i18n/index.ts'
 
-defineProps<{ title: string }>()
+defineProps<{ title: string; dialog?: boolean }>()
 const emit = defineEmits<{ close: [] }>()
 </script>
 
 <template>
-  <div class="bottom-sheet">
+  <div class="bottom-sheet" :class="{ 'bottom-sheet--dialog': dialog }">
     <div class="bottom-sheet__backdrop" @click="emit('close')"></div>
     <section class="bottom-sheet__panel" role="dialog" :aria-label="title">
       <header class="bottom-sheet__head">

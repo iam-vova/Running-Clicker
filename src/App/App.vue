@@ -52,7 +52,7 @@ onBeforeUnmount(() => GESTURES.forEach((g) => removeEventListener(g, onFirstTouc
     <GameHud />
     <ActionBar />
 
-    <BottomSheet v-if="sheet" :title="sheetTitle" @close="closeSheet">
+    <BottomSheet v-if="sheet" :title="sheetTitle" :dialog="sheet === 'settings'" @close="closeSheet">
       <component :is="SHEETS[sheet]" />
     </BottomSheet>
 
