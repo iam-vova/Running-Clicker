@@ -1,7 +1,7 @@
 // Звук и вибрация: 8-битные эффекты синтезируются Web Audio (без аудиофайлов), вибрация — navigator.vibrate.
 // Аудио включается по первому касанию (требование браузеров, особенно Safari на iOS).
 import { ref, watch } from 'vue'
-import { platformPaused } from './platform.ts'
+import { platformMuted, platformPaused } from './platform.ts'
 
 const KEY = 'ultramarathon-sound'
 function initial(): boolean {
@@ -45,7 +45,7 @@ export function setMuted(m: boolean) {
     startMusic()
   }
 }
-const sfxOn = () => soundOn.value && !muted.value
+const sfxOn = () => soundOn.value && !muted.value && !platformMuted.value && !platformPaused.value
 
 let ctx: AudioContext | null = null
 let master: GainNode | null = null
@@ -319,7 +319,7 @@ function schedule() {
   }
 }
 export function startMusic() {
-  if (!musicOn.value || muted.value || timer) return
+  if (!musicOn.value || muted.value || platformMuted.value || platformPaused.value || timer) return
   if (!ctx || !master) return // аудио ещё не разбужено касанием
   if (!musicGain) {
     musicGain = ctx.createGain()
@@ -342,8 +342,9 @@ document.addEventListener('visibilitychange', () => {
   }
 })
 
-// пауза площадки (реклама, меню Яндекс Игр) — тишина, снята — звук и музыка как были
-watch(platformPaused, (p) => {
+// пауза площадки (реклама, меню Яндекс Игр) или звук выключен в настройках CrazyGames — тишина, снято — как было
+watch([platformPaused, platformMuted], ([paused, muted]) => {
+  const p = paused || muted
   if (p) {
     stopMusic()
     void ctx?.suspend().catch(() => {})

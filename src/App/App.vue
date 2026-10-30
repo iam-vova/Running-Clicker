@@ -4,6 +4,7 @@
 import { computed, onBeforeUnmount, onMounted } from 'vue'
 import { state, toast } from '../game/state.ts'
 import { startMusic, unlock } from '../sound.ts'
+import { platformName } from '../platform.ts'
 import { useRace } from '../composables/useRace.ts'
 import { useRaceFlow } from '../composables/useRaceFlow.ts'
 import { useScale } from '../composables/useScale.ts'
@@ -29,6 +30,8 @@ const { lastResult, showResult, away, startFlow } = useRaceFlow()
 /** Ночной участок забега: сцена ночная при любой теме */
 const { nightNow } = useRace()
 startFlow()
+// CrazyGames требует сразу запускать в игру: без окна выбора, персонаж случайный (сменить — в настройках)
+if (!state.character && platformName() === 'crazygames') state.character = Math.random() < 0.5 ? 'he' : 'she'
 
 const SHEETS = { train: TrainSheet, gear: GearSheet, race: RaceSheet, more: ProfileSheet, settings: SettingsSheet }
 

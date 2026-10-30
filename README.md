@@ -7,6 +7,7 @@ npm ci
 npm run dev      # локально
 npm run build    # сборка в dist/
 npm run build:yandex  # сборка для Яндекс Игр: dist-yandex/ и архив hundred-miler-yandex.zip
+npm run build:crazy   # сборка для CrazyGames: dist-crazygames/ и архив hundred-miler-crazygames.zip
 npm run sim      # симуляция баланса (RUSH=1 — игрок, который стартует как можно раньше)
 node --experimental-strip-types sim/calibrate.ts   # подбор лимитов забегов под целевые минуты (TARGET='{"1k":3,…}')
 ```
@@ -60,7 +61,8 @@ src/
 | `race_start` | `race`, `forecast_min`, `best_min`, `cutoff_min`, `ready` (ok/maybe/late) |
 | `race_finish`, `race_dnf` | `race`, `time_min`, `cutoff_min`, `covered_km`, `gave_up`, `taps`, `gels` |
 
-У каждого события есть `play_min` (минуты активной игры с первого запуска), `races_done`, `income_kmh`, `lang`.
+У каждого события есть `play_min` (минуты активной игры с первого запуска), `races_done`, `income_kmh`, `lang`,
+`tz` (часовой пояс — страна без IP), `locale` (язык браузера с регионом), `platform` (web / yandex / crazygames).
 
 ## Публикация
 
@@ -80,3 +82,17 @@ src/
 - на мониторе сцена на всю ширину окна, интерфейс — колонкой по центру; правый клик не открывает меню, пробел — тап.
 
 Проверка в черновике: открыть игру с `?debug-mode=16` — в левом нижнем углу `IT`, если SDK инициализирован.
+
+### CrazyGames
+
+`npm run build:crazy` — версия с CrazyGames SDK v3 (`crazygames-sdk-v3.js` с их CDN), архив `hundred-miler-crazygames.zip`.
+Тот же `src/platform.ts`, отличия от Яндекса:
+
+- `loadingStart/loadingStop` вокруг загрузки; `gameplayStart/Stop` только по паузе для рекламы — уход со вкладки площадка ловит сама;
+- настройка площадки `muteAudio` главнее внутриигровой: звук и музыка молчат;
+- сохранения — модуль Data (`data.setItem('save', …)`): при подаче включить **Progress Save → Yes, using the Data Module**;
+- `happytime()` — первый финиш дистанции или новый рекорд;
+- без окна выбора персонажа (требование «сразу в игру»): персонаж случайный, сменить — в настройках;
+- язык — из браузера.
+
+Сначала игра идёт в Basic Launch (без монетизации, SDK необязателен), Full Launch — после отбора по метрикам.

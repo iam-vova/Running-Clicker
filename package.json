@@ -6,7 +6,8 @@
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "sim": "node --experimental-strip-types sim/simulate.ts",
-    "build:yandex": "vue-tsc --noEmit && vite build --mode yandex --outDir dist-yandex && cd dist-yandex && rm -f ../hundred-miler-yandex.zip && zip -qr ../hundred-miler-yandex.zip ."
+    "build:yandex": "vue-tsc --noEmit && vite build --mode yandex --outDir dist-yandex && cd dist-yandex && rm -f ../hundred-miler-yandex.zip && zip -qr ../hundred-miler-yandex.zip .",
+    "build:crazy": "vue-tsc --noEmit && vite build --mode crazygames --outDir dist-crazygames && cd dist-crazygames && rm -f ../hundred-miler-crazygames.zip && zip -qr ../hundred-miler-crazygames.zip ."
   },
   "dependencies": {
     "@fontsource-variable/roboto": "^5.3.0",

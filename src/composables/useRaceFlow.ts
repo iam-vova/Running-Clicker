@@ -8,6 +8,7 @@ import { abandonRace, canStartRace, startRace } from '../game/logic.ts'
 import type { OfflineReport, RaceResult } from '../game/logic.ts'
 import { paused, startGame, state } from '../game/state.ts'
 import { sfx } from '../sound.ts'
+import { celebrate } from '../platform.ts'
 import { useSheets } from './useSheets.ts'
 import { useRace } from './useRace.ts'
 import { raceStats, track } from '../analytics.ts'
@@ -46,6 +47,8 @@ const { sheet, closeSheet } = useSheets()
 function onRaceFinish(res: RaceResult) {
   if (res.ok) {
     sfx.finish()
+    // особый момент для площадки (CrazyGames happytime): первый финиш дистанции или новый рекорд
+    if (!res.replay || (res.prevBest && res.time < res.prevBest)) celebrate()
   }
   else sfx.dnf()
   const r = RACES.find((r) => r.id === res.id)!

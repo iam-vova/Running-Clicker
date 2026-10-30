@@ -3,13 +3,17 @@ import type { Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { viteSingleFile } from 'vite-plugin-singlefile'
 
-/** Сборка для Яндекс Игр: их SDK по относительному пути /sdk.js (раздаёт сама площадка) — до кода игры */
-const yandexSdk = (): Plugin => ({
-  name: 'yandex-sdk',
-  transformIndexHtml: (html) => html.replace('</head>', '    <script src="/sdk.js"></script>\n  </head>'),
+/** SDK площадки — до кода игры: Яндекс раздаёт свой по относительному пути, CrazyGames — со своего CDN */
+const SDK: Record<string, string> = {
+  yandex: '/sdk.js',
+  crazygames: 'https://sdk.crazygames.com/crazygames-sdk-v3.js',
+}
+const platformSdk = (src: string): Plugin => ({
+  name: 'platform-sdk',
+  transformIndexHtml: (html) => html.replace('</head>', `    <script src="${src}"></script>\n  </head>`),
 })
 
-// singlefile: вся игра в одном index.html — удобно для itch.io, Яндекс Игр и превью
+// singlefile: вся игра в одном index.html — удобно для itch.io, площадок и превью
 export default defineConfig(({ mode }) => ({
-  plugins: [vue(), viteSingleFile(), ...(mode === 'yandex' ? [yandexSdk()] : [])],
+  plugins: [vue(), viteSingleFile(), ...(SDK[mode] ? [platformSdk(SDK[mode])] : [])],
 }))

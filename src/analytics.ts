@@ -5,6 +5,7 @@ import { ref } from 'vue'
 import { income } from './game/logic.ts'
 import { state } from './game/state.ts'
 import { lang } from './i18n/index.ts'
+import { platformName } from './platform.ts'
 
 const API_KEY = 'phc_sQBsDea6EpnJTgJveep57PA2anvie3Z7xTgXcYmSrEyK' // публичный ключ проекта: им можно только отправлять события
 const HOST = 'https://us.i.posthog.com' // регион проекта: us или eu
@@ -42,6 +43,14 @@ const playerId =
     write(ID_KEY, id)
     return id
   })()
+/** Страна без IP: часовой пояс ('Asia/Yerevan') и регион языка браузера ('ru-RU') — для разбивки по странам хватает */
+const TZ = (() => {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone
+  } catch {
+    return null
+  }
+})()
 const PLAY_KEY = 'ultramarathon-play-sec'
 /** Секунды активной игры (вкладка открыта) с первого запуска — чтобы мерить «сколько минут до забега» */
 let playSec = Number(read(PLAY_KEY)) || 0
@@ -77,6 +86,9 @@ export function track(event: string, props: Record<string, unknown> = {}) {
       races_done: state.races.length,
       income_kmh: Math.round(income(state)),
       lang: lang.value,
+      tz: TZ,
+      locale: navigator.language,
+      platform: platformName() ?? 'web', // web / yandex / crazygames
       ...props,
     },
   })
